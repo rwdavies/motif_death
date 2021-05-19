@@ -5,10 +5,13 @@ motif_death
 
 This repository contains code to download, pre-process, map, and variant call related species for use in motif death research.
 
-### Pre-process
+### Manual curation of input file and downloading reference material
+
+? how to build input .json files
+? how to download files e.g. reference stuff
 
 
-### Per-sample preparation
+### Per-sample pre-processing and mapping
 
 Run for each species, this would look like the following
 ```
