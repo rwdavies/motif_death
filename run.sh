@@ -4,7 +4,7 @@
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
-component=$1
+component=$1 ## either mapping, preprocess, or 
 what=$2
 where=$3
 species=$4
@@ -29,7 +29,7 @@ then
     SPECIES_ORDER="cercopithecoidea"
 elif [ "${species}" == "cow" ] || [ "${species}" == "goat" ] || [ "${species}" == "giraffe" ] || [ "${species}" == "okapi" ] || [ "${species}" == "whitetaileddeer" ]  || [ "${species}" == "reddeer" ] || [ "${species}" == "buffalo" ]
 then
-    SPECIES_ORDER="bovidae"
+    SPECIES_ORDER="artiodactyla"
 elif [ "${species}" == "FAM" ] || [ "${species}" == "caroli" ] || [ "${species}" == "CAST_EiJ" ] || [ "${species}" == "WSB_EiJ" ] || [ "${species}" == "SPRET_EiJ" ] || [ "${species}" == "PWK_PhJ" ]
 then
     SPECIES_ORDER="mice"
@@ -83,7 +83,7 @@ rm ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ]
 then
     echo -e '
-configfile: "'${SCRIPTPATH}'" + "/'${species}'.json"
+configfile: "'${SCRIPTPATH}'" + "/species_mapping_info/'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
@@ -107,7 +107,7 @@ then
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
         -w 30 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P myers.prjc -j Y -o /well/myers/rwdavies/primates/logs/" --jobs ${jobs} ${other} \
+        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P myers.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} ${other} \
         ${what}
     ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]

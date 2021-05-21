@@ -1,3 +1,28 @@
+## note, a URL like this might work
+## https://www.ebi.ac.uk/ena/portal/api/filereport?accession=PRJNA317745&result=read_run&fields=study_accession,secondary_study_accession,sample_accession,secondary_sample_accession,experiment_accession,run_accession,submission_accession,tax_id,scientific_name,instrument_platform,instrument_model,library_name,nominal_length,library_layout,library_strategy,library_source,library_selection,read_count,base_count,center_name,first_public,last_updated,experiment_title,study_title,study_alias,experiment_alias,run_alias,fastq_bytes,fastq_md5,fastq_ftp,fastq_aspera,fastq_galaxy,submitted_bytes,submitted_md5,submitted_ftp,submitted_aspera,submitted_galaxy,submitted_format,sra_bytes,sra_md5,sra_ftp,sra_aspera,sra_galaxy,cram_index_ftp,cram_index_aspera,cram_index_galaxy,sample_alias,broker_name,sample_title,nominal_sdev,first_created&format=tsv&download=true
+
+## each entry in the list has the following elements, in order, unnamed
+## - name of the sample in the ENA file
+## - scientific name
+## - working name for the analysis (lower case, simple form)
+## - file to read in
+## - number of mapping pieces
+get_artiodactyla_info <- function() {
+    ## okapi, giraffe, cow, goat
+    ## whitetaileddeer, reddeer, buffalo
+    ## giraffe, okapi
+    info <- list(
+        c("giraffe NZOO", "PRJNA313910", "okapi", "filereport_read_run_PRJNA313910_tsv.txt", 50),
+        c("okapi WOAK", "Okapia johnstoni", "okapi", "filereport_read_run_PRJNA313910_tsv.txt", 50),
+        c("Btau_HOL_Bulldog1", "Bos taurus", "cow", "filereport_read_run_PRJNA238491_tsv.txt", 50),
+        c("BGI-WGS_9", "Capra aegagrus", "goat", "filereport_read_run_SRP047212_tsv.txt", 50),
+        c("OVIR.TE", "Odocoileus virginianus texanus", "whitetaileddeer", "filereport_read_run_PRJNA317745_tsv.txt", 60),
+        c("Red deer from Hungary", "Cervus elaphus", "reddeer", "filereport_read_run_PRJNA324173_tsv.txt", 50),
+        c("Cape African Buffalo", "Syncerus caffer", "buffalo", "SRX2069824 (buffalo).txt", 50)
+    )
+    info
+}
+
 ## sample_alias <- info[[i_species]][1]
 ## sample_name <- info[[i_species]][3]
 ## paper <- info[[i_species]][4]
@@ -92,7 +117,7 @@ get_bear_info <- function() {
 }
 
 get_b <- function(paper, sample_alias) {
-    b <- read.table(paper,  header = TRUE, sep = "\t")
+    b <- read.table(file.path(ENA_DIR, paper),  header = TRUE, sep = "\t")
     b <- b[(b[, "sample_alias"] == sample_alias), ]
     if (sample_alias == "Geospiza_fortis reads") {
         b <- b[
@@ -134,6 +159,18 @@ get_b <- function(paper, sample_alias) {
         b <- b[b[, "run_accession"] == "SRR518713", ]
     } else if (sample_alias == "Generic sample from Ailuropoda melanoleuca") {
         ## b <- b[b[, "run_accession"] == "SRR518713", ]
+    } else if (sample_alias == "okapi WOAK") {
+        b <- b[b[, "library_name"] == "WOAK_PE", ]
+    } else if (sample_alias == "BGI-WGS_9") {
+        b <- read.table(file.path(ENA_DIR, paper),  header = TRUE, sep = "\t")
+        ## paper suggests this is OK
+        b <- b[
+        (b[, "sample_alias"] == "BGI-WGS_9") |
+        (b[, "sample_alias"] == "BGI-WGS_5")
+      , ]
+    } else if (sample_alias == "OVIR.TE") {
+        b <- b[b[, "run_accession"] %in% c("SRR4069805", "SRR4069807", "SRR4069809"), ]
+        ## filereport_read_run_PRJNA317745_tsv.txt
     } else {
         b <- b[is.na(b[, "nominal_length"]) | b[, "nominal_length"] < 1000 , ]
     }
