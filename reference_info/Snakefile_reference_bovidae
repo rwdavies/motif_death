@@ -1,0 +1,35 @@
+REFNAME = "bosTau8"
+REF_URL="http://hgdownload.cse.ucsc.edu/goldenPath/bosTau8/bigZips/bosTau8.fa.gz"
+CHR_LIST_ONLY_AUTOS = list(range(1, 30))
+CHR_LIST = list(range(1, 30))
+CHR_LIST.append("X") ## new - not done on these samples previously!
+SPECIES_LIST = ['cow', 'buffalo', 'giraffe', 'okapi', 'goat', 'whitetaileddeer', 'reddeer']
+VCF_PREFIX = "bovidae.cbgogwd"
+TREEMIX_PREFIX = VCF_PREFIX
+GATK_CHR_PREFIX = "chr"
+## CHR_CHUNKS = range(1, 17)
+TREEMIX_OUTGROUP = "reddeer"
+TREEMIX_THREADS=4
+
+HATBAG_DIR="ruminantia"
+HATBAG_OUTPUT_DATE="2018_02_25"
+HATBAG_LINEAGES=['list(' +
+'"cow"="cow",'
+'"buffalo"="buffalo",'
+'"ACB"=c("cow","buffalo"),'
+'"goat"="goat",'
+'"ACBG"=c("ACB","goat"),'
+'"giraffe"="giraffe",'
+'"okapi"="okapi",'
+'"AOGi"=c("giraffe","okapi")'
+')']
+HATBAG_ANCESTRAL_LINEAGE=['list('
+'"AOGiACBG"=c("AOGi","ACBG")'
+')']
+HATBAG_OUTGROUPS='c("reddeer","whitetaileddeer")'
+HATBAG_LINEAGES_TO_BUILD='NULL'
+HATBAG_CHRS='paste0("chr",1:29)'
+HATBAG_GENOME_SIZE=2670044500
+HATBAG_RMASK="/well/myers/rwdavies/primates/external/bosTau8.rmsk.gz"
+HATBAG_SIMPLE_REPEAT="/well/myers/rwdavies/primates/external/bosTau8.simpleRepeat.gz"
+HATBAG_CALLABLE_BED='NULL'

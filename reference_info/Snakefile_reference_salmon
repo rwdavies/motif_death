@@ -1,0 +1,38 @@
+REFNAME = "Otsh_v1.0"
+REF_URL="XXX"
+SPECIES_LIST = ['atlantic_salmon', 'rainbow_trout', 'arctic_char', 'coho', 'chinook']
+VCF_PREFIX = "salmon.aracc"
+TREEMIX_PREFIX = VCF_PREFIX
+TREEMIX_OUTGROUP = 'atlantic_salmon'
+GATK_CHR_PREFIX = ""
+TREEMIX_THREADS=4
+
+
+CHR_LIST_ONLY_AUTOS = ['NC_037097.1', 'NC_037098.1', 'NC_037099.1', 'NC_037100.1', 'NC_037101.1', 'NC_037102.1', 'NC_037103.1', 'NC_037104.1', 'NC_037105.1', 'NC_037106.1', 'NC_037107.1', 'NC_037108.1', 'NC_037109.1', 'NC_037110.1', 'NC_037111.1', 'NC_037112.1', 'NC_037113.1', 'NC_037114.1', 'NC_037115.1', 'NC_037116.1', 'NC_037117.1', 'NC_037118.1', 'NC_037119.1', 'NC_037120.1', 'NC_037121.1', 'NC_037122.1', 'NC_037123.1', 'NC_037124.1', 'NC_037125.1', 'NC_037126.1', 'NC_037127.1', 'NC_037128.1', 'NC_037129.1', 'NC_037130.1']
+CHR_LIST = CHR_LIST_ONLY_AUTOS
+
+
+
+HATBAG_DIR="salmon"
+## everything below this is a lie
+HATBAG_OUTPUT_DATE="2018_02_25"
+HATBAG_LINEAGES=['list(' +
+'"cow"="cow",'
+'"buffalo"="buffalo",'
+'"ACB"=c("cow","buffalo"),'
+'"goat"="goat",'
+'"ACBG"=c("ACB","goat"),'
+'"giraffe"="giraffe",'
+'"okapi"="okapi",'
+'"AOGi"=c("giraffe","okapi")'
+')']
+HATBAG_ANCESTRAL_LINEAGE=['list('
+'"AOGiACBG"=c("AOGi","ACBG")'
+')']
+HATBAG_OUTGROUPS='c("reddeer","whitetaileddeer")'
+HATBAG_LINEAGES_TO_BUILD='NULL'
+HATBAG_CHRS='paste0("chr",1:29)'
+HATBAG_GENOME_SIZE=2670044500
+HATBAG_RMASK="/well/myers/rwdavies/primates/external/bosTau8.rmsk.gz"
+HATBAG_SIMPLE_REPEAT="/well/myers/rwdavies/primates/external/bosTau8.simpleRepeat.gz"
+HATBAG_CALLABLE_BED='NULL'
