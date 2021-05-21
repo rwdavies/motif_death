@@ -30,14 +30,17 @@ Eventually, `run.sh` is actually run, on a head or data node. It requires snakem
 run.sh preprocess all local goat --dryrun ## to check what will be run
 run.sh preprocess all local goat ## to run it
 ```
+Note this might take from 30 minutes to a few hours of wall clock time to run per job, depending on size of individual fastqs.
 
 ### Mapping
 
 Run for each species, jobs submitted to the cluster, this would look like the following
 
 ```
-run.sh mapping all local goat
+run.sh mapping all cluster goat
 ```
+
+This might take one or a few days to run through to completion.
 
 ## Downstream variant calling
 

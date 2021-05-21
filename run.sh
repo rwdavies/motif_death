@@ -77,11 +77,10 @@ then
     exit 1
 fi
 
-cd ${ANALYSIS_DIR}
 
-
+mkdir -p job_snakefiles
 SNAKEFILE=${SCRIPTPATH}/job_snakefiles/snakefile_${species}_${component}
-rm ${SNAKEFILE}
+rm -f ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ]
 then
     echo -e '
@@ -101,7 +100,7 @@ include:
 
 ' >> ${SNAKEFILE}
 
-
+cd ${ANALYSIS_DIR}
 if [ $where == "cluster" ]
 then
     ##--verbose 
@@ -110,7 +109,7 @@ then
         --snakefile ${SNAKEFILE} \
         -w 30 \
 	 --max-status-checks-per-second 0.1 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P myers.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} ${other} \
+        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} ${other} \
         ${what}
     ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]
