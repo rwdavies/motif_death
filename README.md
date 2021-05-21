@@ -23,9 +23,12 @@ R -f prepare_inputs.R --args artiodactyla
 
 ### Downloading data
 
-Run on a head or data node. 
+Analysis is done using the `run.sh` file, which requires manual intervention to note how species are linked to an order. For example `goat` is in `artiodactyla`, specified in `run.sh`. To use `run.sh` further requires `Snakefile_reference_artiodactyla`, with manual specification of things like the path to the reference genome, the species, etc.
+
+Eventually, `run.sh` is actually run, on a head or data node. It requires snakemake to be installed, currently done using `install_snakemake_2.sh` semi-interactively through conda
 ```
-run.sh preprocess all local goat
+run.sh preprocess all local goat --dryrun ## to check what will be run
+run.sh preprocess all local goat ## to run it
 ```
 
 ### Mapping

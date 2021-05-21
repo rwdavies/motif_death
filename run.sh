@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-. ~/personal/activate
+set -e
+. activate
+
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
@@ -62,11 +64,10 @@ fi
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
-SNAKEMAKE=${SCRIPTPATH}/snakemake/.venv/bin/snakemake
 
-ANALYSIS_DIR='/well/myers/rwdavies/primates/'
-##EXTERNAL_DIR=${ANALYSIS_DIR}/external/ ## manually put external data
-LOG_DIR=${ANALYSIS_DIR}/logs/
+SNAKEMAKE="${BIN_DIR}miniconda3/envs/snakemake/bin/snakemake"
+
+LOG_DIR="${ANALYSIS_DIR}/logs/"
 mkdir -p ${ANALYSIS_DIR}
 mkdir -p ${LOG_DIR}
 
@@ -78,7 +79,8 @@ fi
 
 cd ${ANALYSIS_DIR}
 
-SNAKEFILE=${SCRIPTPATH}/snakefile_${species}_${component}
+
+SNAKEFILE=${SCRIPTPATH}/job_snakefiles/snakefile_${species}_${component}
 rm ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ]
 then
@@ -92,7 +94,7 @@ include:
     "'${SCRIPTPATH}'" + "/Snakefile_programs"
 
 include:
-    "'${SCRIPTPATH}'" + "/Snakefile_reference_'${SPECIES_ORDER}'"
+    "'${SCRIPTPATH}'" + "/reference_info/Snakefile_reference_'${SPECIES_ORDER}'"
 
 include:
     "'${SCRIPTPATH}'" + "/Snakefile_'${component}'"
@@ -107,6 +109,7 @@ then
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
         -w 30 \
+	 --max-status-checks-per-second 0.1 \
         --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P myers.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} ${other} \
         ${what}
     ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
