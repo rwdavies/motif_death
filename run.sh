@@ -88,6 +88,14 @@ configfile: "'${SCRIPTPATH}'" + "/species_mapping_info/'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
+
+## add activate components as necessary
+echo -e '
+BIN_DIR='\"${BIN_DIR}\"'
+R_DIR='\"${R_DIR}\"'
+' >> ${SNAKEFILE}
+
+## add other programs
 echo -e '
 include:
     "'${SCRIPTPATH}'" + "/Snakefile_programs"

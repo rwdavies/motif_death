@@ -1,14 +1,36 @@
-library("data.table")
+##library("data.table")
 
 
-##f setwd("/well/myers/rwdavies/primates/")
+
+## setwd("/well/davies/users/dcc832/primates/")
 species <- commandArgs(trailingOnly = TRUE)[1]
 ref <- commandArgs(trailingOnly = TRUE)[2]
 ## species <- "chimp"; ref <- "hg38.fa";
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
+## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
 ref_summary_file <- paste0("ref/", ref, ".summary.txt")
 
-source("/users/flint/rwdavies/personal/proj/primates/R/functions.R")
+
+get_chrlist <- function(ref) {
+    if (ref == "bosTau8.fa") {
+        chrlist <- 1:29
+        chr_prefix <- "chr"
+    } else if (ref == "hg38.fa") {
+        chrlist <- 1:22
+        chr_prefix <- "chr"
+    } else if (ref == "NCBIM37_um.fa") {
+        chrlist <- 1:19
+        chr_prefix <- ""
+    } else if (ref == "canFam3.fa") {
+        chrlist <- 1:38
+        chr_prefix <- "chr"    
+    } else {
+        print(paste0("ref = ", ref))
+        stop("ref not defined")
+    }
+    return(list(chrlist = chrlist, chr_prefix = chr_prefix))
+}
+    
 chrlist <- get_chrlist(ref)$chrlist
 
 RData_file_function <- function(species, chr)
@@ -16,6 +38,9 @@ RData_file_function <- function(species, chr)
 
 depth_sum <- 0
 message("First pass")
+
+chr <- chrlist[1]
+
 for(chr in chrlist) {
     message(paste0(chr, ", ", date()))
     RData_file <- RData_file_function(species, chr)
@@ -28,23 +53,30 @@ for(chr in chrlist) {
         system(paste0("gunzip -c ", input_file, " | cut -f1,4 > ", f))
         nrows <- system(paste0("wc -l ", f), intern = TRUE)
         nrows <- as.numeric(strsplit(nrows, " ")[[1]][1])
-        data <- fread(
-            f, data.table = FALSE, nrows = nrows,
-            colClasses = c("character", "integer"),
-            skip = 1
-        )
-        unlink(f)
-        message("extract")
-        gc(reset = TRUE); gc(reset = TRUE)
-        depth <- data[, 2]
-        x <- data[, 1]
-        rm(data)
-        gc(reset = TRUE); gc(reset = TRUE); gc(reset = TRUE); gc(reset = TRUE)
-        L <- as.numeric(substr(x, 5 + nchar(chr), 100))
-        gc(reset = TRUE); gc(reset = TRUE)
+        message(paste0("nrows = ", nrows))
+        message(paste0("extract depth"))
+        depth <- as.integer(system(paste0("cut -f2 ", f, " | sed 1d"), intern = TRUE))
+        message(paste0("extract L"))        
+        L <- as.integer(system(paste0("cut -f1 ", f, " | sed 1d | cut -c ", 5 + nchar(chr), "-"), intern = TRUE))
+        ## data <- fread(
+        ##     f, data.table = FALSE, nrows = nrows,
+        ##     colClasses = c("character", "integer"),
+        ##     skip = 1
+        ## )
+        ## unlink(f)
+        ## message("extract")
+        ## for(i in 1:10) {
+        ##     gc(reset = TRUE)
+        ## }
+        ## L <- as.numeric(substr(data[, 1], 5 + nchar(chr), 100))
+        ## gc(reset = TRUE); gc(reset = TRUE)
+        ## depth <- data[, 2]
+        ## rm(data)
         message("save")
         save(L, depth, file = RData_file, compress = FALSE) ## speed up since a temp fi
-        ##message("remove input file")
+        for(i in 1:10) {
+            gc(reset = TRUE)
+        }
         ##unlink(input_file)        
     } else {
         message("load")

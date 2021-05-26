@@ -32,7 +32,7 @@ if (1 == 0) {
 source(file.path(R_DIR, "prepare_inputs_functions.R"))
 
 ## choose
-group <- commandArgrs(trailingOnly = TRUE)
+group <- commandArgs(trailingOnly = TRUE)
 if (group == "artiodactyla") {
     info <- get_artiodactyla_info()
 } else {
