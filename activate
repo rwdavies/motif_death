@@ -1,0 +1,5 @@
+ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
+BIN_DIR="/well/davies/users/dcc832/primates/bin/"
+PYTHON_DIR="~/proj/motif_death/python/"
+R_DIR="~/proj/motif_death/R/"
+ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
