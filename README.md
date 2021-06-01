@@ -27,9 +27,9 @@ Note, dependent R packages are not currently captured, and will cause program fa
 
 Analysis is done per-sample for all samples in an order using the `run.sh` file, which requires manual intervention to note how species are linked to an order. For example `goat` is in `artiodactyla`, specified in `run.sh`.
 
-To use `run.sh` further requires `Snakefile_reference_artiodactyla`, with manual specification of things like the download path for the reference genome, the species, etc.
+To use `run.sh` further requires a file in `reference_info`, here `Snakefile_reference_artiodactyla`, with manual specification of things like the download path for the reference genome, the species, etc. Most of these can probably be set more automatically.
 
-Note that run.sh pulls sources `activate`, which contains some manual paths, specific to the current machine and user. Similarly, `Snakefile_programs` contains a mixture of manual paths, which should be moved to the activate script, and some programs set depending on paths that depend on the activate script, which is OK. 
+Note that run.sh pulls sources `activate`, which contains some manual paths, specific to the current machine and user. Similarly, `Snakefile_programs` contains a mixture of manual paths, which should be moved to the activate script (a script containing machine and user specific paths), and some programs set depending on paths that depend on the activate script, which is OK. 
 
 Eventually, `run.sh` is actually run, on a head or data node. It requires snakemake to be installed, currently done using `install_snakemake_2.sh` semi-interactively through conda
 ```
@@ -62,13 +62,27 @@ Once all the samples from an order have been downloaded and mapped, it is time t
 
 Note that the number of cores being used per chromosome is a parameter set somewhere, one option is to make this parameter more visible, another is to break the region into chunks and call the genome in chunks them combine back together. This would run faster and more easily on the cluster but requires some coding.
 
-TODO: `get_per_sample_average_cor.R` requires manual intervention to set list of chromosomes for new species
+TODO: `get_per_sample_average_cor.R` requires manual intervention to set list of chromosomes for new species, fix this so it runs automatically
+
+## Treemix
+
+The above should also run treemix (can be manually run using `./run.sh downstream treemix cluster goat`), which creates some plots in the analysis directory `treemix/` which shows the relationship between samples. This is pre-supposed in most cases, i.e. based on prior evidence, we assume a relationship between samples, though ideally we would get this from this plot. This is currently maually interpreted / assumed, though it would be good it this could be automated (at least, the within tree relationships - probably OK to assume the outgroup). The results from this (the interpreted results) are currently used in `R/run_all_functions.R` which should probably be automated.
 
 ## Analysis using HATBAG
 
-TODO: get this to run on rescomp?
+HATBAG itself is a relatively OK piece of code. It can be run from the command line.
 
-See on smew ~/proj/HOTSPOT_DEATH_ANALYSIS/
+The current integration of this into the script is very hacky. It should work - it does work - but it is inelegant, and was put together now in a brute force fashion (previously this ran on a single compute server with 300+ GB of RAM, rather than on a cluster). Old code towards this goal (in `Snakefile_HATBAG`) still exists but isn't quite working.
 
-TODO (for Robbie): Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`b
+This step requires manual downloading of files (explanation of how this was done, and how this might be automated, to be discussed in time) from UCSC as specified in `R/run_all_functions.R` for now (simpleRepeat file, rmask file). This also requires manual specification of paths and values in `R/run_all_functions.R`
+
+This does currently run on the cluster using
+
+```
+./run.sh HATBAG HATBAG_HACK cluster goat
+```
+
+## Other TODO
+
+TODO (for Robbie): Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`
 

@@ -1,4 +1,115 @@
-## not currently operational
+## unclear why I did this, same as in Snakefile_downstream
+VCF_PREFIX = VCF_PREFIX + ".GATKug"
+
+
+##
+## current hack
+##
+rule HATBAG_HACK:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/F_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+
+
+rule HATBAG_HACK_A:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/A_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+rule HATBAG_HACK_B:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/B_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+rule HATBAG_HACK_C:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/C_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+rule HATBAG_HACK_D:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/D_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+rule HATBAG_HACK_E:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/E_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+rule HATBAG_HACK_F:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/F_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+
+
+
+def get_hatbag_n_threads(wildcards):
+    run = wildcards.run
+    if run == "A":
+        return(1)
+    if run == "B":
+        return(4)
+    if run == "C":
+        return(4)
+    if run == "D":
+        return(4)
+    if run == "E":
+        return(4)
+    if run == "F":
+        return(1)
+
+
+def get_input_bam(wildcards):
+    return(scenarios[wildcards.scenario]["impute_bam_list"][wildcards.sample_name])
+
+def get_hatbag_input(wildcards):
+    run = wildcards.run
+    if run == "A":
+        return()
+    if run == "B":
+        need = "A"
+    if run == "C":
+        need = "B"
+    if run == "D":
+        need = "C"
+    if run == "E":
+        need = "D"
+    if run == "F":
+        need = "E"
+    return(expand("hatbag/{hatbag_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
+
+
+rule HATBAG_HACK_FUNCTION:
+    input:
+        get_hatbag_input
+    output:
+        decoy = expand("hatbag/{hatbag_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+    params:
+        N='hatbag_test',
+        threads=get_hatbag_n_threads,
+        queue="short.qc"
+    wildcard_constraints:
+        run='[A-Z]{1,6}'
+    shell:
+        'R -f ' + R_DIR + 'run_all.R '
+	'--args '
+	' ' + R_DIR + ' '
+        ' ' + SPECIES_ORDER + ' '
+	' {wildcards.run} '
+	' ' + HATBAG_OUTPUT_DATE + ' '
+	' {params.threads} '
+	' vcf/' + VCF_PREFIX + '.filtered.vcf.gz '
+	' && touch {output.decoy} '
+
+
+
+
+
+
+
+
+##
+##
+## UNCLEAR OPERATIONAL STATUS BELOW
+##
+## 
+
+rule all_hatbag:
+    input:
+        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+
+
+rule test_hatbag:
+    input:
+        expand("hatbag/{hatbag_dir}--{simple_repeat}_simple_repeat--{use_one_sided_pvalue}_use_one_sided_pvalue--mrle_{mrle}--ndge_{ndge}--callable_bed_{callable_bed}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE, simple_repeat = ["yes", "no"], use_one_sided_pvalue = ["TRUE", "FALSE"], mrle = [6, 10], ndge = [3, 0], callable_bed = ["yes", "no"])
 
 
 ## simple - basic options
@@ -99,4 +210,5 @@ rule HATBAG:
         '{output.decoy}.${{RUN}}.log ; '
         'done && '
         'touch {output.decoy}'
+
 

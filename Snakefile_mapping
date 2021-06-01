@@ -129,12 +129,11 @@ rule extract_and_map_fastq_pieces:
         'gunzip -c {input.pen1} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen1}.temp.{wildcards.piece}.gz && '
         'gunzip -c {input.pen2} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen2}.temp.{wildcards.piece}.gz && '
         'set -o pipefail && '
-        '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\t@LB{params.lb}" '
+        '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\tLB:{params.lb}" '
         ' ref/{REFNAME}.fa -t{params.threads} '
         '{input.pen1}.temp.{wildcards.piece}.gz '
         '{input.pen2}.temp.{wildcards.piece}.gz | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp1.bam && '
-        'rm {input.pen1}.temp.{wildcards.piece}.gz {input.pen2}.temp.{wildcards.piece}.gz && '	
         '{PYTHON_278} {STAMPY} '
         '--readgroup='
         'ID:{params.flowcell_barcode}.{params.flowcell_lane},'
@@ -146,11 +145,13 @@ rule extract_and_map_fastq_pieces:
         '-t{params.threads} -g ref/{REFNAME} -h ref/{REFNAME} --overwrite --bamkeepgoodreads '
         '-M {output.bam}.temp1.bam | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp2.bam && '
-        'rm {output.bam}.temp1.bam && '	
         'echo STAMPY DONE && '
         '{SAMTOOLS} sort -T mapping/{SPECIES}/ -o {output.bam} {output.bam}.temp2.bam && '
         '{SAMTOOLS} index {output.bam} && '
-        'rm {output.bam}.temp2.bam '
+        'rm {output.bam}.temp1.bam && '	
+        'rm {output.bam}.temp2.bam && '
+        'rm {input.pen1}.temp.{wildcards.piece}.gz {input.pen2}.temp.{wildcards.piece}.gz'
+
 
 ## after STAMPY command maybe --sensitive
 ## make head this for faster version "| head -n 400"
@@ -215,7 +216,7 @@ rule mark_duplicates:
         'OUTPUT={output.bam} '
         'MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 '
         'METRICS_FILE={output.bam}.metrics.txt && '
-        '{SAMTOOLS} index {output.bam} && '        
+        '{SAMTOOLS} index {output.bam} && '
         'rm {input.bam} && '
         'rm {input.bai}'
 

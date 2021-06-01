@@ -92,7 +92,9 @@ fi
 ## add activate components as necessary
 echo -e '
 BIN_DIR='\"${BIN_DIR}\"'
+PYTHON_DIR='\"${PYTHON_DIR}\"'
 R_DIR='\"${R_DIR}\"'
+SPECIES_ORDER='\"${SPECIES_ORDER}\"'
 ' >> ${SNAKEFILE}
 
 ## add other programs
@@ -112,7 +114,7 @@ cd ${ANALYSIS_DIR}
 if [ $where == "cluster" ]
 then
     ##--verbose 
-    ##--printshellcmds 
+    ##--printshellcmds
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
         -w 30 \

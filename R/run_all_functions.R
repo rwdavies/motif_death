@@ -219,6 +219,8 @@ get_per_species_params <- function(species) {
             "AOGiACBG" = c("AOGi", "ACBG")
         )
         outgroups = c("reddeer", "whitetaileddeer")
+        ## if no reddeer (yet)
+        outgroups = c("whitetaileddeer")        
     }
     if (species == "felidae") {
         nCores <- 16

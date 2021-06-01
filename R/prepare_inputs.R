@@ -26,6 +26,7 @@ if (1 == 0) {
     ANALYSIS_DIR='/well/myers/rwdavies/primates/'
     R_DIR="~/proj/motif_death/R/"
     ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
+    group <- "artiodactyla"
     
 }
 

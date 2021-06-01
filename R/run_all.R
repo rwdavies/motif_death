@@ -16,12 +16,14 @@ if (1 == 0) {
 
 }
 
+print(args)
+print(getwd())
 R_DIR <- args[1]
 species_to_run <- args[2]
 to_run <- args[3]
 outputDate <- args[4]
 nCores <- as.integer(args[5])
-vcf_file <- args[6]
+vcf_file <- file.path(getwd(), args[6])
 
 source(file.path(R_DIR, "run_all_functions.R"))
 

@@ -28,8 +28,7 @@ rule download_fastq:
     shell:
         'mkdir -p mapping && cd mapping && '
         'mkdir -p {SPECIES} && cd {SPECIES} && '
-        'wget {params.path}'
-
+        'wget ftp://{params.path}'
 
 
 
