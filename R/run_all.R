@@ -30,6 +30,15 @@ source(file.path(R_DIR, "run_all_functions.R"))
 analysisDir <- getwd()
 
 
+## outputDate <- "2018_04_27" ## no missing allowed, mrle >= 6, etc
+## outputDate <- "2018_05_22" ## allow missing in 
+## outputDate <- "2018_05_29" ## no missing allowed, set hets to NA, otherwise same as 2018_04_27
+## outputDate <- "2018_05_30" ## full run. 1 missing lineage allowed + only 1 outgroup required, set hets to NA, mrle >= 5, mncdn <= 3, use mrle as similar k-mer
+## outputDate <- "2018_07_18" ## no update from previous, just to get up to speed after long absence
+## outputDate <- "2018_11_21" ## test to get running again
+
+
+
 ## source("~/proj/motif_death/R/run_all_functions.R")
 ## "ruminantia"
 ##run <- "ABCDEF"
@@ -118,7 +127,10 @@ for(i_species in i_species_to_run) {
             num_missing_lineages_allowed = num_missing_lineages_allowed
         )
 
-        if (length(grep("B", run)) > 0) {
+        ##
+        ## only do at the end?
+        ##
+        if (length(grep("F", run)) > 0) {
             ## tar up B_output 
             setwd(masterDirHDD)
             dir.create(file.path(masterDirHDD, "B_output_tarballs"))

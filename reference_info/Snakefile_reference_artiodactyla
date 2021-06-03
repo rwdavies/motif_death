@@ -21,7 +21,7 @@ TREEMIX_PREFIX = VCF_PREFIX
 
 
 ## updated 2021
-HATBAG_DIR="ruminantia"
+HATBAG_DIR="artiodactyla"
 HATBAG_OUTPUT_DATE="2021_05_26"
 
 

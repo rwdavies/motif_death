@@ -82,7 +82,11 @@ This does currently run on the cluster using
 ./run.sh HATBAG HATBAG_HACK cluster goat
 ```
 
-## Other TODO
+## Other TODO for Robbie
 
-TODO (for Robbie): Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`
+Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`
+Make HATBAG use far far fewer temporary files in steps B -> C (and later?)
+Check out Step C, gainat, nonRepeat, artiodactyla, took ~6 hours?
+Also can Step B run better when using a cluster? Use far more jobs, 1 core each, split out types of test, run all in parallel?
+Should cluster / snakemake use be incorporated into HATBAG itself? Do I use snakemake in tests for some repo? 
 

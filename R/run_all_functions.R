@@ -1,11 +1,3 @@
-## outputDate <- "2018_04_27" ## no missing allowed, mrle >= 6, etc
-## outputDate <- "2018_05_22" ## allow missing in 
-outputDate <- "2018_05_29" ## no missing allowed, set hets to NA, otherwise same as 2018_04_27
-outputDate <- "2018_05_30" ## full run. 1 missing lineage allowed + only 1 outgroup required, set hets to NA, mrle >= 5, mncdn <= 3, use mrle as similar k-mer
-outputDate <- "2018_07_18" ## no update from previous, just to get up to speed after long absence
-outputDate <- "2018_11_21" ## test to get running again
-
-
 get_params <- function(outputDate) {
     ## "default"
     num_non_missing_outgroups_required <- NULL
@@ -220,7 +212,7 @@ get_per_species_params <- function(species) {
         )
         outgroups = c("reddeer", "whitetaileddeer")
         ## if no reddeer (yet)
-        outgroups = c("whitetaileddeer")        
+        outgroups = c("whitetaileddeer")
     }
     if (species == "felidae") {
         nCores <- 16

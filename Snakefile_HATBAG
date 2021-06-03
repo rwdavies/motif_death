@@ -31,14 +31,18 @@ rule HATBAG_HACK_F:
 
 
 
+##
+## note, not sure if these should be changed
+## if the cluster is busy, this will take a while
+##
 def get_hatbag_n_threads(wildcards):
     run = wildcards.run
     if run == "A":
-        return(1)
+        return(8)
     if run == "B":
-        return(4)
+        return(8)
     if run == "C":
-        return(4)
+        return(8)
     if run == "D":
         return(4)
     if run == "E":
