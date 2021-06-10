@@ -7,6 +7,21 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ## Workthrough / explanation
 
+### Set up notes
+User specific paths are defined in `activate`. Please change as needed before running. You should then load them into the environment by running:
+
+```
+source ./activate
+```
+
+You need to install R. If running on BMRC (cluster), you can use an existing R installation, for example:
+
+```
+module load R/3.6.2-foss-2019b
+```
+
+Note, dependent R packages are not currently captured, and will cause program failure at some point for example R package `data.table`.
+
 ### Manual curation of input file and downloading reference material
 
 Briefly, currently, identify a set of related species, appropriate for the model, and papers with their raw data, with data deposited in the EBI ENA. 
@@ -18,10 +33,8 @@ For a given deposition project ID like PRJNA313910, we can then go to e.g. https
 In `prepare_inputs.R` and `prepare_inputs_functions.R` we extract information about the raw data in a semi-automated fashion.
 
 ```
-R -f prepare_inputs.R --args artiodactyla
+R -f R/prepare_inputs.R --args artiodactyla
 ```
-
-Note, dependent R packages are not currently captured, and will cause program failure at some point for example R package `data.table`.
 
 ### Downloading per-sample raw data
 
