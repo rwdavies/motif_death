@@ -1,0 +1,7 @@
+ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
+BIN_DIR="/well/davies/users/dcc832/primates/bin/"
+# MOTIF_DEATH_DIR="~/proj/motif_death/"
+PYTHON_DIR="~/proj/motif_death/python/"
+R_DIR="~/proj/motif_death/R/"
+SPECIES_MAP_DIR="~/proj/motif_death/species_mapping_info/"
+ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
