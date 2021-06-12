@@ -54,6 +54,7 @@ rule extract_and_map_fastq_pieces:
         'gunzip -c {input.pen1} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen1}.temp.{wildcards.piece}.gz && '
         'gunzip -c {input.pen2} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen2}.temp.{wildcards.piece}.gz && '
         'set -o pipefail && '
+        'module load samtools/1.8-gcc5.4.0 && '
         '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\tLB:{params.lb}" '
         ' ref/{REFNAME}.fa -t{params.threads} '
         '{input.pen1}.temp.{wildcards.piece}.gz '
