@@ -10,7 +10,7 @@ component=$1 ## either mapping, preprocess, or
 what=$2
 where=$3
 species=$4
-other=$5
+other=${@:5} # all other CLI arguments passed to snakemake
 
 
 if [ "$where" == "cluster" ]
@@ -61,7 +61,7 @@ else
     exit 1
 fi
 
-
+# TODO: simplify this with activate
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
@@ -77,11 +77,11 @@ then
     exit 1
 fi
 
-
+# TODO: species_mapping_info as directory set in activate
 mkdir -p job_snakefiles
 SNAKEFILE=${SCRIPTPATH}/job_snakefiles/snakefile_${species}_${component}
 rm -f ${SNAKEFILE}
-if [ $component == "mapping" ] || [ $component == "preprocess" ]
+if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
 then
     echo -e '
 configfile: "'${SCRIPTPATH}'" + "/species_mapping_info/'${species}'.json"
