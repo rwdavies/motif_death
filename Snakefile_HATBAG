@@ -46,7 +46,7 @@ def get_hatbag_n_threads(wildcards):
     if run == "D":
         return(4)
     if run == "E":
-        return(4)
+        return(6)
     if run == "F":
         return(1)
 

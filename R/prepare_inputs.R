@@ -20,6 +20,8 @@
 
 R_DIR <- Sys.getenv("R_DIR")
 ENA_DIR <- Sys.getenv("ENA_DIR")
+group <- commandArgs(trailingOnly = TRUE)
+
 
 if (1 == 0) {
     
@@ -33,7 +35,6 @@ if (1 == 0) {
 source(file.path(R_DIR, "prepare_inputs_functions.R"))
 
 ## choose
-group <- commandArgs(trailingOnly = TRUE)
 if (group == "artiodactyla") {
     info <- get_artiodactyla_info()
 } else {
@@ -54,6 +55,7 @@ lapply(1:length(info), function(i_species) {
     print(i_species)
     sample_alias <- info[[i_species]][1]
     sample_name <- info[[i_species]][3]
+    print(sample_name)
     paper <- info[[i_species]][4]
     n_mapping_pieces <- as.integer(info[[i_species]][5])
     ##

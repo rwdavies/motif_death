@@ -12,7 +12,7 @@ get_artiodactyla_info <- function() {
     ## whitetaileddeer, reddeer, buffalo
     ## giraffe, okapi
     info <- list(
-        c("giraffe NZOO", "PRJNA313910", "okapi", "filereport_read_run_PRJNA313910_tsv.txt", 50),
+        c("giraffe NZOO", "PRJNA313910", "giraffe", "filereport_read_run_PRJNA313910_tsv.txt", 50),
         c("okapi WOAK", "Okapia johnstoni", "okapi", "filereport_read_run_PRJNA313910_tsv.txt", 50),
         c("Btau_HOL_Bulldog1", "Bos taurus", "cow", "filereport_read_run_PRJNA238491_tsv.txt", 50),
         c("BGI-WGS_9", "Capra aegagrus", "goat", "filereport_read_run_SRP047212_tsv.txt", 50),
