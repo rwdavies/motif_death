@@ -8,11 +8,7 @@ This repository contains code to download, pre-process, map, and variant call re
 ## Workthrough / explanation
 
 ### Notes on set-up
-1. **User specific paths are defined in `activate`.** Please change as needed before running. You should then load them into the environment by running:
-
-    ```
-    source ./activate
-    ```
+1. **User specific paths are defined in `activate`.** Please change as needed before running. 
 
 2. You need to install **R**. If running on BMRC (cluster), you can use an existing R installation, for example:
 
