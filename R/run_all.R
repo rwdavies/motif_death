@@ -99,6 +99,15 @@ for(i_species in i_species_to_run) {
         dir.create(masterDirHDD, recursive = TRUE)
         system(paste0("cd ~/proj/HATBAG && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
         ##
+
+        ## argh - hack for now - using too much ram
+        if (run == "E") {
+            nCores <- max(c(1, floor(nCores / 2)))
+            print(paste0("Lowering nCores to ", nCores))
+        }
+        ## use fewer cores 
+        ## 
+        
         out <- HATBAG(
             species = species,
             run = run,

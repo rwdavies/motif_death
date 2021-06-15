@@ -17,7 +17,21 @@
 
 R_DIR <- Sys.getenv("R_DIR")
 ENA_DIR <- Sys.getenv("ENA_DIR")
+<<<<<<< HEAD
 SPECIES_MAP_DIR <- Sys.getenv("SPECIES_MAP_DIR")
+=======
+group <- commandArgs(trailingOnly = TRUE)
+
+
+if (1 == 0) {
+    
+    ANALYSIS_DIR='/well/myers/rwdavies/primates/'
+    R_DIR="~/proj/motif_death/R/"
+    ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
+    group <- "artiodactyla"
+    
+}
+>>>>>>> main
 
 source(file.path(R_DIR, "prepare_inputs_functions.R"))
 dir.create(file.path(SPECIES_MAP_DIR))
@@ -25,7 +39,6 @@ dir.create(file.path(SPECIES_MAP_DIR))
 group <- "artiodactyla"
 
 ## choose
-group <- commandArgs(trailingOnly = TRUE)
 if (group == "artiodactyla") {
     info <- get_artiodactyla_info()
 } else {
@@ -46,6 +59,7 @@ lapply(1:length(info), function(i_species) {
     print(i_species)
     sample_alias <- info[[i_species]][1]
     sample_name <- info[[i_species]][3]
+    print(sample_name)
     paper <- info[[i_species]][4]
     n_mapping_pieces <- as.integer(info[[i_species]][5])
     ##
