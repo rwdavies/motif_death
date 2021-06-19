@@ -7,7 +7,29 @@ ref_dir <- "./"
 ##ref_prefix <- "NCBIM37_um.fa";
 ##ref_prefix <- "bosTau8.fa"
 
-source("/users/flint/rwdavies/personal/proj/primates/R/functions.R")
+# source("/users/flint/rwdavies/personal/proj/primates/R/functions.R")
+# TODO: this also appears in get_per_sample_average_cov.R
+get_chrlist <- function(ref) {
+    if (ref == "bosTau8.fa") {
+        chrlist <- 1:29
+        chr_prefix <- "chr"
+    } else if (ref == "hg38.fa") {
+        chrlist <- 1:22
+        chr_prefix <- "chr"
+    } else if (ref == "NCBIM37_um.fa") {
+        chrlist <- 1:19
+        chr_prefix <- ""
+    } else if (ref == "canFam3.fa") {
+        chrlist <- 1:38
+        chr_prefix <- "chr"    
+    } else {
+        print(paste0("ref = ", ref))
+        stop("ref not defined")
+    }
+    return(list(chrlist = chrlist, chr_prefix = chr_prefix))
+}
+
+
 out <- get_chrlist(ref_prefix)
 chrlist <- out$chrlist
 chr_prefix <- out$chr_prefix
