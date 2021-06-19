@@ -1,7 +1,7 @@
 BAM_SUFFIX = "realigned.rmdup.bam"
 WILDCARD_CHR_CONSTRAINT = '[a-zA-Z0-9]+'
 ## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
-GENOTYPING_QUEUE="long.qc"
+GENOTYPING_QUEUE="short.qc" # TODO: Change back to long!
 GENOTYPING_THREADS=4 ## might get lucky!
 GENOTYPER="UnifiedGenotyper"
 
@@ -190,6 +190,7 @@ rule prepare_reference:
         queue = "short.qc"
     wildcard_constraints:
     shell:
+        'module load R/3.6.2-foss-2019b && '
         'cd ref && R -f {input.script} --args {REFNAME}.fa'
 
 
@@ -209,6 +210,7 @@ rule get_callable_regions:
         species='\w{1,40}'
     shell:
         'echo start && '
+        'module load R/3.6.2-foss-2019b && '
         'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REFNAME}.fa && '
         'echo done'
 
@@ -245,6 +247,7 @@ rule run_treemix:
         migrants='\d{1,2}'
     shell:
         'echo begin treemix && date &&'
+        'module load R/3.6.2-foss-2019b && '
         '{TREEMIX} -i {input} -m {wildcards.migrants} -noss -se -k 5000 '
         '-root {TREEMIX_OUTGROUP} '
         '-n_warn 10 '
