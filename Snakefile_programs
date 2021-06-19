@@ -1,6 +1,6 @@
 BWA = "/apps/well/bwa/0.7.8/bwa"
 BGZIP = "/apps/well/htslib/1.4.1/bin/bgzip"
-FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred"
+FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # obsolete
 GATK = "/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
 JAVA = "/apps/well/java/jdk1.8.0_45/bin/java"
 PICARD = "/apps/well/picard-tools/2.0.1/picard.jar"
@@ -19,7 +19,6 @@ TREEMIX_R_PLOT_HELPER = R_DIR + "treemix_plotting_funcs.R"
 R_GET_GENOME_STATS = R_DIR + "get_genome_stats.R"
 R_GET_PER_SAMPLE_AVERAGE_COV = R_DIR + "get_per_sample_average_cov.R"
 VCF2TREEMIX = PYTHON_DIR + "vcf2treemix.py"
-
 
 ## R_HATBAG = "/users/flint/rwdavies/personal/proj/HATBAG/HATBAG.R"
 ## PYTHON_EXTRACT_FASTQ = "/users/flint/rwdavies/personal/proj/primates/extract_python.py"
