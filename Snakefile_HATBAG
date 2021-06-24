@@ -79,7 +79,7 @@ rule HATBAG_HACK_FUNCTION:
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,
-        queue="short.qc"
+        queue="short.qc@@short.hge"
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:

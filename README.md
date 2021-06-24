@@ -7,18 +7,22 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ## Workthrough / explanation
 
-### Notes on set-up
-1. **User specific paths are defined in `activate`.** Please change as needed before running. 
-
-2. You need to install **R**. If running on BMRC (cluster), you can use an existing R installation, for example:
-
+### Set-up
+1. **Pre-requisites:** Most required packages are installed for shared use on the cluster (see `Snakefile_programs` for details). You **also need R and other packages**. If running on cluster, you can use existing installations, for example:
     ```
     module load R/3.6.2-foss-2019b
+    module load git/2.19.1-GCCcore-7.3.0
+    module load samtools/1.8-gcc5.4.0
+    module load HTSlib/1.9-foss-2018b
     ```
+    Put these lines in `~\.bashrc` so all worker nodes will load the right packages.
 
-    Note, dependent R packages are not currently captured, and will cause program failure at some point for example R package `data.table`.
-
-3. You also need **Snakemake** (currently installed using `install_snakemake_2.sh` semi-interactively through Conda, see Snakemake docs for more info).  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and hence don't need to worry about installation. 
+1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file and downloading the HATBAG repo to `/well/<group>/users/<username>/R`, then running the HATBAG installation as described in its' repo. 
+    * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.
+    * Note: you should be able to ignore pdflatex errors that arise during installation
+    * Note: Make sure you add `options(bitmapType='cairo')` to `~/.Rprofile` as specified in cluster instructions ([more details](https://stackoverflow.com/questions/24999983/r-unable-to-start-device-png-capabilities-has-true-for-png))
+1. You also need **Snakemake**.  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and you don't need to install anything. Otherwise on local you can use `install_snakemake_2.sh` to semi-interactively install with Conda (see Snakemake docs for more info).
+1. Once done, specify **user specific paths in `activate`.** Ensure e.g. your HATBAG installation location is correctly captured.
 
 ### A. Manual curation of input file and downloading reference material
 
