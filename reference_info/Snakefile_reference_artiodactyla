@@ -22,7 +22,7 @@ TREEMIX_PREFIX = VCF_PREFIX
 
 ## updated 2021
 HATBAG_DIR="artiodactyla"
-HATBAG_OUTPUT_DATE="2021_05_26"
+HATBAG_OUTPUT_DATE="2021_06_29"
 
 
 ## old (2018 and earlier)
