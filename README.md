@@ -8,14 +8,14 @@ This repository contains code to download, pre-process, map, and variant call re
 ## Workthrough / explanation
 
 ### Set-up
-1. **Pre-requisites:** Most required packages are installed for shared use on the cluster (see `Snakefile_programs` for details). You **also need R and other packages**. If running on cluster, you can use existing installations, for example:
+1. **Pre-requisites:** Most required packages are installed for shared use on the cluster (see `Snakefile_programs` for details). You **also need R and other packages**. If running on cluster, you can use existing installations, for example running this before anything else:
     ```
-    module load R/3.6.2-foss-2019b
-    module load git/2.19.1-GCCcore-7.3.0
-    module load samtools/1.8-gcc5.4.0
+    module load R/3.6.0-foss-2018b
+    module load SAMtools/1.9-foss-2018b
     module load HTSlib/1.9-foss-2018b
+    export PATH=/apps/well/git/2.3.4/bin/:${PATH}
     ```
-    Put these lines in `~\.bashrc` so all worker nodes will load the right packages.
+    TODO: Putting these in `~/.bash_profile` is not working for `qsub -V ...` (but works for interactive sesions). Put in `run.sh` temporarily.
 
 1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file and downloading the HATBAG repo to `/well/<group>/users/<username>/R`, then running the HATBAG installation as described in its' repo. 
     * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.

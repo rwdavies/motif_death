@@ -13,6 +13,12 @@ species=$4
 other=${@:5} # all other CLI arguments passed to snakemake
 
 
+# module load R/3.6.2-foss-2019b
+module load R/3.6.0-foss-2018b
+module load SAMtools/1.9-foss-2018b
+module load HTSlib/1.9-foss-2018b
+export PATH=/apps/well/git/2.3.4/bin/:${PATH}
+
 if [ "$where" == "cluster" ]
 then
     jobs=1000

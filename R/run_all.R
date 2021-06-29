@@ -2,6 +2,8 @@ library("HATBAG")
 
 args <- commandArgs(trailingOnly = TRUE)
 
+HATBAG_DIR <- "/well/davies/users/zri347/R/HATBAG"
+
 if (1 == 0) {
 
     setwd("/well/davies/users/dcc832/primates/")
@@ -97,7 +99,7 @@ for(i_species in i_species_to_run) {
         
         masterDirHDD <- file.path(outputDir, outputDate)
         dir.create(masterDirHDD, recursive = TRUE)
-        system(paste0("cd ~/proj/HATBAG && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
+        system(paste0("cd ", HATBAG_DIR," && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
         ##
 
         ## argh - hack for now - using too much ram
@@ -194,7 +196,7 @@ quit()
 
 
 ##################### AT to GC fitting
-    setwd("~/proj/HATBAG/HATBAG/R/")
+    setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
     sapply(dir()[-grep("~", dir())], source)
 masterDirHDD <- file.path(outputDir, outputDate)
 test <- "losslin"
@@ -219,7 +221,7 @@ nCores <- 16
 
 
 ##################### AT to GC fitting
-    setwd("~/proj/HATBAG/HATBAG/R/")
+    setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
     sapply(dir()[-grep("~", dir())], source)
 masterDirHDD <- file.path(outputDir, outputDate)
 test <- "losslin"
@@ -242,7 +244,7 @@ nCores <- 16
 
 
         ############# TEMP
-    setwd("~/proj/HATBAG/HATBAG/R/")
+    setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
     sapply(dir()[-grep("~", dir())], source)
     masterDirHDD <- file.path(outputDir, outputDate)    
     out <- validate_lineage_specification_and_build_ancNames(lineages)
@@ -308,7 +310,7 @@ gcW2 <- 1000
 ## THIS CODE CAN BE USED TO REGENERATE QQ PLOTS
 
 ## -- temporary to QQ plotting
-setwd("~/proj/HATBAG/HATBAG/R/")
+setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
 sapply(dir()[-grep("~", dir())], source)
 masterDirHDD <- file.path(outputDir, outputDate)    
 testingNames = c("losslin", "lossat", "gainlin", "gainat")
@@ -333,7 +335,7 @@ analyze_QQ_data(
 ## debug ancestral map plots
 
 
-setwd("~/proj/HATBAG/HATBAG/R/")
+setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
 sapply(dir()[-grep("~", dir())], source)
 library("testthat"); library("HATBAG")
 
