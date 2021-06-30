@@ -19,7 +19,7 @@ readRenviron("activate") # Note: has to be run from 'motif_death/' for this path
 
 R_DIR <- Sys.getenv("R_DIR")
 ENA_DIR <- Sys.getenv("ENA_DIR")
-SPECIES_MAP_DIR <- Sys.getenv("SPECIES_MAP_DIR")
+SPECIES_MAP_DIR_NAME <- Sys.getenv("SPECIES_MAP_DIR_NAME")
 group <- commandArgs(trailingOnly = TRUE)
 
 # TBD if needed?
@@ -33,7 +33,7 @@ if (1 == 0) {
 }
 
 source(file.path(R_DIR, "prepare_inputs_functions.R"))
-dir.create(file.path(SPECIES_MAP_DIR))
+dir.create(file.path(SPECIES_MAP_DIR_NAME))
 
 
 ## choose
@@ -122,7 +122,7 @@ lapply(1:length(info), function(i_species) {
     ##
     json_to_out <- toJSON(o, pretty = TRUE, auto_unbox = TRUE)
     print(json_to_out)
-    cat(json_to_out, file = file.path(SPECIES_MAP_DIR, paste0(sample_name, ".json")))
+    cat(json_to_out, file = file.path(SPECIES_MAP_DIR_NAME, paste0(sample_name, ".json")))
     ##
     gb <- sum(as.numeric(unlist(strsplit(as.character(b[, "fastq_bytes"]), ";")))) / 1024 / 1024 / 1024
     return(c(gb, sample_name))

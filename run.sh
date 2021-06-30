@@ -54,7 +54,7 @@ then
     SPECIES_ORDER="canidae"
 elif [ "${species}" == "ursidae" ]
 then
-    SPECIES_ORDER="ursidae"     
+    SPECIES_ORDER="ursidae"       
 else
     echo Cannot determine order
     exit 1
@@ -63,6 +63,7 @@ fi
 # TODO: simplify this with activate
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
+
 
 SNAKEMAKE="${BIN_DIR}miniconda3/envs/snakemake/bin/snakemake"
 
@@ -82,7 +83,7 @@ rm -f ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
 then
     echo -e '
-configfile: "'${SPECIES_MAP_DIR}'" + "'${species}'.json"
+configfile: "'${SCRIPTPATH}'/" + "'${SPECIES_MAP_DIR_NAME}'/" + "'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
