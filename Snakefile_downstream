@@ -35,7 +35,7 @@ rule all:
         [
 	expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
 	expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST),
-	expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
+	# expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
 	]
 
 
@@ -190,7 +190,7 @@ rule prepare_reference:
         queue = "short.qc"
     wildcard_constraints:
     shell:
-        'cd ref && R -f {input.script} --args {REFNAME}.fa'
+        'R -f {input.script} --args {REF_DIR} {REFNAME}.fa'
 
 
 
@@ -209,7 +209,7 @@ rule get_callable_regions:
         species='\w{1,40}'
     shell:
         'echo start && '
-        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REFNAME}.fa && '
+        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REFNAME}.fa && '
         'echo done'
 
 
