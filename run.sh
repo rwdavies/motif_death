@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
+source ~/.bash_profile
 
 set -e
 . activate
-
-source ~/.bash_profile
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
