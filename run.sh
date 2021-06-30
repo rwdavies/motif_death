@@ -77,14 +77,13 @@ then
     exit 1
 fi
 
-# TODO: species_mapping_info as directory set in activate
 mkdir -p job_snakefiles
 SNAKEFILE=${SCRIPTPATH}/job_snakefiles/snakefile_${species}_${component}
 rm -f ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
 then
     echo -e '
-configfile: "'${SCRIPTPATH}'" + "/species_mapping_info/'${species}'.json"
+configfile: "'${SPECIES_MAP_DIR}'" + "'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
