@@ -7,27 +7,27 @@ VCF_PREFIX = VCF_PREFIX + ".GATKug"
 ##
 rule HATBAG_HACK:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/F_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 
 
 rule HATBAG_HACK_A:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/A_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/A_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_B:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/B_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/B_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_C:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/C_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/C_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_D:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/D_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/D_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_E:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/E_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/E_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_F:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/F_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 
 
 
@@ -68,14 +68,14 @@ def get_hatbag_input(wildcards):
         need = "D"
     if run == "F":
         need = "E"
-    return(expand("hatbag/{hatbag_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
+    return(expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
 
 
 rule HATBAG_HACK_FUNCTION:
     input:
         get_hatbag_input
     output:
-        decoy = expand("hatbag/{hatbag_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        decoy = expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,
@@ -91,7 +91,7 @@ rule HATBAG_HACK_FUNCTION:
 	' ' + HATBAG_OUTPUT_DATE + ' '
 	' {params.threads} '
 	' vcf/' + VCF_PREFIX + '.filtered.vcf.gz '
-    ' ' + HATBAG_DIR + ' '
+        ' ' + HATBAG_DIR + ' '
 	' && touch {output.decoy} '
 
 
@@ -109,12 +109,12 @@ rule HATBAG_HACK_FUNCTION:
 
 rule all_hatbag:
     input:
-        expand("hatbag/{hatbag_dir}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 
 
 rule test_hatbag:
     input:
-        expand("hatbag/{hatbag_dir}--{simple_repeat}_simple_repeat--{use_one_sided_pvalue}_use_one_sided_pvalue--mrle_{mrle}--ndge_{ndge}--callable_bed_{callable_bed}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE, simple_repeat = ["yes", "no"], use_one_sided_pvalue = ["TRUE", "FALSE"], mrle = [6, 10], ndge = [3, 0], callable_bed = ["yes", "no"])
+        expand("hatbag/{hatbag_output_dir}--{simple_repeat}_simple_repeat--{use_one_sided_pvalue}_use_one_sided_pvalue--mrle_{mrle}--ndge_{ndge}--callable_bed_{callable_bed}/{hatbag_output_date}/complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE, simple_repeat = ["yes", "no"], use_one_sided_pvalue = ["TRUE", "FALSE"], mrle = [6, 10], ndge = [3, 0], callable_bed = ["yes", "no"])
 
 
 ## simple - basic options
@@ -124,7 +124,7 @@ rule HATBAG_test:
         vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
         tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
     output:
-        decoy = expand("hatbag/{hatbag_dir}--{{simple_repeat}}_simple_repeat--{{use_one_sided_pvalue}}_use_one_sided_pvalue--mrle_{{mrle}}--ndge_{{ndge}}--callable_bed_{{callable_bed}}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        decoy = expand("hatbag/{hatbag_output_dir}--{{simple_repeat}}_simple_repeat--{{use_one_sided_pvalue}}_use_one_sided_pvalue--mrle_{{mrle}}--ndge_{{ndge}}--callable_bed_{{callable_bed}}/{hatbag_output_date}/complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
     params:
         N='hatbag_test',
         threads=8,
@@ -178,7 +178,7 @@ rule HATBAG:
         vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
         tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX),
     output:
-        decoy = expand("hatbag/{hatbag_dir}/{hatbag_output_date}/complete", hatbag_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        decoy = expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
     params:
         N='hatbag',
         threads=8,
