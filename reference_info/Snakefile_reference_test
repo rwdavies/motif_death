@@ -1,0 +1,26 @@
+REF_DIR = "ref/test/"
+REFNAME = "ref"
+# REF_URL="http://hgdownload.cse.ucsc.edu/goldenPath/bosTau8/bigZips/bosTau8.fa.gz"
+CHR_LIST_ONLY_AUTOS = list(range(1, 30))
+CHR_LIST = list(range(1, 30))
+CHR_LIST.append("X") ## new - not done on these samples previously!
+GATK_CHR_PREFIX = "chr"
+## CHR_CHUNKS = range(1, 17)
+TREEMIX_THREADS=4
+OPERATE_GATK_PER_CHR="TRUE"
+
+## if reddeer done
+## TREEMIX_OUTGROUP = "reddeer"
+## SPECIES_LIST = ['cow', 'buffalo', 'giraffe', 'okapi', 'goat', 'whitetaileddeer', 'reddeer']
+## VCF_PREFIX = "bovidae.cbgogwd" ## should have been changed!
+
+## if only whitetaileddeer done
+TREEMIX_OUTGROUP = "whitetaileddeer"
+SPECIES_LIST=['cow', 'buffalo', 'giraffe', 'okapi', 'goat', 'whitetaileddeer']
+VCF_PREFIX="artiodactyla.cbgogw"
+TREEMIX_PREFIX = VCF_PREFIX
+
+
+## updated 2021
+HATBAG_OUTPUT_DIR="test_data"
+HATBAG_OUTPUT_DATE="2021_06_30"
