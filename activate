@@ -4,7 +4,7 @@ ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
 
 # Change the following:
 ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
-SPECIES_MAP_DIR="~/proj/motif_death/species_mapping_info/"
+SPECIES_MAP_DIR_NAME="species_mapping_info"
 # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
 PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
 R_DIR="/users/davies/zri347/proj/motif_death/R/"

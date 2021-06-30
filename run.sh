@@ -67,6 +67,7 @@ fi
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
+
 SNAKEMAKE="${BIN_DIR}miniconda3/envs/snakemake/bin/snakemake"
 
 LOG_DIR="${ANALYSIS_DIR}/logs/"
@@ -85,7 +86,7 @@ rm -f ${SNAKEFILE}
 if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
 then
     echo -e '
-configfile: "'${SPECIES_MAP_DIR}'" + "'${species}'.json"
+configfile: "'${SCRIPTPATH}'/" + "'${SPECIES_MAP_DIR_NAME}'/" + "'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
