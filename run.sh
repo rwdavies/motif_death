@@ -55,7 +55,7 @@ then
 elif [ "${species}" == "ursidae" ]
 then
     SPECIES_ORDER="ursidae"    
-elif [ "${species}" == "test" ]
+elif [ "${species}" == "test_pop1" ] || [ "${species}" == "test_pop2" ] || [ "${species}" == "test_outgroup" ]
 then
     SPECIES_ORDER="test"     
 else
