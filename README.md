@@ -17,12 +17,12 @@ This repository contains code to download, pre-process, map, and variant call re
     ```
     You can put these lines in your `~/.bash_profile` and they will be run as part of the shell script to submit jobs (`run.sh`).
 
-1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file, downloading the HATBAG repo to `/well/<group>/users/<username>/R`, then running the HATBAG installation as described in its' repo. 
+1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file, downloading the HATBAG repo, then running the HATBAG installation as described in its' repo. 
     * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.
     * Note: you should be able to ignore pdflatex errors that arise during installation
     * Note: Make sure you add `options(bitmapType='cairo')` to `~/.Rprofile` as specified in cluster instructions ([more details](https://stackoverflow.com/questions/24999983/r-unable-to-start-device-png-capabilities-has-true-for-png))
 1. You also need **Snakemake**.  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and you don't need to install anything. Otherwise on local you can use `install_snakemake_2.sh` to semi-interactively install with Conda (see Snakemake docs for more info).
-1. Once done, specify **user specific paths in `activate`.** Ensure e.g. your HATBAG installation location is correctly captured.
+1. Once done, specify **user specific paths in `activate`. Ensure your HATBAG installation location is correctly captured.**
 
 ### A. Manual curation of input file and downloading reference material
 
