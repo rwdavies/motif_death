@@ -15,7 +15,7 @@ This repository contains code to download, pre-process, map, and variant call re
     module load HTSlib/1.9-foss-2018b
     export PATH=/apps/well/git/2.3.4/bin/:${PATH}
     ```
-    TODO: Putting these in `~/.bash_profile` is not working for `qsub -V ...` (but works for interactive sesions). Put in `run.sh` temporarily.
+    You can put these lines in your `~/.bash_profile` and they will be run as part of the shell script to submit jobs (`run.sh`).
 
 1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file and downloading the HATBAG repo to `/well/<group>/users/<username>/R`, then running the HATBAG installation as described in its' repo. 
     * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.
