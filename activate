@@ -8,4 +8,4 @@ SPECIES_MAP_DIR="~/proj/motif_death/species_mapping_info/"
 # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
 PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
 R_DIR="/users/davies/zri347/proj/motif_death/R/"
-HATBAG_DIR="/well/davies/users/zri347/R/HATBAG"
+HATBAG_DIR="/well/davies/users/zri347/R/HATBAG/"

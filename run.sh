@@ -93,6 +93,7 @@ echo -e '
 BIN_DIR='\"${BIN_DIR}\"'
 PYTHON_DIR='\"${PYTHON_DIR}\"'
 R_DIR='\"${R_DIR}\"'
+HATBAG_DIR='\"${HATBAG_DIR}\"'
 SPECIES_ORDER='\"${SPECIES_ORDER}\"'
 ' >> ${SNAKEFILE}
 
