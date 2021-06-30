@@ -2,8 +2,6 @@ library("HATBAG")
 
 args <- commandArgs(trailingOnly = TRUE)
 
-HATBAG_DIR <- "/well/davies/users/zri347/R/HATBAG"
-
 if (1 == 0) {
 
     setwd("/well/davies/users/dcc832/primates/")
@@ -26,6 +24,7 @@ to_run <- args[3]
 outputDate <- args[4]
 nCores <- as.integer(args[5])
 vcf_file <- file.path(getwd(), args[6])
+HATBAG_DIR <- args[7]
 
 source(file.path(R_DIR, "run_all_functions.R"))
 

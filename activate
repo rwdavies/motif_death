@@ -1,8 +1,11 @@
-ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
+# Do not need to change below:
 BIN_DIR="/well/davies/users/dcc832/primates/bin/"
-SPECIES_MAP_DIR="~/proj/motif_death/species_mapping_info/"
 ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
-# MOTIF_DEATH_DIR="~/proj/motif_death/"
-# Note: for downstream, cannot reference dirs with ~ as cannot resolve reference
+
+# Change the following:
+ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
+SPECIES_MAP_DIR="~/proj/motif_death/species_mapping_info/"
+# Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
 PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
 R_DIR="/users/davies/zri347/proj/motif_death/R/"
+HATBAG_DIR="/well/davies/users/zri347/R/HATBAG"
