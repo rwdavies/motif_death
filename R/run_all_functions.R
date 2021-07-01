@@ -38,6 +38,7 @@ convert_dict_to_chrlist <- function(dict_file, min_size = 1e6) {
     return(chrlist)
 }
 
+# TODO: species should be order?
 get_per_species_params <- function(species) {
     lineages_to_build <- NULL
     if (species == "primates") {
@@ -186,6 +187,39 @@ get_per_species_params <- function(species) {
         reference <- file.path("ref/bosTau8.fa.gz")
         simpleRepeat_file <- file.path("external/bosTau8.simpleRepeat.gz")
         rmask_file <- file.path("external/bosTau8.rmsk.gz")
+        vcf_file <- NA ##  now specified elsewhere
+        ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
+        ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
+        ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
+        nCores <- NA ## now specified elsewhere
+        ## simpleRepeat_file <- "/bosTau8.simpleRepeat.gz"
+        ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
+        ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
+        ## rmask_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bosTau8.rmsk.gz"
+        chrlist <- paste0("chr", 1:29)
+        genomeSize <- 2670044500
+        lineages = list(
+            "cow" = "cow",
+            "buffalo" = "buffalo",
+            "ACB" = c("cow", "buffalo"),
+            "goat" = "goat",
+            "ACBG" = c("ACB", "goat"),
+            "giraffe" = "giraffe",
+            "okapi" = "okapi",
+            "AOGi" = c("giraffe", "okapi")
+        )
+        ancestral_lineage = list(
+            "AOGiACBG" = c("AOGi", "ACBG")
+        )
+        outgroups = c("reddeer", "whitetaileddeer")
+        ## if no reddeer (yet)
+        outgroups = c("whitetaileddeer")
+    }
+    if (species == "test") {
+        ## have manually rsynced these over
+        reference <- file.path("ref/test/ref.fa.gz")
+        simpleRepeat_file <- file.path("ref/test/simpleRepeat.gz")
+        rmask_file <- file.path("ref/test/rmask.gz")
         vcf_file <- NA ##  now specified elsewhere
         ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
         ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
