@@ -229,7 +229,7 @@ get_per_species_params <- function(species) {
             "test_pop2" = "test_pop2"
         )
         ancestral_lineage = list(
-            "P1P2Anc" = c("test_pop1", "test_pop2"),
+            "P1P2Anc" = c("test_pop1", "test_pop2")
         )
         outgroups = c("test_outgroup")
     }
