@@ -15,7 +15,7 @@ This repository contains code to download, pre-process, map, and variant call re
     module load HTSlib/1.9-foss-2018b
     export PATH=/apps/well/git/2.3.4/bin/:${PATH}
     ```
-    You can put these lines in your `~/.bash_profile` and they will be run as part of the shell script to submit jobs (`run.sh`).
+    These are placed in `activate` and are run as part of the shell script to submit jobs (`run.sh`).
 
 1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file, downloading the HATBAG repo, then running the HATBAG installation as described in its' repo. 
     * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.
@@ -48,7 +48,7 @@ To use `run.sh` further requires a file in `reference_info`, here `Snakefile_ref
 
 Note that run.sh pulls sources `activate`, which contains some manual paths, specific to the current machine and user. Similarly, `Snakefile_programs` contains a mixture of manual paths, which should be moved to the activate script (a script containing machine and user specific paths), and some programs set depending on paths that depend on the activate script, which is OK. 
 
-Eventually, `run.sh` is actually run, on a head or data node. 
+Eventually, `run.sh` is actually run, on a head node (need internet access). 
 ```
 ./run.sh preprocess all local goat --dryrun ## to check what will be run
 ./run.sh preprocess all local goat ## to run it
