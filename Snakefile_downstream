@@ -1,7 +1,7 @@
 BAM_SUFFIX = "realigned.rmdup.bam"
 WILDCARD_CHR_CONSTRAINT = '[a-zA-Z0-9]+'
 ## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
-GENOTYPING_QUEUE="short.qc" # TODO: Change back to long!
+GENOTYPING_QUEUE="short.qc"
 GENOTYPING_THREADS=4 ## might get lucky!
 GENOTYPER="UnifiedGenotyper"
 

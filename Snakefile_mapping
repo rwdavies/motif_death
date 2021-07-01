@@ -208,7 +208,7 @@ rule merge_realigned_bams:
     params:
         N='merge_units',
         threads=1,
-        queue = "short.qc" # TODO: change back to long!
+        queue = "short.qc"
     wildcard_constraints:
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
