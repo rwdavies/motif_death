@@ -226,7 +226,7 @@ get_per_species_params <- function(species) {
         genomeSize <- 4e5
         lineages = list(
             "test_pop1" = "test_pop1",
-            "test_pop2" = "test_pop2",
+            "test_pop2" = "test_pop2"
         )
         ancestral_lineage = list(
             "P1P2Anc" = c("test_pop1", "test_pop2"),
