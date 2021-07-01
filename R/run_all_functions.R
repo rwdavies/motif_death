@@ -221,32 +221,17 @@ get_per_species_params <- function(species) {
         simpleRepeat_file <- file.path("ref/test/simpleRepeat.gz")
         rmask_file <- file.path("ref/test/rmask.gz")
         vcf_file <- NA ##  now specified elsewhere
-        ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
-        ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
-        ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
         nCores <- NA ## now specified elsewhere
-        ## simpleRepeat_file <- "/bosTau8.simpleRepeat.gz"
-        ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
-        ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
-        ## rmask_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bosTau8.rmsk.gz"
-        chrlist <- paste0("chr", 1:29)
-        genomeSize <- 2670044500
+        chrlist <- paste0("chr", 1:2)
+        genomeSize <- 4e5
         lineages = list(
-            "cow" = "cow",
-            "buffalo" = "buffalo",
-            "ACB" = c("cow", "buffalo"),
-            "goat" = "goat",
-            "ACBG" = c("ACB", "goat"),
-            "giraffe" = "giraffe",
-            "okapi" = "okapi",
-            "AOGi" = c("giraffe", "okapi")
+            "test_pop1" = "test_pop1",
+            "test_pop2" = "test_pop2",
         )
         ancestral_lineage = list(
-            "AOGiACBG" = c("AOGi", "ACBG")
+            "P1P2Anc" = c("test_pop1", "test_pop2"),
         )
-        outgroups = c("reddeer", "whitetaileddeer")
-        ## if no reddeer (yet)
-        outgroups = c("whitetaileddeer")
+        outgroups = c("test_outgroup")
     }
     if (species == "felidae") {
         nCores <- 16
