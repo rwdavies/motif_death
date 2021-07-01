@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-source ~/.bash_profile
 
 set -e
 . activate

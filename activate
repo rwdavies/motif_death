@@ -1,3 +1,8 @@
+module load R/3.6.0-foss-2018b
+module load SAMtools/1.9-foss-2018b
+module load HTSlib/1.9-foss-2018b
+export PATH=/apps/well/git/2.3.4/bin/:${PATH}
+
 # Do not need to change below:
 BIN_DIR="/well/davies/users/dcc832/primates/bin/"
 ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
