@@ -222,7 +222,7 @@ get_per_species_params <- function(species) {
         rmask_file <- file.path("ref/test/rmask.gz")
         vcf_file <- NA ##  now specified elsewhere
         nCores <- NA ## now specified elsewhere
-        chrlist <- paste0("chr", 1:2)
+        chrlist <- paste0(1:2)
         genomeSize <- 4e5
         lineages = list(
             "test_pop1" = "test_pop1",
