@@ -1,6 +1,6 @@
 BWA = "/apps/well/bwa/0.7.8/bwa"
 BGZIP = "/apps/well/htslib/1.4.1/bin/bgzip"
-FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # obsolete
+FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # TODO obsolete
 GATK = "/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
 JAVA = "/apps/well/java/jdk1.8.0_45/bin/java"
 PICARD = "/apps/well/picard-tools/2.0.1/picard.jar"

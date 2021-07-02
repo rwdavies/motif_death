@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-source ~/.bash_profile
 
 set -e
 . activate
@@ -63,7 +62,6 @@ else
     exit 1
 fi
 
-# TODO: simplify this with activate
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
