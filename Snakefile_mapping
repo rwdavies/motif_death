@@ -18,16 +18,6 @@ rule all:
     input:
         ["mapping/" + SPECIES + "/" + SPECIES + ".realigned.rmdup.bam"]
 
-# TODO Robbie Temp - delete
-rule all2:
-    input:
-        ["mapping/" + SPECIES + "/" + SPECIES + ".rmdup.bam"]
-
-# TODO Robbie Temp - delete
-rule all_pe:
-    input:
-        [expand("mapping/{species}/{units}.bam", species = SPECIES, units = UNITS)]
-
 ## make head this for faster version "| head -n 400"
 rule extract_and_map_fastq_pieces:
     input:
