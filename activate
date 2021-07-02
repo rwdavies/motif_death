@@ -1,16 +1,18 @@
+#!/usr/bin/env bash
+
 module load R/3.6.0-foss-2018b
 module load SAMtools/1.9-foss-2018b
 module load HTSlib/1.9-foss-2018b
 export PATH=/apps/well/git/2.3.4/bin/:${PATH}
 
 # Do not need to change below:
-BIN_DIR="/well/davies/users/dcc832/primates/bin/"
-ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
+export BIN_DIR="/well/davies/users/dcc832/primates/bin/"
+export ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
 
 # Change the following:
-ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
-SPECIES_MAP_DIR_NAME="species_mapping_info"
+export ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
+export SPECIES_MAP_DIR_NAME="species_mapping_info"
 # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
-PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
-R_DIR="/users/davies/zri347/proj/motif_death/R/"
-HATBAG_DIR="/well/davies/users/zri347/R/HATBAG/"
+export PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
+export R_DIR="/users/davies/zri347/proj/motif_death/R/"
+export HATBAG_DIR="/well/davies/users/zri347/R/HATBAG/"
