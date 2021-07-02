@@ -20,7 +20,7 @@ ENA_DIR <- Sys.getenv("ENA_DIR")
 SPECIES_MAP_DIR_NAME <- Sys.getenv("SPECIES_MAP_DIR_NAME")
 group <- commandArgs(trailingOnly = TRUE)
 
-# TBD if needed?
+# TODO Robbie temp
 if (1 == 0) {
     
     ANALYSIS_DIR='/well/myers/rwdavies/primates/'

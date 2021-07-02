@@ -53,7 +53,7 @@ then
     SPECIES_ORDER="canidae"
 elif [ "${species}" == "ursidae" ]
 then
-    SPECIES_ORDER="ursidae"       
+    SPECIES_ORDER="ursidae"
 else
     echo Cannot determine order
     exit 1
