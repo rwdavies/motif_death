@@ -18,12 +18,12 @@ rule all:
     input:
         ["mapping/" + SPECIES + "/" + SPECIES + ".realigned.rmdup.bam"]
 
-# TBD if needed?
+# TODO Robbie Temp - delete
 rule all2:
     input:
         ["mapping/" + SPECIES + "/" + SPECIES + ".rmdup.bam"]
 
-# TBD if needed?
+# TODO Robbie Temp - delete
 rule all_pe:
     input:
         [expand("mapping/{species}/{units}.bam", species = SPECIES, units = UNITS)]

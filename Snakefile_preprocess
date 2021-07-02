@@ -8,7 +8,7 @@ rule all:
     input:
         expand("mapping/{species}/{units}_{pen}.fastq.gz", species = SPECIES, pen = [1, 2], units = UNITS)
         
-# TBD obsolete?
+# TODO obsolete?
 rule all_standardized_phred:
     input:
         expand("mapping/{species}/{units}_{pen}.standardized_phred.fastq.gz", species = SPECIES, pen = [1, 2], units = UNITS)
@@ -29,7 +29,7 @@ rule download_fastq:
         'mkdir -p {SPECIES} && cd {SPECIES} && '
         'wget ftp://{params.path}'
 
-# TBD Obsolete?
+# TODO Obsolete?
 rule standardize_fastq:
     input:
         fastq = expand("mapping/{species}/{{units}}_{{pen}}.fastq.gz", species = SPECIES)
@@ -53,7 +53,7 @@ rule standardize_fastq:
         'gzip -1 {wildcards.units}_{wildcards.pen}.fastq && '
         'gzip -1 {wildcards.units}_{wildcards.pen}.standardized_phred.fastq'
 
-# TBD Obsolete?
+# TODO Obsolete?
 rule expand_fastq:
     input:
         expand("mapping/{species}/{units}_{pen}.fastq.gz", species = SPECIES, pen = [1, 2], units = UNITS)
