@@ -24,6 +24,7 @@ to_run <- args[3]
 outputDate <- args[4]
 nCores <- as.integer(args[5])
 vcf_file <- file.path(getwd(), args[6])
+HATBAG_DIR <- args[7]
 
 source(file.path(R_DIR, "run_all_functions.R"))
 
@@ -97,7 +98,7 @@ for(i_species in i_species_to_run) {
         
         masterDirHDD <- file.path(outputDir, outputDate)
         dir.create(masterDirHDD, recursive = TRUE)
-        system(paste0("cd ~/proj/HATBAG && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
+        system(paste0("cd ", HATBAG_DIR," && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
         ##
 
         ## argh - hack for now - using too much ram
@@ -191,83 +192,6 @@ for(i_species in i_species_to_run) {
 
 
 quit()
-
-
-##################### AT to GC fitting
-    setwd("~/proj/HATBAG/HATBAG/R/")
-    sapply(dir()[-grep("~", dir())], source)
-masterDirHDD <- file.path(outputDir, outputDate)
-test <- "losslin"
-K <- 10
-n_initial_atToGC_fitting_reps = 50
-nCores <- 16
-    fit_best_values_and_confidence_interval(
-        masterDirHDD = masterDirHDD,
-        test = test,
-        K = K,
-        species = species,
-        nCores = nCores,
-        gcW2 = gcW2,
-        nLin = nLin,
-        n_initial_reps = n_initial_atToGC_fitting_reps,
-        nRepLocal = 10,
-        n_narrow = 10
-    )
-##################### AT to GC fitting
-
-        
-
-
-##################### AT to GC fitting
-    setwd("~/proj/HATBAG/HATBAG/R/")
-    sapply(dir()[-grep("~", dir())], source)
-masterDirHDD <- file.path(outputDir, outputDate)
-test <- "losslin"
-K <- 10
-n_initial_atToGC_fitting_reps = 50
-nCores <- 16
-    fit_best_values_and_confidence_interval(
-        masterDirHDD = masterDirHDD,
-        test = test,
-        K = K,
-        species = species,
-        nCores = nCores,
-        gcW2 = gcW2,
-        nLin = nLin,
-        n_initial_reps = n_initial_atToGC_fitting_reps,
-        nRepLocal = 10,
-        n_narrow = 10
-    )
-##################### AT to GC fitting
-
-
-        ############# TEMP
-    setwd("~/proj/HATBAG/HATBAG/R/")
-    sapply(dir()[-grep("~", dir())], source)
-    masterDirHDD <- file.path(outputDir, outputDate)    
-    out <- validate_lineage_specification_and_build_ancNames(lineages)
-    lineageNames_single <- out$lineageNames_single
-ancNames_for_ref_building <- out$ancNames_for_ref_building
-n_initial_atToGC_fitting_reps <- 50
-test <- "losslin"
-K <- 10
-gcW2 <- 1000
-        load(stepB_snptype_counts_filename(masterDirHDD, "all"))
-
-        
-    fit_best_values_and_confidence_interval(
-        masterDirHDD = masterDirHDD,
-        test = test,
-        K = K,
-        species = species,
-        nCores = nCores,
-        gcW2 = gcW2,
-        nLin = nLin,
-        n_initial_reps = n_initial_atToGC_fitting_reps,
-        nRepLocal = 10,
-        n_narrow = 10
-    )
-############# TEMP
     
 
 
@@ -308,7 +232,7 @@ gcW2 <- 1000
 ## THIS CODE CAN BE USED TO REGENERATE QQ PLOTS
 
 ## -- temporary to QQ plotting
-setwd("~/proj/HATBAG/HATBAG/R/")
+setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
 sapply(dir()[-grep("~", dir())], source)
 masterDirHDD <- file.path(outputDir, outputDate)    
 testingNames = c("losslin", "lossat", "gainlin", "gainat")
@@ -333,7 +257,7 @@ analyze_QQ_data(
 ## debug ancestral map plots
 
 
-setwd("~/proj/HATBAG/HATBAG/R/")
+setwd(file.path(HATBAG_DIR, "HATBAG", "R"))
 sapply(dir()[-grep("~", dir())], source)
 library("testthat"); library("HATBAG")
 

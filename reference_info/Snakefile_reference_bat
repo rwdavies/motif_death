@@ -15,7 +15,7 @@ CHR_LIST = CHR_LIST_ONLY_AUTOS
 
 
 
-HATBAG_DIR="bat"
+HATBAG_OUTPUT_DIR="bat"
 ## everything below this is a lie
 HATBAG_OUTPUT_DATE="2018_02_25"
 HATBAG_LINEAGES=['list(' +

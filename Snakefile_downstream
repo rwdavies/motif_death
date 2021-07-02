@@ -1,7 +1,7 @@
 BAM_SUFFIX = "realigned.rmdup.bam"
 WILDCARD_CHR_CONSTRAINT = '[a-zA-Z0-9]+'
 ## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
-GENOTYPING_QUEUE="long.qc"
+GENOTYPING_QUEUE="short.qc"
 GENOTYPING_THREADS=4 ## might get lucky!
 GENOTYPER="UnifiedGenotyper"
 
@@ -96,6 +96,7 @@ rule call_chr:
         '2> '
         'vcf/logs/{VCF_PREFIX}.chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz.log '
 
+# TODO Robbie Temp - delete
 ##        'REGION_START=$(({wildcards.piece} * 10000000 + 1)) && '
 ##        'REGION_END=$((({wildcards.piece} + 1) * 10000000)) && '
 ##        '-L {GATK_CHR_PREFIX}{wildcards.chr}:${{REGION_START}}-${{REGION_END}} '

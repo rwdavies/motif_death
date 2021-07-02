@@ -7,7 +7,24 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ## Workthrough / explanation
 
-### Manual curation of input file and downloading reference material
+### Set-up
+1. **Pre-requisites:** Most required packages are installed for shared use on the cluster (see `Snakefile_programs` for details). You **also need R and other packages**. If running on cluster, you can use existing installations, for example running this before anything else:
+    ```
+    module load R/3.6.0-foss-2018b
+    module load SAMtools/1.9-foss-2018b
+    module load HTSlib/1.9-foss-2018b
+    export PATH=/apps/well/git/2.3.4/bin/:${PATH}
+    ```
+    These are placed in `activate` and are run as part of the shell script to submit jobs (`run.sh`).
+
+1. You need your own installation of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file, downloading the HATBAG repo, then running the HATBAG installation as described in its' repo. 
+    * Note: You can install once on rescomp 1 or 2, and ignore instructions on rescomp 3.
+    * Note: you should be able to ignore pdflatex errors that arise during installation
+    * Note: Make sure you add `options(bitmapType='cairo')` to `~/.Rprofile` as specified in cluster instructions ([more details](https://stackoverflow.com/questions/24999983/r-unable-to-start-device-png-capabilities-has-true-for-png))
+1. You also need **Snakemake**.  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and you don't need to install anything. Otherwise on local you can use `install_snakemake_2.sh` to semi-interactively install with Conda (see Snakemake docs for more info).
+1. Once done, specify **user specific paths in `activate`. Ensure your HATBAG installation location is correctly captured.**
+
+### A. Manual curation of input file and downloading reference material
 
 Briefly, currently, identify a set of related species, appropriate for the model, and papers with their raw data, with data deposited in the EBI ENA. 
 
@@ -18,12 +35,12 @@ For a given deposition project ID like PRJNA313910, we can then go to e.g. https
 In `prepare_inputs.R` and `prepare_inputs_functions.R` we extract information about the raw data in a semi-automated fashion.
 
 ```
-R -f prepare_inputs.R --args artiodactyla
+R -f R/prepare_inputs.R --args artiodactyla
 ```
 
-Note, dependent R packages are not currently captured, and will cause program failure at some point for example R package `data.table`.
+Note: you have to run this from your project directory for environment variables (from `.activate`) to be read.
 
-### Downloading per-sample raw data
+### B.1 Downloading per-sample raw data
 
 Analysis is done per-sample for all samples in an order using the `run.sh` file, which requires manual intervention to note how species are linked to an order. For example `goat` is in `artiodactyla`, specified in `run.sh`.
 
@@ -31,27 +48,37 @@ To use `run.sh` further requires a file in `reference_info`, here `Snakefile_ref
 
 Note that run.sh pulls sources `activate`, which contains some manual paths, specific to the current machine and user. Similarly, `Snakefile_programs` contains a mixture of manual paths, which should be moved to the activate script (a script containing machine and user specific paths), and some programs set depending on paths that depend on the activate script, which is OK. 
 
-Eventually, `run.sh` is actually run, on a head or data node. It requires snakemake to be installed, currently done using `install_snakemake_2.sh` semi-interactively through conda
+Eventually, `run.sh` is actually run, on a head node (need internet access). 
 ```
-run.sh preprocess all local goat --dryrun ## to check what will be run
-run.sh preprocess all local goat ## to run it
+./run.sh preprocess all local goat --dryrun ## to check what will be run
+./run.sh preprocess all local goat ## to run it
 ```
 Note this might take from 30 minutes to a few hours of wall clock time to run per job, depending on size of individual fastqs.
 
-### Mapping per-sample
+### B.2 Download and prepare reference
+
+On top of downloading files for each species above, you also need to download the reference genome and index it.
+Run the below for any **one** of the species in your group (as reference is shared across all species in group).
+
+```
+./run.sh prep_reference all local goat --dryrun ## to check what will be run
+./run.sh prep_reference all local goat ## to run it
+```
+
+### C. Mapping per-sample
 
 Run for each species, jobs submitted to the cluster, this would look like the following
 
 ```
-run.sh mapping all cluster goat --dryrun
-run.sh mapping all cluster goat
+./run.sh mapping all cluster goat --dryrun
+./run.sh mapping all cluster goat
 ```
 
 This might take a few hours, or a few days to run through, depending on the sample being processed, and cluster availability. It first maps reads, then marks PCR duplicates, then runs indel realignment, then merges the bams together.
 
 TODO: Once mapping complete and BAM OK, add in deletion of original fastq files (now done manually)
 
-## Downstream variant calling per-order
+## D. Downstream variant calling per-order
 
 Once all the samples from an order have been downloaded and mapped, it is time to call variants, and calculate depth of coverage, from which callable regions are derived, where "callable region" means regions where we can reasonably expect to call variants. Here we can perform this step using any of the names of the species in that order.
 
@@ -64,11 +91,11 @@ Note that the number of cores being used per chromosome is a parameter set somew
 
 TODO: `get_per_sample_average_cor.R` requires manual intervention to set list of chromosomes for new species, fix this so it runs automatically
 
-## Treemix
+## E. Treemix
 
 The above should also run treemix (can be manually run using `./run.sh downstream treemix cluster goat`), which creates some plots in the analysis directory `treemix/` which shows the relationship between samples. This is pre-supposed in most cases, i.e. based on prior evidence, we assume a relationship between samples, though ideally we would get this from this plot. This is currently maually interpreted / assumed, though it would be good it this could be automated (at least, the within tree relationships - probably OK to assume the outgroup). The results from this (the interpreted results) are currently used in `R/run_all_functions.R` which should probably be automated.
 
-## Analysis using HATBAG
+## F. Analysis using HATBAG
 
 HATBAG itself is a relatively OK piece of code. It can be run from the command line.
 

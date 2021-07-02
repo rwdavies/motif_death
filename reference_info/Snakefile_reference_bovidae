@@ -11,7 +11,7 @@ GATK_CHR_PREFIX = "chr"
 TREEMIX_OUTGROUP = "reddeer"
 TREEMIX_THREADS=4
 
-HATBAG_DIR="ruminantia"
+HATBAG_OUTPUT_DIR="ruminantia"
 HATBAG_OUTPUT_DATE="2018_02_25"
 HATBAG_LINEAGES=['list(' +
 '"cow"="cow",'

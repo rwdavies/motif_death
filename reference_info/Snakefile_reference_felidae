@@ -8,7 +8,7 @@ SPECIES_LIST = ["NA", "NA2"]
 CHR_LIST_ONLY_AUTOS = list(range(1, 2))
 REFNAME = "Felis_catus.Felis_catus_6.2.dna.toplevel"
 
-HATBAG_DIR="felidae"
+HATBAG_OUTPUT_DIR="felidae"
 HATBAG_OUTPUT_DATE="2018_02_25"
 HATBAG_LINEAGES=['list(' +
 '"ChineseShorttailed_FelisCatus6.2"="ChineseShorttailed_FelisCatus6.2",' +

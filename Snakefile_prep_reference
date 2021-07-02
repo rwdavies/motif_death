@@ -1,0 +1,67 @@
+rule all:
+    input:
+        "ref/" + REFNAME + ".fa.sa",
+        "ref/" + REFNAME + ".fa.fai",
+        "ref/" + REFNAME + ".dict",
+        "ref/" + REFNAME + ".stidx"
+
+rule download_ref:
+    input:
+    output:
+        ref = "ref/" + REFNAME + ".fa.gz"
+    params: N='make_ref', threads=1, queue = "short.qc"
+    shell:
+        'mkdir -p ref && cd ref && '
+        'wget {REF_URL}'
+
+rule unzip_ref:
+    input:
+        ref = "ref/" + REFNAME + ".fa.gz"
+    output:
+        ref = "ref/" + REFNAME + ".fa"
+    params: N='unzip_ref', threads=1, queue = "short.qc"
+    shell:
+        'cd ref && '
+	'gunzip -c {REFNAME}.fa.gz > {REFNAME}.fa'
+
+rule bwa_mem_ref:
+    input:
+        ref = "ref/" + REFNAME + ".fa"
+    output:
+        "ref/" + REFNAME + ".fa.sa"
+    params: N='bwa_mem_ref', threads=1, queue = "short.qc"
+    shell:
+        'cd ref && '
+        '{BWA} index {REFNAME}.fa '
+
+rule faidx_ref:
+    input:
+        ref = "ref/" + REFNAME + ".fa"
+    output:
+        ref = "ref/" + REFNAME + ".fa.fai"
+    params: N='faidx_ref', threads=1, queue = "short.qc"
+    shell:
+        'cd ref && '
+        '{SAMTOOLS} faidx {REFNAME}.fa'
+
+rule picard_ref:
+    input:
+        ref = "ref/" + REFNAME + ".fa"
+    output:
+        ref = "ref/" + REFNAME + ".dict"
+    params: N='picard_ref', threads=1, queue = "short.qc"
+    shell:
+        'cd ref && '
+        '{JAVA} -Xmx12G -jar {PICARD} CreateSequenceDictionary R={REFNAME}.fa O={REFNAME}.dict'
+
+rule stampy_ref:
+    input:
+        ref = "ref/" + REFNAME + ".fa"
+    output:
+        "ref/" + REFNAME + ".sthash",
+        "ref/" + REFNAME + ".stidx"
+    params: N='stampy_ref', threads=1, queue = "short.qc"
+    shell:
+        'cd ref && '
+        '{PYTHON_278} {STAMPY} -G {REFNAME} {REFNAME}.fa && '
+        '{PYTHON_278} {STAMPY} -g {REFNAME} -H {REFNAME}'

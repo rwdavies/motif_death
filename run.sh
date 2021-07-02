@@ -3,15 +3,13 @@
 set -e
 . activate
 
-
 ## e.g. run.sh mapping all local gorilla --dryrun
 
 component=$1 ## either mapping, preprocess, or 
 what=$2
 where=$3
 species=$4
-other=$5
-
+other=${@:5} # all other CLI arguments passed to snakemake
 
 if [ "$where" == "cluster" ]
 then
@@ -55,15 +53,15 @@ then
     SPECIES_ORDER="canidae"
 elif [ "${species}" == "ursidae" ]
 then
-    SPECIES_ORDER="ursidae"     
+    SPECIES_ORDER="ursidae"
 else
     echo Cannot determine order
     exit 1
 fi
 
-
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
+
 
 SNAKEMAKE="${BIN_DIR}miniconda3/envs/snakemake/bin/snakemake"
 
@@ -77,14 +75,13 @@ then
     exit 1
 fi
 
-
 mkdir -p job_snakefiles
 SNAKEFILE=${SCRIPTPATH}/job_snakefiles/snakefile_${species}_${component}
 rm -f ${SNAKEFILE}
-if [ $component == "mapping" ] || [ $component == "preprocess" ]
+if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
 then
     echo -e '
-configfile: "'${SCRIPTPATH}'" + "/species_mapping_info/'${species}'.json"
+configfile: "'${SCRIPTPATH}'/" + "'${SPECIES_MAP_DIR_NAME}'/" + "'${species}'.json"
 
 ' > ${SNAKEFILE}
 fi
@@ -94,6 +91,7 @@ echo -e '
 BIN_DIR='\"${BIN_DIR}\"'
 PYTHON_DIR='\"${PYTHON_DIR}\"'
 R_DIR='\"${R_DIR}\"'
+HATBAG_DIR='\"${HATBAG_DIR}\"'
 SPECIES_ORDER='\"${SPECIES_ORDER}\"'
 ' >> ${SNAKEFILE}
 
