@@ -1,0 +1,20 @@
+{
+    "SPECIES_ORDER": "test",
+    "SPECIES_LIST": ["test_pop1", "test_pop2", "test_outgroup"],
+    "REFNAME": "ref",
+    "REF_URL": "",
+    "CHR_LIST_ONLY_AUTOS": [1,2], // TBD if still needed?
+    "CHR_LIST": [1,2],
+    "GATK_CHR_PREFIX": "",
+    // ## CHR_CHUNKS = range(1, 17) TBD if still needed?
+    "TREEMIX_THREADS": 4,
+    "OPERATE_GATK_PER_CHR": "TRUE", // check how to Bool
+    "VCF_PREFIX": "test.cbgogw",
+    "TREEMIX_PREFIX": "test.cbgogw",
+    "TREEMIX_OUTGROUP": "test_outgroup",
+    "HATBAG_OUTPUT_DIR": "test_data",
+    "HATBAG_OUTPUT_DATE": "2021_06_30",
+    // TBD if below still needed:
+    "HATBAG_SIMPLE_REPEAT": "/well/davies/users/zri347/motif_death_analysis/ref/test/simpleRepeat.gz",
+    "HATBAG_CALLABLE_BED": "NULL" // check how to NA
+}

@@ -1,0 +1,25 @@
+{
+    "paths": {
+        // Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
+        "ANALYSIS_DIR": "/well/davies/users/zri347/motif_death_analysis/",
+        "PYTHON_DIR": "/users/davies/zri347/proj/motif_death/python/",
+        "R_DIR": "/users/davies/zri347/proj/motif_death/R/",
+        "HATBAG_DIR": "/well/davies/users/zri347/R/HATBAG/",
+
+    },
+    "filenames": {
+        "FASTQ_SUFFIX": "fastq.gz",
+        // in motif_death repo:
+        "SPECIES_MAP_DIR_NAME": "species_mapping_info",
+        // in ANALYSIS_DIR:
+        "REF_DIR": "ref/", // TODO: correct test ref location (currently in /test)
+        "MAPPING_DIR": "mapping/", // TBD if worthwhile
+        // In R_DIR: 
+        "TREEMIX_R_PLOT": "plotDataAfterTreeMix.R",
+        "TREEMIX_R_PLOT_HELPER": "treemix_plotting_funcs.R",
+        "R_GET_GENOME_STATS": "get_genome_stats.R",
+        "R_GET_PER_SAMPLE_AVERAGE_COV": "get_per_sample_average_cov.R",
+        // In PYTHON_DIR:
+        "VCF2TREEMIX": "vcf2treemix.py"
+    }
+}
