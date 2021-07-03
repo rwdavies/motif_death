@@ -5,6 +5,7 @@ set -e
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
+# TODO: don't need component, species, just config file. leave what: all or specify job, where:, other:.
 component=$1 ## either mapping, preprocess, or 
 what=$2
 where=$3
@@ -19,6 +20,7 @@ then
      jobs=8
 fi
 
+# put this all in config
 ## if [ "${species}" == "human" ] || [ "${species}" == "chimp" ] || [ "${species}" == "gorilla" ] || [ "${species}" == "orangutan" ] || [ "${species}" == "baboon" ] || [ "${species}" == "marmoset" ] ||  [ "${species}" == "baboon" ] || [ "${species}" == "macaque" ] || [ "${species}" == "snubnosedmonkey" ] || [ "${species}" == "vervet" ] || [ "${species}" == "squirrelmonkey" ] || [ "${species}" == "neanderthal" ]  || [ "${species}" == "denisovan" ]
 
 if [ "${species}" == "human" ] || [ "${species}" == "chimp" ] || [ "${species}" == "gorilla" ] || [ "${species}" == "orangutan" ] || [ "${species}" == "neanderthal" ]  || [ "${species}" == "denisovan" ]
@@ -65,7 +67,8 @@ fi
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-
+# run.sh script needs BIN_DIR (snakemake), ANALYSIS_DIR, SPECIES_MAP_DIR_NAME
+# SNAKEMAKE has to be called by name, not by exporting to path
 SNAKEMAKE="${BIN_DIR}miniconda3/envs/snakemake/bin/snakemake"
 
 LOG_DIR="${ANALYSIS_DIR}/logs/"
@@ -88,15 +91,15 @@ configfile: "'${SCRIPTPATH}'/" + "'${SPECIES_MAP_DIR_NAME}'/" + "'${species}'.js
 
 ' > ${SNAKEFILE}
 fi
-
+#TODO: combine all species jsons into a single order json as config
 ## add activate components as necessary
-echo -e '
-BIN_DIR='\"${BIN_DIR}\"'
-PYTHON_DIR='\"${PYTHON_DIR}\"'
-R_DIR='\"${R_DIR}\"'
-HATBAG_DIR='\"${HATBAG_DIR}\"'
-SPECIES_ORDER='\"${SPECIES_ORDER}\"'
-' >> ${SNAKEFILE}
+# echo -e '
+# BIN_DIR='\"${BIN_DIR}\"'
+# PYTHON_DIR='\"${PYTHON_DIR}\"'
+# R_DIR='\"${R_DIR}\"'
+# HATBAG_DIR='\"${HATBAG_DIR}\"'
+# SPECIES_ORDER='\"${SPECIES_ORDER}\"'
+# ' >> ${SNAKEFILE}
 
 ## add other programs
 echo -e '
