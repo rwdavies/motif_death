@@ -1,0 +1,16 @@
+{
+    "species": "test_pop1",
+    "n_mapping_pieces": 20,
+    "platform": "Illumina",
+    "mapping_queue": "short.qc",
+    "units": {
+        "POP1": {
+            "1": "https://storage.googleapis.com/motif_death/test_data/POP1_1.fastq.gz",
+            "2": "https://storage.googleapis.com/motif_death/test_data/POP1_2.fastq.gz",
+            "lb": "dummy1",
+            "lb_insert_size": "100",
+            "flowcell_barcode": "X1",
+            "flowcell_lane": "1"
+        }
+      }
+}
