@@ -28,6 +28,15 @@ This repository contains code to download, pre-process, map, and variant call re
 1. You also need **Snakemake**.  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and you don't need to install anything. Otherwise on local you can use `install_snakemake_2.sh` to semi-interactively install with Conda (see Snakemake docs for more info).
 1. Once done, specify **user specific paths in `activate`. Ensure your HATBAG installation location is correctly captured.**
 
+### Generating Test Data
+
+Ensure you have installed the latest version of HATBAG.
+
+```
+./scripts/prepare_test_data.sh
+```
+
+
 ### A. Manual curation of input file and downloading reference material
 
 Briefly, currently, identify a set of related species, appropriate for the model, and papers with their raw data, with data deposited in the EBI ENA. 
