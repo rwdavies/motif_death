@@ -9,6 +9,20 @@ This repository contains code to download, pre-process, map, and variant call re
 
 **Repo will only run through for test data in current state, as additional specifications for HATBAG in `R/run_all_functions.R` have not been done for other orders / species.**
 
+## Testing
+
+### Generating Test data
+Ensure you have installed the latest version of HATBAG.
+```
+./scripts/prepare_test_data.sh
+```
+
+### Running tests
+Specify location of HATBAG results for test data to test output, e.g.,
+```
+./scripts/test.sh /well/davies/users/zri347/motif_death_analysis/hatbag/test/2021_06_30
+```
+
 ## Workthrough / explanation
 
 ### Set-up
@@ -27,15 +41,6 @@ This repository contains code to download, pre-process, map, and variant call re
     * Note: Make sure you add `options(bitmapType='cairo')` to `~/.Rprofile` as specified in cluster instructions ([more details](https://stackoverflow.com/questions/24999983/r-unable-to-start-device-png-capabilities-has-true-for-png))
 1. You also need **Snakemake**.  On the BRMC (cluster), a fixed Snakemake installation is specified in the code and you don't need to install anything. Otherwise on local you can use `install_snakemake_2.sh` to semi-interactively install with Conda (see Snakemake docs for more info).
 1. Once done, specify **user specific paths in `activate`. Ensure your HATBAG installation location is correctly captured.**
-
-### Generating Test Data
-
-Ensure you have installed the latest version of HATBAG.
-
-```
-./scripts/prepare_test_data.sh
-```
-
 
 ### A. Manual curation of input file and downloading reference material
 
