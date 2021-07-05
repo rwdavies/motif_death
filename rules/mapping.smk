@@ -37,7 +37,7 @@ rule extract_and_map_fastq_pieces:
         flowcell_lane = lambda wildcards: config["units"][wildcards.units]["flowcell_lane"],
         head=" "
     wildcard_constraints:
-        units='[A-Z0-9-]+',
+        units='[A-Za-z0-9]+',
         piece='\d{1,3}'
     shell:
         'set +o pipefail && '
@@ -83,7 +83,7 @@ rule merge_mapped_pieces:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '
@@ -103,7 +103,7 @@ rule merge_units:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '
@@ -239,7 +239,7 @@ rule extract_and_map_single_fastq_pieces:
         flowcell_lane = lambda wildcards: config["units"][wildcards.units]["flowcell_lane"],
         head=" "
     wildcard_constraints:
-        units='[A-Z0-9-]+',
+        units='[A-Za-z0-9]+',
         piece='\d{1,3}'
     shell:
         'set +o pipefail && '
@@ -281,7 +281,7 @@ rule merge_se_pieces:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '

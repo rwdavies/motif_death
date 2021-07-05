@@ -35,7 +35,7 @@ rule all:
         [
 	expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
 	expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST),
-	# expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
+	expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
 	]
 
 
@@ -246,7 +246,7 @@ rule run_treemix:
         migrants='\d{1,2}'
     shell:
         'echo begin treemix && date &&'
-        '{TREEMIX} -i {input} -m {wildcards.migrants} -noss -se -k 5000 '
+        '{TREEMIX} -i {input} -m {wildcards.migrants} -noss -se -k {TREEMIX_K} '
         '-root {TREEMIX_OUTGROUP} '
         '-n_warn 10 '
         '-o treemix/{TREEMIX_PREFIX}.treemix.migrants.{wildcards.migrants}.out &&'

@@ -232,6 +232,15 @@ get_per_species_params <- function(species) {
             "P1P2Anc" = c("test_pop1", "test_pop2")
         )
         outgroups = c("test_outgroup")
+        vcf_load_split_num_files = 1
+        Klist = 6
+        cgte = 0
+        rgte = 0
+        n_extra_random_starts = 1 ## since slow
+        max_iters_atToGC = 10 ## also since slow, who cares what parameters are! 
+        use_gradient_and_hessian_for_ATGC_model_fitting = FALSE ## disable as uses nlminb which is slow with these
+        ancestral_map_window_size = 1e4
+        n_initial_atToGC_fitting_reps = 3
     }
     if (species == "felidae") {
         nCores <- 16
@@ -401,7 +410,16 @@ get_per_species_params <- function(species) {
             lineages  = lineages,
             lineages_to_build = lineages_to_build,
             ancestral_lineage = ancestral_lineage,
-            outgroups = outgroups
+            outgroups = outgroups,
+            vcf_load_split_num_files = vcf_load_split_num_files,
+            Klist = Klist,
+            cgte = cgte,
+            rgte = rgte,
+            n_extra_random_starts = n_extra_random_starts, ## since slow
+            max_iters_atToGC = max_iters_atToGC, ## also since slow, who cares what parameters are! 
+            use_gradient_and_hessian_for_ATGC_model_fitting = use_gradient_and_hessian_for_ATGC_model_fitting, ## disable as uses nlminb which is slow with these
+            ancestral_map_window_size = ancestral_map_window_size,
+            n_initial_atToGC_fitting_reps = n_initial_atToGC_fitting_reps
         )
     )
 }

@@ -89,7 +89,7 @@ for(i_species in i_species_to_run) {
     ancestral_lineage <- out$ancestral_lineage
     outgroups <- out$outgroups
     lineages_to_build <- out$lineages_to_build
-    ## 
+    ## TODO: make sure this aligns with HATBAG_OUTPUT_DIR specified in Snakefile_reference_order
     outputDir <- file.path(analysisDir, "hatbag", species, "/")
     message(outputDir)
     
@@ -119,7 +119,7 @@ for(i_species in i_species_to_run) {
             chrlist = chrlist,
             genomeSize = genomeSize,
             rmask_file = rmask_file,
-            Klist = Klist,
+            # Klist = Klist,
             nCores = nCores,
             lineages = lineages,
             lineages_to_build = lineages_to_build,
@@ -134,7 +134,16 @@ for(i_species in i_species_to_run) {
             mncdnle = mncdnle,
             gcW2 = gcW2,
             num_non_missing_outgroups_required = num_non_missing_outgroups_required,
-            num_missing_lineages_allowed = num_missing_lineages_allowed
+            num_missing_lineages_allowed = num_missing_lineages_allowed,
+            vcf_load_split_num_files = out$vcf_load_split_num_files,
+            Klist = out$Klist,
+            cgte = out$cgte,
+            rgte = out$rgte,
+            n_extra_random_starts = out$n_extra_random_starts,
+            max_iters_atToGC = out$max_iters_atToGC,
+            use_gradient_and_hessian_for_ATGC_model_fitting = out$use_gradient_and_hessian_for_ATGC_model_fitting,
+            ancestral_map_window_size = out$ancestral_map_window_size,
+            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps
         )
 
         ##
