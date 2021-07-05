@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-. activate
+## . activate
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
@@ -112,6 +112,7 @@ include:
 ' >> ${SNAKEFILE}
 
 cd ${ANALYSIS_DIR}
+
 if [ $where == "cluster" ]
 then
     ##--verbose 

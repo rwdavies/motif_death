@@ -217,9 +217,9 @@ get_per_species_params <- function(species) {
     }
     if (species == "test") {
         ## have manually rsynced these over
-        reference <- file.path("ref/test/ref.fa.gz")
-        simpleRepeat_file <- file.path("ref/test/simpleRepeat.gz")
-        rmask_file <- file.path("ref/test/rmask.gz")
+        reference <- file.path("ref/ref.fa.gz")
+        simpleRepeat_file <- file.path("ref/simpleRepeat.gz")
+        rmask_file <- file.path("ref/rmask.gz")
         vcf_file <- NA ##  now specified elsewhere
         nCores <- NA ## now specified elsewhere
         chrlist <- paste0(1:2)
