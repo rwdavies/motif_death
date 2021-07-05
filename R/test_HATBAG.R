@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 library("testthat")
 
 TEST_HATBAG_DIR <- Sys.getenv("TEST_HATBAG_DIR")

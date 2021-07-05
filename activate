@@ -18,7 +18,6 @@ then
     export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/${PATH} # Note - easier than changing R library paths for now
     # Change the following:
     export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
-    export SPECIES_MAP_DIR_NAME="species_mapping_info"
     # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
     export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"
     export R_DIR="/users/davies/dcc832/proj/motif_death/R/"
@@ -28,7 +27,6 @@ then
     module load R/3.6.2-foss-2019b
     # Change the following:
     export ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
-    export SPECIES_MAP_DIR_NAME="species_mapping_info"
     # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
     export PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
     export R_DIR="/users/davies/zri347/proj/motif_death/R/"
@@ -38,4 +36,5 @@ else
     exit 1
 fi
 
-
+export SPECIES_MAP_DIR_NAME="species_mapping_info"
+export PATH=${HATBAG_DIR}:${PATH} 
