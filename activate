@@ -6,23 +6,21 @@ module load jq/1.6-GCCcore-8.3.0
 # module load SAMtools/1.9-foss-2018b
 # module load HTSlib/1.9-foss-2018b
 export PATH=/apps/well/git/2.3.4/bin/:${PATH}
+export PATH=/apps/well/bwa/0.7.8/:${PATH} # bwa
+export PATH=/apps/well/samtools/1.4.1/bin/:${PATH} # samtools
+export PATH=/apps/well/htslib/1.4.1/bin/:${PATH} # tabix, bgzip
+export PATH=/apps/well/treemix/20151030-gcc4.9.3/bin/:${PATH}
 
 # change to snakemake
 export BIN_DIR="/well/davies/users/dcc832/primates/bin/" 
 
-# export all to path
-BGZIP = "/apps/well/htslib/1.4.1/bin/bgzip" # export or not?
-# FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # TODO obsolete
-export BWA="/apps/well/bwa/0.7.8/bwa"
+# export as variables, not to path
 export JAVA="/apps/well/java/jdk1.8.0_45/bin/java"
-export SAMTOOLS="/apps/well/samtools/1.4.1/bin/samtools"
-export TABIX="/apps/well/htslib/1.4.1/bin/tabix"
-export TREEMIX="/apps/well/treemix/20151030-gcc4.9.3/bin/treemix"
-
-GATK="/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
-PICARD="/apps/well/picard-tools/2.0.1/picard.jar"
-PLINK = "/apps/well/plink/1.90b3/plink" # unsure to export or not?
+# FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # TODO obsolete
+export GATK="/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
+export PICARD="/apps/well/picard-tools/2.0.1/picard.jar"
+export PLINK="/apps/well/plink/1.90b3/plink" # unsure to export or not?
 # python has to be called by version name
-PYTHON_278="/apps/well/python/2.7.8/bin/python"
-PYTHON_352="/apps/well/python/3.5.2-gcc5.4.0/bin/python"
-STAMPY="/apps/well/stampy/1.0.23-py2.7/stampy.py"
+export PYTHON_278="/apps/well/python/2.7.8/bin/python"
+export PYTHON_352="/apps/well/python/3.5.2-gcc5.4.0/bin/python"
+export STAMPY="/apps/well/stampy/1.0.23-py2.7/stampy.py"

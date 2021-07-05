@@ -9,6 +9,20 @@ This repository contains code to download, pre-process, map, and variant call re
 
 **Repo will only run through for test data in current state, as additional specifications for HATBAG in `R/run_all_functions.R` have not been done for other orders / species.**
 
+## Testing
+
+### Generating Test data
+Ensure you have installed the latest version of HATBAG.
+```
+./scripts/prepare_test_data.sh
+```
+
+### Running tests
+Specify location of HATBAG results for test data to test output, e.g.,
+```
+./scripts/test.sh /well/davies/users/zri347/motif_death_analysis/hatbag/test/2021_06_30
+```
+
 ## Workthrough / explanation
 
 ### Set-up
