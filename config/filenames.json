@@ -1,0 +1,12 @@
+{
+    "FASTQ_SUFFIX": "fastq.gz",
+    "BAM_SUFFIX": "realigned.rmdup.bam",
+    "SPECIES_MAP_DIR_NAME": "species_mapping_info",
+    "REF_DIR": "ref/",
+    "MAPPING_DIR": "mapping/",
+    "TREEMIX_R_PLOT": "plotDataAfterTreeMix.R",
+    "TREEMIX_R_PLOT_HELPER": "treemix_plotting_funcs.R",
+    "R_GET_GENOME_STATS": "get_genome_stats.R",
+    "R_GET_PER_SAMPLE_AVERAGE_COV": "get_per_sample_average_cov.R",
+    "VCF2TREEMIX": "vcf2treemix.py"
+}
