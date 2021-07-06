@@ -143,7 +143,8 @@ for(i_species in i_species_to_run) {
             max_iters_atToGC = out$max_iters_atToGC,
             use_gradient_and_hessian_for_ATGC_model_fitting = out$use_gradient_and_hessian_for_ATGC_model_fitting,
             ancestral_map_window_size = out$ancestral_map_window_size,
-            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps
+            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps,
+            skip_at_to_gc_ci_fitting = out$skip_at_to_gc_ci_fitting
         )
 
     }

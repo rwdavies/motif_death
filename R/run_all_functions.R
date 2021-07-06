@@ -241,6 +241,7 @@ get_per_species_params <- function(species) {
         use_gradient_and_hessian_for_ATGC_model_fitting = FALSE ## disable as uses nlminb which is slow with these
         ancestral_map_window_size = 1e4
         n_initial_atToGC_fitting_reps = 3
+        skip_at_to_gc_ci_fitting = TRUE
     }
     if (species == "felidae") {
         nCores <- 16
@@ -419,7 +420,8 @@ get_per_species_params <- function(species) {
             max_iters_atToGC = max_iters_atToGC, ## also since slow, who cares what parameters are! 
             use_gradient_and_hessian_for_ATGC_model_fitting = use_gradient_and_hessian_for_ATGC_model_fitting, ## disable as uses nlminb which is slow with these
             ancestral_map_window_size = ancestral_map_window_size,
-            n_initial_atToGC_fitting_reps = n_initial_atToGC_fitting_reps
+            n_initial_atToGC_fitting_reps = n_initial_atToGC_fitting_reps,
+            skip_at_to_gc_ci_fitting = skip_at_to_gc_ci_fitting
         )
     )
 }
