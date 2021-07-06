@@ -2,5 +2,6 @@
     "ANALYSIS_DIR": "/well/davies/users/zri347/motif_death_analysis/",
     "PYTHON_DIR": "/users/davies/zri347/proj/motif_death/python/",
     "R_DIR": "/users/davies/zri347/proj/motif_death/R/",
-    "HATBAG_DIR": "/well/davies/users/zri347/R/HATBAG/"
+    "HATBAG_DIR": "/well/davies/users/zri347/R/HATBAG/",
+    "SNAKEMAKE": "/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
 }

@@ -9,7 +9,6 @@ export PATH=/apps/well/samtools/1.4.1/bin/:${PATH} # samtools
 export PATH=/apps/well/htslib/1.4.1/bin/:${PATH} # tabix, bgzip
 
 export TREEMIX="/apps/well/treemix/20151030-gcc4.9.3/bin/treemix"
-export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"
 export JAVA="/apps/well/java/jdk1.8.0_45/bin/java"
 # FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # TODO obsolete
 export GATK="/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
