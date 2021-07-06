@@ -2,9 +2,9 @@
 
 library("testthat")
 
-TEST_HATBAG_DIR <- Sys.getenv("TEST_HATBAG_DIR")
+ANALYSIS_DIR <- Sys.getenv("ANALYSIS_DIR")
 
-load(file.path(TEST_HATBAG_DIR, "D_summary/allp.losslin.K6.RData"))
+load(file.path(ANALYSIS_DIR, "hatbag/test/dummy_date/D_summary/allp.losslin.K6.RData")) # path hardcoded in Snakefile_reference_test
 # Assumes test k-mer length 6 and lost k-mers are "AGACAT", "GCGTCC"
 
 m2.dropNA <- m2[(!is.na(m2[, "test_pop1"])) & (!is.na(m2[, "test_pop2"])), ]
