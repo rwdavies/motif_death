@@ -19,18 +19,27 @@ export PYTHON_278="/apps/well/python/2.7.8/bin/python"
 export PYTHON_352="/apps/well/python/3.5.2-gcc5.4.0/bin/python"
 export STAMPY="/apps/well/stampy/1.0.23-py2.7/stampy.py"
 
+# TODO: put all user stuff here (not in JSON), will be easier for Robbie
 user=`whoami`
 if [ ${user} == "dcc832" ]
 then
     export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/${PATH} # Note - easier than changing R library paths for now
-    export USER_CONFIG="/users/davies/dcc832/proj/motif_death/config/dcc832.json"
+    # export USER_CONFIG="/users/davies/dcc832/proj/motif_death/config/dcc832.json"
+    export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
+    export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"
+    export R_DIR="/users/davies/dcc832/proj/motif_death/R/"
+    export HATBAG_DIR="/users/davies/dcc832/proj/HATBAG/"
+    export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"
 elif [ ${user} == "zri347" ]
 then
     module load R/3.6.2-foss-2019b
-    export USER_CONFIG="/users/davies/zri347/proj/motif_death/config/zri347.json"
+    # export USER_CONFIG="/users/davies/zri347/proj/motif_death/config/zri347.json"
+    export ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
+    export PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
+    export R_DIR="/users/davies/zri347/proj/motif_death/R/"
+    export HATBAG_DIR="/well/davies/users/zri347/R/HATBAG/"
+    export SNAKEMAKE="/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
 else
     echo ${user} "is uninitialized"
     exit 1
 fi
-
-export PATH=${HATBAG_DIR}:${PATH}
