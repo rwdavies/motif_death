@@ -71,4 +71,4 @@ else
 fi
 
 # Test significant k-mers
-Rscript ./R/test_HATBAG.R
+./R/test_HATBAG.R
