@@ -1,18 +1,3 @@
-# SPECIES = config["species"]
-# UNITS = config["units"].keys()
-# N_MAPPING_PIECES = config["n_mapping_pieces"]
-# N_MAPPING_PIECES_SE = N_MAPPING_PIECES * 10
-
-# MAPPING_QUEUE = config["mapping_queue"]
-
-GATK_CHR_PREFIX = config["GATK_CHR_PREFIX"]
-OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
-REF_DIR = config["REF_DIR"]
-REFNAME = config["REFNAME"]
-REF_URL = config["REF_URL"]
-FASTQ_SUFFIX = config["FASTQ_SUFFIX"]
-CHR_LIST = config["CHR_LIST"]
-
 # if SPECIES == "marmoset":
 #     FASTQ_SUFFIX = "standardized_phred.fastq.gz"
 
@@ -55,10 +40,15 @@ rule map_all:
 rule extract_and_map_fastq_pieces:
     input:
         pen1 = expand("mapping/{{species}}/{{units}}_1.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
-        pen2 = expand("mapping/{{species}}/{{units}}_2.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX)
+        pen2 = expand("mapping/{{species}}/{{units}}_2.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
+        ref = REF_DIR + REF_NAME + ".fa",
+        ref_sa = REF_DIR + REF_NAME + ".fa.sa",
+        ref_fai = REF_DIR + REF_NAME + ".fa.fai",
+        ref_dict = REF_DIR + REF_NAME + ".dict",
+        ref_stidx = REF_DIR + REF_NAME + ".stidx"
     output:
-        bam = expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam"),
-        bai = expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam.bai")
+        bam = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam")),
+        bai = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam.bai"))
     params:
         N='map',
         threads=1,
@@ -78,7 +68,7 @@ rule extract_and_map_fastq_pieces:
         'gunzip -c {input.pen2} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen2}.temp.{wildcards.piece}.gz && '
         'set -o pipefail && '
         'bwa mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{wildcards.species}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{wildcards.species}\\tLB:{params.lb}" '
-        ' {REF_DIR}/{REFNAME}.fa -t{params.threads} '
+        ' {input.ref} -t{params.threads} '
         '{input.pen1}.temp.{wildcards.piece}.gz '
         '{input.pen2}.temp.{wildcards.piece}.gz | '
         'samtools view -Sb - > {output.bam}.temp1.bam && '
@@ -90,7 +80,7 @@ rule extract_and_map_fastq_pieces:
         'PI:{params.lb_insert_size},'
         'PU:{params.flowcell_barcode}.{params.flowcell_lane}.{wildcards.species},'
         'LB:{params.lb}'
-        '-t{params.threads} -g {REF_DIR}/{REFNAME} -h {REF_DIR}/{REFNAME} --overwrite --bamkeepgoodreads '
+        '-t{params.threads} -g {REF_DIR}/{REF_NAME} -h {REF_DIR}/{REF_NAME} --overwrite --bamkeepgoodreads '
         '-M {output.bam}.temp1.bam | '
         'samtools view -Sb - > {output.bam}.temp2.bam && '
         'echo STAMPY DONE && '
@@ -111,8 +101,8 @@ rule merge_mapped_pieces:
         bams = get_bam_pieces,
         bais = get_bai_pieces
     output:
-        bam = expand("mapping/{{species}}/{{units}}.bam"),
-        bai = expand("mapping/{{species}}/{{units}}.bam.bai")
+        bam = temp(expand("mapping/{{species}}/{{units}}.bam")),
+        bai = temp(expand("mapping/{{species}}/{{units}}.bam.bai"))
     params:
         N='merge_pieces',
         threads=1,
@@ -122,9 +112,7 @@ rule merge_mapped_pieces:
         piece='\d{1,3}'
     shell:
         'samtools merge {output.bam} {input.bams} && '
-        'samtools index {output.bam} && '
-        'rm {input.bams} && '
-        'rm {input.bais}'
+        'samtools index {output.bam} '
 
  
 rule merge_units:
@@ -134,8 +122,8 @@ rule merge_units:
         bams = get_bam_units,
         bais = get_bai_units
     output:
-        bam = expand("mapping/{{species}}/{{species}}.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.bam.bai")
+        bam = temp(expand("mapping/{{species}}/{{species}}.bam")),
+        bai = temp(expand("mapping/{{species}}/{{species}}.bam.bai"))
     params:
         N='merge_units',
         threads=1,
@@ -144,9 +132,7 @@ rule merge_units:
         units='[A-Za-z0-9]+'
     shell:
         'samtools merge {output.bam} {input.bams} && '
-        'samtools index {output.bam} && '
-        'rm {input.bams} && '
-        'rm {input.bais}'
+        'samtools index {output.bam} '
 
 
 # can be done at the end due to library usage
@@ -169,16 +155,16 @@ rule mark_duplicates:
         'OUTPUT={output.bam} '
         'MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 '
         'METRICS_FILE={output.bam}.metrics.txt && '
-        'samtools index {output.bam} && '
-        'rm {input.bam} && '
-        'rm {input.bai}'
+        'samtools index {output.bam} '#&& '
+        # 'rm {input.bam} && '
+        # 'rm {input.bai}'
 
 
 rule identify_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        ref = REF_DIR + REFNAME + ".fa"	
+        ref = REF_DIR + REF_NAME + ".fa"	
     output:
         outfile = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")
     params:
@@ -204,7 +190,7 @@ rule realign_around_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        ref = REF_DIR + REFNAME + ".fa",
+        ref = REF_DIR + REF_NAME + ".fa",
         intervals = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")	
     output:
         bam = expand("mapping/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bam"),
@@ -285,7 +271,7 @@ rule merge_realigned_bams:
 #         'set -o pipefail && '
 #         'echo ====BWA START==== && '
 #         '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\t@LB{params.lb}" '
-#         ' {REF_DIR}/{REFNAME}.fa -t{params.threads} '
+#         ' {REF_DIR}/{REF_NAME}.fa -t{params.threads} '
 #         '{input.pen}.se.temp.{wildcards.piece}.gz | '
 #         '{SAMTOOLS} view -Sb - > {output.bam}.temp1.bam && '
 #         'rm {input.pen}.se.temp.{wildcards.piece}.gz && '
@@ -298,7 +284,7 @@ rule merge_realigned_bams:
 #         'PI:{params.lb_insert_size},'
 #         'PU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES},'
 #         'LB:{params.lb}'
-#         '-t{params.threads} -g {REF_DIR}/{REFNAME} -h {REF_DIR}/{REFNAME} --overwrite --bamkeepgoodreads '
+#         '-t{params.threads} -g {REF_DIR}/{REF_NAME} -h {REF_DIR}/{REF_NAME} --overwrite --bamkeepgoodreads '
 #         '-M {output.bam}.temp1.bam | '
 #         '{SAMTOOLS} view -Sb - > {output.bam}.temp2.bam && '
 #         'rm {output.bam}.temp1.bam && '	

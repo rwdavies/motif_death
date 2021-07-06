@@ -1,20 +1,3 @@
-if GENOTYPER == "HaplotypeCaller":
-    GENOTYPING_MULTITHREAD_FLAG="-nct"
-elif GENOTYPER == "UnifiedGenotyper":
-    GENOTYPING_MULTITHREAD_FLAG="-nt"
-
-CHR_CHUNKS = range(1, 2) ## disable - too complicated as crashes if out of rang - run 1 chunk only
-TREEMIX_MIGRANT_RANGE = list(range(0, 10))
-
-IBAMS=""
-for species in SPECIES_LIST:
-    IBAMS = IBAMS + " -I mapping/" + species + "/" + species + "." + BAM_SUFFIX
-
-MERGE_VCF_GATK_INPUT=""
-for piece in CHR_CHUNKS:
-    for chr in CHR_LIST_ONLY_AUTOS:
-    	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
-	
 rule downstream_all:
     input:
         [
@@ -50,7 +33,7 @@ rule treemix:
 
 rule call_chr:
     input:
-        ref = REF_DIR + REFNAME + ".fa",
+        ref = REF_DIR + REF_NAME + ".fa",
         bams = expand("mapping/{species}/{species}.{bam_suffix}", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{species}/{species}.{bam_suffix}.bai", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX)
     output:
@@ -88,7 +71,7 @@ rule filter_chr:
     input:
         input_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
         input_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX),
-        ref = REF_DIR + REFNAME + ".fa"
+        ref = REF_DIR + REF_NAME + ".fa"
     output:
         filtered_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
         filtered_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
@@ -112,7 +95,7 @@ rule merge_chr:
     input:
         vcf = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
         tbi = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
-        ref = REF_DIR + REFNAME + ".fa"	
+        ref = REF_DIR + REF_NAME + ".fa"	
     output:
         merged_vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
         merged_tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
@@ -131,7 +114,7 @@ rule merge_chr:
 
 rule calculate_doc:
     input:
-        ref = REF_DIR + REFNAME + ".fa",
+        ref = REF_DIR + REF_NAME + ".fa",
         bam = expand("mapping/{{species}}/{{species}}.{bam_suffix}", bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{{species}}/{{species}}.{bam_suffix}.bai", bam_suffix = BAM_SUFFIX)
     output:
@@ -158,23 +141,23 @@ rule calculate_doc:
 
 rule prepare_reference:
     input:
-        amb = REF_DIR + REFNAME + ".fa.amb",
-        ann = REF_DIR + REFNAME + ".fa.ann"
+        amb = REF_DIR + REF_NAME + ".fa.amb",
+        ann = REF_DIR + REF_NAME + ".fa.ann"
     output:
-        summary = REF_DIR + REFNAME + ".fa.summary.txt"    
+        summary = REF_DIR + REF_NAME + ".fa.summary.txt"    
     params:
         N='prepare_reference',
         threads=1,
         queue = "short.qc"
     wildcard_constraints:
     shell:
-        'R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REFNAME}.fa'
+        'R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REF_NAME}.fa'
 
 
 rule get_callable_regions:
     input:
         infile = expand("coverage/coverage.{{species}}.chr{chr}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
-        summary = REF_DIR + REFNAME + ".fa.summary.txt"
+        summary = REF_DIR + REF_NAME + ".fa.summary.txt"
     output:
         beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS)
     params:
@@ -185,7 +168,7 @@ rule get_callable_regions:
         species='\w{1,40}'
     shell:
         'echo start && '
-        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REFNAME}.fa && '
+        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa && '
         'echo done'
 
 

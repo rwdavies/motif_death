@@ -1,13 +1,18 @@
+import os
 import pandas as pd
+
+# From Activate
+R_DIR=os.environ["R_DIR"]
+HATBAG_DIR=os.environ["HATBAG_DIR"]
+PYTHON_DIR=os.environ["PYTHON_DIR"]
 
 VCF_PREFIX = config["VCF_PREFIX"]
 HATBAG_OUTPUT_DIR = config["HATBAG_OUTPUT_DIR"]
 HATBAG_OUTPUT_DATE=config["HATBAG_OUTPUT_DATE"]
-R_DIR=config["R_DIR"]
+HATBAG_PARAMS=config["HATBAG_PARAMS"]
 SPECIES_ORDER=config["SPECIES_ORDER"]
-HATBAG_DIR=config["HATBAG_DIR"]
 REF_DIR = config["REF_DIR"]
-REFNAME = config["REFNAME"]
+REF_NAME = config["REF_NAME"]
 REF_URL = config["REF_URL"]
 BAM_SUFFIX = config["BAM_SUFFIX"]
 WILDCARD_CHR_CONSTRAINT = config["WILDCARD_CHR_CONSTRAINT"]
@@ -24,17 +29,32 @@ TREEMIX_OUTGROUP=config["TREEMIX_OUTGROUP"]
 TREEMIX_THREADS=config["TREEMIX_THREADS"]
 GATK_CHR_PREFIX = config["GATK_CHR_PREFIX"]
 OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
-REF_DIR = config["REF_DIR"]
-REFNAME = config["REFNAME"]
-REF_URL = config["REF_URL"]
 FASTQ_SUFFIX = config["FASTQ_SUFFIX"]
 CHR_LIST = config["CHR_LIST"]
 
 R_GET_GENOME_STATS=R_DIR + config["R_GET_GENOME_STATS"]
 R_GET_PER_SAMPLE_AVERAGE_COV=R_DIR + config["R_GET_PER_SAMPLE_AVERAGE_COV"]
-VCF2TREEMIX=config["PYTHON_DIR"] + config["VCF2TREEMIX"]
+VCF2TREEMIX=PYTHON_DIR + config["VCF2TREEMIX"]
 TREEMIX_R_PLOT=R_DIR + config["TREEMIX_R_PLOT"]
 TREEMIX_R_PLOT_HELPER=R_DIR + config["TREEMIX_R_PLOT_HELPER"]
+
+# Downstream stuff
+CHR_CHUNKS = range(1, 2) ## disable - too complicated as crashes if out of rang - run 1 chunk only
+TREEMIX_MIGRANT_RANGE = list(range(0, 10))
+
+if GENOTYPER == "HaplotypeCaller":
+    GENOTYPING_MULTITHREAD_FLAG="-nct"
+elif GENOTYPER == "UnifiedGenotyper":
+    GENOTYPING_MULTITHREAD_FLAG="-nt"
+
+IBAMS=""
+for species in SPECIES_LIST:
+    IBAMS = IBAMS + " -I mapping/" + species + "/" + species + "." + BAM_SUFFIX
+
+MERGE_VCF_GATK_INPUT=""
+for piece in CHR_CHUNKS:
+    for chr in CHR_LIST_ONLY_AUTOS:
+    	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
 
 order_df = pd.read_csv('/users/davies/zri347/proj/motif_death/test.csv').set_index(["species", "units"], drop=False)
 # order_df.index = order_df.index.set_levels([i.astype(str) for i in order_df.index.levels])  # enforce str in index

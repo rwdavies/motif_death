@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
 set -e
-## . activate
+## . activate # if load activate again, need to account for test ANALYSIS_DIR
 
 ## e.g. run.sh config/test.json all local --dryrun
 
 # component=$1 ## either mapping, preprocess, or 
-config=$1
+order_config=$1
 what=$2
 where=$3
-# species=$4
 other=${@:4} # all other CLI arguments passed to snakemake
 
 if [ "$where" == "cluster" ]
@@ -67,10 +66,17 @@ fi
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-
 # From jq docs on how to load variables
-eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECIES_ORDER)"' ${config})"
-eval "$(jq -r '@sh "ANALYSIS_DIR=\(.ANALYSIS_DIR) SNAKEMAKE=\(.SNAKEMAKE)"' ${USER_CONFIG})"
+eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECIES_ORDER)"' ${order_config})"
+
+# if [ $other = "test" ]
+# then
+#     # use ANALYSIS_DIR defined in scripts/test.sh
+#     other="" # so not passed to snakemake
+
+# fi
+echo "Output in ${ANALYSIS_DIR}"
+
 # eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
 
 # json_list=""
@@ -88,49 +94,6 @@ mkdir -p ${LOG_DIR}
 
 SNAKEFILE="${SCRIPTPATH}/Snakefile"
 
-# if [ ! -f "Snakefile_${component}" ]
-# then
-#     echo Cannot find file Snakefile_${component}
-#     exit 1
-# fi
-
-# mkdir -p rules/job_snakefiles
-# SNAKEFILE=${SCRIPTPATH}/rules/job_snakefiles/snakefile_${SPECIES_ORDER}_${what}
-# rm -f ${SNAKEFILE}
-# if [ $component == "mapping" ] || [ $component == "preprocess" ] || [ $component == "prep_reference" ]
-# then
-# "'${SCRIPTPATH}'/'${SPECIES_ORDER}'.json"]
-# echo -e '
-# # configfiles: ["'${SCRIPTPATH}'/'${config}'", "'${USER_CONFIG}'", "'${SCRIPTPATH}'/config/filenames.json"]
-
-# include: "'${SCRIPTPATH}'/rules/download.smk"
-# include: "'${SCRIPTPATH}'/rules/prep_reference.smk"
-#     # include: "'${SCRIPTPATH}'/" + "Snakefile"
-
-# ' > ${SNAKEFILE}
-
-## add activate components as necessary
-# echo -e '
-# BIN_DIR='\"${BIN_DIR}\"'
-# PYTHON_DIR='\"${PYTHON_DIR}\"'
-# R_DIR='\"${R_DIR}\"'
-# HATBAG_DIR='\"${HATBAG_DIR}\"'
-# SPECIES_ORDER='\"${SPECIES_ORDER}\"'
-# ' >> ${SNAKEFILE}
-
-## add other programs
-# echo -e '
-# include:
-#     "'${SCRIPTPATH}'" + "/Snakefile_programs"
-
-# include:
-#     "'${SCRIPTPATH}'" + "/reference_info/Snakefile_reference_'${SPECIES_ORDER}'"
-
-# include:
-#     "'${SCRIPTPATH}'" + "/Snakefile_'${component}'"
-
-# ' >> ${SNAKEFILE}
-
 cd ${ANALYSIS_DIR}
 
 if [ $where == "cluster" ]
@@ -141,17 +104,17 @@ then
         --snakefile ${SNAKEFILE} \
         -w 30 \
 	 --max-status-checks-per-second 0.1 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} ${other} \
-        ${what} \
-        --configfiles "${SCRIPTPATH}/${config}" "${USER_CONFIG}" "${SCRIPTPATH}/config/filenames.json"
+        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} \
+         ${other} ${what} \
+        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
     ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]
 then
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
-        --jobs ${jobs} ${other} \
-        ${what} \
-        --configfiles "${SCRIPTPATH}/${config}" "${USER_CONFIG}" "${SCRIPTPATH}/config/filenames.json"
+        --jobs ${jobs} \
+        ${other} ${what} \
+        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
 echo done
 else
     echo bad where: ${where}
