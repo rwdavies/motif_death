@@ -1,6 +1,9 @@
-## unclear why I did this, same as in Snakefile_downstream
-VCF_PREFIX = VCF_PREFIX + ".GATKug"
-
+VCF_PREFIX = config["VCF_PREFIX"]
+HATBAG_OUTPUT_DIR = config["HATBAG_OUTPUT_DIR"]
+HATBAG_OUTPUT_DATE=config["HATBAG_OUTPUT_DATE"]
+R_DIR=config["R_DIR"]
+SPECIES_ORDER=config["SPECIES_ORDER"]
+HATBAG_DIR=config["HATBAG_DIR"]
 
 ##
 ## current hack

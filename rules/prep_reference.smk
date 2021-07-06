@@ -1,4 +1,4 @@
-rule all:
+rule reference_all:
     input:
         REF_DIR + REFNAME + ".fa.sa",
         REF_DIR + REFNAME + ".fa.fai",
@@ -32,7 +32,7 @@ rule bwa_mem_ref:
     params: N='bwa_mem_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
-        '{BWA} index {REFNAME}.fa '
+        'bwa index {REFNAME}.fa '
 
 rule faidx_ref:
     input:
@@ -42,7 +42,7 @@ rule faidx_ref:
     params: N='faidx_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
-        '{SAMTOOLS} faidx {REFNAME}.fa'
+        'samtools faidx {REFNAME}.fa'
 
 rule picard_ref:
     input:
@@ -52,7 +52,7 @@ rule picard_ref:
     params: N='picard_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
-        '{JAVA} -Xmx12G -jar {PICARD} CreateSequenceDictionary R={REFNAME}.fa O={REFNAME}.dict'
+        '${{JAVA}} -Xmx12G -jar ${{PICARD}} CreateSequenceDictionary R={REFNAME}.fa O={REFNAME}.dict'
 
 rule stampy_ref:
     input:
@@ -63,5 +63,5 @@ rule stampy_ref:
     params: N='stampy_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
-        '{PYTHON_278} {STAMPY} -G {REFNAME} {REFNAME}.fa && '
-        '{PYTHON_278} {STAMPY} -g {REFNAME} -H {REFNAME}'
+        '${{PYTHON_278}} ${{STAMPY}} -G {REFNAME} {REFNAME}.fa && '
+        '${{PYTHON_278}} ${{STAMPY}} -g {REFNAME} -H {REFNAME}'
