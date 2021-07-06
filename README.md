@@ -11,16 +11,8 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ## Testing
 
-### Generating Test data
-Ensure you have installed the latest version of HATBAG.
 ```
-./scripts/prepare_test_data.sh
-```
-
-### Running tests
-Specify location of HATBAG results for test data to test output, e.g.,
-```
-./scripts/test.sh /well/davies/users/zri347/motif_death_analysis/hatbag/test/2021_06_30
+./scripts/test.sh
 ```
 
 ## Workthrough / explanation

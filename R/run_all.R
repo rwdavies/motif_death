@@ -143,53 +143,11 @@ for(i_species in i_species_to_run) {
             max_iters_atToGC = out$max_iters_atToGC,
             use_gradient_and_hessian_for_ATGC_model_fitting = out$use_gradient_and_hessian_for_ATGC_model_fitting,
             ancestral_map_window_size = out$ancestral_map_window_size,
-            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps
+            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps,
+            skip_at_to_gc_ci_fitting = out$skip_at_to_gc_ci_fitting
         )
 
-        ##
-        ## only do at the end?
-        ##
-        if (length(grep("F", run)) > 0) {
-            ## tar up B_output 
-            setwd(masterDirHDD)
-            dir.create(file.path(masterDirHDD, "B_output_tarballs"))
-            for(chr in chrlist) {
-                tarball <- paste0("B_output_tarballs/B_output.", chr, ".tgz")
-                if (file.exists(tarball) == FALSE) {
-                    message(paste0("Tarring up ", chr))
-                    system(paste0("tar -czf ", tarball, " B_output/*.", chr, ".*"))
-                    message(paste0("Removing", chr))            
-                    system(paste0("rm B_output/*.", chr, ".*"))
-                    system(paste0("mv B_output.", chr, ".tgz B_output_tarballs/"))
-                }
-            }
-        }
-        ## ####### END OF NORMAL#############
     }
-    ## skip B_output
-    ## system(paste0(
-    ##     "rsync -av --progress ",
-    ##     "--exclude B_output ",
-    ##     "--exclude B_output_tarballs ",
-    ##     "--exclude C_results ",        
-    ##     "--exclude mask ",
-    ##     "--exclude ref ",
-    ##     outputDir, "/", outputDate, " ",
-    ##     "rescomp:/well/davies/users/dcc832/primates/hatbag/",
-    ##     tail(strsplit(outputDir, "/")[[1]], 1),
-    ##     "/"
-    ## ))
-    ## system(paste0(
-    ##     "rsync -av --progress ",
-    ##     "--include=", shQuote("results.type.*.K10.repeat.nonRepeat.RData"), " ",
-    ##     "--exclude=", shQuote("*"), " ",
-    ##     outputDir, "/", outputDate, "/C_results/ ",
-    ##     "rescomp:/well/myers/rwdavies/primates/hatbag/",
-    ##     tail(strsplit(outputDir, "/")[[1]], 1),
-    ##     "/",
-    ##     outputDate, 
-    ##     "/C_results/"
-    ## ))
     for(i in 1:10) {
         gc(reset = TRUE)
     }
