@@ -5,15 +5,6 @@ rule reference_all:
         REF_DIR + REF_NAME + ".dict",
         REF_DIR + REF_NAME + ".stidx"
 
-rule download_ref:
-    input:
-    output:
-        ref = REF_DIR + REF_NAME + ".fa.gz"
-    params: N='make_ref', threads=1, queue = "short.qc"
-    shell:
-        'mkdir -p {REF_DIR} && cd {REF_DIR} && '
-        'wget {REF_URL}'
-
 rule unzip_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa.gz"
