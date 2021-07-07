@@ -68,25 +68,29 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 # From jq docs on how to load variables
 eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECIES_ORDER)"' ${order_config})"
+eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
 
 # if [ $other = "test" ]
 # then
 #     # use ANALYSIS_DIR defined in scripts/test.sh
 #     other="" # so not passed to snakemake
-
 # fi
+
 echo "Motif Death output in ${ANALYSIS_DIR}"
 
-# eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
+if [ -f "${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv" ]
+then
+    rm "${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv"
+fi
 
-# json_list=""
-# for name in ${SPECIES_LIST[@]}; do
-#     # echo $name
-#     json_list+=" ${SPECIES_MAP_DIR_NAME}/${name}.json"
-# done
+echo "species,units,1,2,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > ${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
 
-# TODO: change this to ouput csv. 
-# jq -rs 'reduce .[] as $item ({}; . * $item) ' $json_list > "${SPECIES_ORDER}.json"
+json_list=""
+for name in ${SPECIES_LIST[@]}; do
+    jq -r '.units = (.units | to_entries[]) |
+        [.species, .units.key, .units.value."1", .units.value."2", .n_mapping_pieces, .mapping_queue, .units.value.lb, .units.value.lb_insert_size, .units.value.flowcell_barcode, .units.value.flowcell_lane] | @csv' \
+        ${SPECIES_MAP_DIR_NAME}/${name}.json >> ${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+done
 
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}
@@ -104,10 +108,10 @@ then
         --snakefile ${SNAKEFILE} \
         -w 30 \
 	 --max-status-checks-per-second 0.1 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR} --jobs ${jobs} \
+        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \
          ${other} ${what} \
         --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
-    ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
+    ## qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]
 then
     ${SNAKEMAKE} \

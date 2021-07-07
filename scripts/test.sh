@@ -10,7 +10,7 @@ SIMULATE_DIR="${SCRIPTPATH}/../"simulate_input/ # in top level of motif_death
 export ANALYSIS_DIR="${SCRIPTPATH}/../"simulate_results/ # in top level of motif_death
 TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test.json"
 eval "$(jq -r '@sh "HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR) HATBAG_OUTPUT_DATE=\(.HATBAG_OUTPUT_DATE)"' ${TEST_CONFIG_PATH})"
-HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${HATBAG_OUTPUT_DIR}/${HATBAG_OUTPUT_DATE}"
+HATBAG_TEST_DIR="${ANALYSIS_DIR}hatbag/${HATBAG_OUTPUT_DIR}/${HATBAG_OUTPUT_DATE}"
 
 if [ -d "${SIMULATE_DIR}" ]
 then
@@ -35,9 +35,9 @@ for name in $TEST_NAMES; do
     mkdir -p $SPECIES_DIR
     rsync -a "${name}"* $SPECIES_DIR
     # create json
-    # jq --null-input --arg species "test_$name" --arg unit "$name" \
-    #     '{($species): {"species": $species, "n_mapping_pieces": 20, "platform": "Illumina", "mapping_queue": "short.qc", "units": {($unit): {"lb": "dummyout", "lb_insert_size": "100", "flowcell_barcode": "X1", "flowcell_lane": "1"}}}}' > \
-    #     "${SCRIPTPATH}/../species_mapping_info/test_${name}.json" # change back to SPECIES_MAP_DIR
+    jq --null-input --arg species "test_$name" --arg unit "$name" \
+        '{"species": $species, "n_mapping_pieces": 20, "platform": "Illumina", "mapping_queue": "short.qc", "units": {($unit): {"1": "dummy_URL", "2": "dummy_URL", "lb": "dummyout", "lb_insert_size": "100", "flowcell_barcode": "X1", "flowcell_lane": "1"}}}' > \
+        "${SCRIPTPATH}/../species_mapping_info/test_${name}.json" # TODO: change back to SPECIES_MAP_DIR
 done
 
 # Copy reference files
@@ -51,9 +51,9 @@ cd "${SCRIPTPATH}/../"
 ./run.sh config/test.json all local
 
 # Check test here
-test_file=${HATBAG_OUTPUT_DIR}/F_document/qq.losslin.all.K6.png
 
 # Test test_file exists
+test_file=${HATBAG_TEST_DIR}/F_document/qq.losslin.all.K6.png
 if test -f "${test_file}"; then
     echo "test passed; ${test_file} exists"
 else
@@ -62,4 +62,4 @@ else
 fi
 
 # Test significant k-mers
-./R/test_HATBAG.R ${HATBAG_OUTPUT_DIR}
+./R/test_HATBAG.R ${HATBAG_TEST_DIR}

@@ -1,6 +1,9 @@
 {
     "SPECIES_ORDER": "test",
     "SPECIES_LIST": ["test_pop1", "test_pop2", "test_outgroup"],
+    "ORDER_CSV":"/users/davies/zri347/proj/motif_death/species_mapping_info/test.csv",
+    "HATBAG_OUTPUT_DIR": "test_data",
+    "HATBAG_OUTPUT_DATE": "2021_07_06",
     "REF_NAME": "ref",
     "REF_URL": "https://storage.googleapis.com/motif_death/test_data/ref.fa.gz",
     "CHR_LIST_ONLY_AUTOS": [1,2],
@@ -12,8 +15,6 @@
     "TREEMIX_PREFIX": "test.cbgogw",
     "VCF_PREFIX": "test.cbgogw.GATKug",
     "TREEMIX_OUTGROUP": "test_outgroup",
-    "HATBAG_OUTPUT_DIR": "test_data",
-    "HATBAG_OUTPUT_DATE": "2021_07_06",
     "HATBAG_CALLABLE_BED": null,
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "GENOTYPING_QUEUE": "short.qc",
