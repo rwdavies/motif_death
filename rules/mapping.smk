@@ -33,8 +33,6 @@ else:
 rule map_all:
     input:
         expand("mapping/{species}/{species}.realigned.rmdup.bam", species = order_df["species"])
-        # expand("mapping/{species}}/{units}_piece{piece}.bam", zip,  species = order_df["species"], units = order_df["units"], piece = ),
-        # expand("mapping/{species}}/{units}_piece{piece}.bam.bai", zip,  species = order_df["species"], units = order_df["units"], piece = )
 
 ## make head this for faster version "| head -n 400"
 rule extract_and_map_fastq_pieces:
