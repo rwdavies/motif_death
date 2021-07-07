@@ -1,5 +1,9 @@
+#!/usr/bin/env Rscript
+
 library("HATBAG")
 
+R_DIR <- Sys.getenv("R_DIR")
+source(file.path(R_DIR, "run_all_functions.R"))
 args <- commandArgs(trailingOnly = TRUE)
 
 if (1 == 0) {
@@ -17,146 +21,50 @@ if (1 == 0) {
 }
 
 print(args)
-print(getwd())
+analysisDir <- getwd()
+
+print(analysisDir)
 R_DIR <- args[1]
-species_to_run <- args[2]
+species_order <- args[2]
 to_run <- args[3]
 outputDate <- args[4]
 nCores <- as.integer(args[5])
 vcf_file <- file.path(getwd(), args[6])
 HATBAG_DIR <- args[7]
+outputDir <- args[8]
 
-source(file.path(R_DIR, "run_all_functions.R"))
+HATBAG_params_1 <- get_params(outputDate)
+HATBAG_params_2 <- get_per_species_params(species_order)
+callable_bed <- NULL    
+ndge <- 3
+gcW2 <- 5000
+# Klist <- 10 # 6 for test
 
-analysisDir <- getwd()
+message(paste0("HATBAG analyzing ", species_order))
+message(paste0("HATBAG output in ", outputDir))
 
+masterDirHDD <- file.path(outputDir, outputDate)
+dir.create(masterDirHDD, recursive = TRUE)
+system(paste0("cd ", HATBAG_DIR," && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
 
-## outputDate <- "2018_04_27" ## no missing allowed, mrle >= 6, etc
-## outputDate <- "2018_05_22" ## allow missing in 
-## outputDate <- "2018_05_29" ## no missing allowed, set hets to NA, otherwise same as 2018_04_27
-## outputDate <- "2018_05_30" ## full run. 1 missing lineage allowed + only 1 outgroup required, set hets to NA, mrle >= 5, mncdn <= 3, use mrle as similar k-mer
-## outputDate <- "2018_07_18" ## no update from previous, just to get up to speed after long absence
-## outputDate <- "2018_11_21" ## test to get running again
-
-
-
-## source("~/proj/motif_death/R/run_all_functions.R")
-## "ruminantia"
-##run <- "ABCDEF"
-## setwd("/well/davies/users/dcc832/primates/")
-##analysisDir <- "/data/smew1/rdavies/motifLossAnalysis/"
-##
-##species_to_run <- c("mice", "primates_nean", "felidae", "primates", "ruminantia", "avian", "salmon")
-## species_to_run <- c("mice", "hominoidea", "cercopithecidae", "primates_nean", "felidae", "ruminantia", "avian", "salmon", "lizards", "bats", "canidae")
-## ## lizards did not work
-## ## try to debug, then run bats
-## i_species_to_run <- 11
-## to_run <- c(run, run, run, run, run, run, run, run, run, run, "CDEF")
-
-i_species <- 1
-i_species_to_run <- 1
-
-
-for(i_species in i_species_to_run) {
-    
-    run <- to_run[i_species]
-    species <- species_to_run[i_species]
-    ## specify some params that get modified often
-    out <- get_params(outputDate)
-    num_non_missing_outgroups_required <- out$num_non_missing_outgroups_required
-    num_missing_lineages_allowed <- out$num_missing_lineages_allowed
-    mrle <- out$mrle
-    mncdnle <- out$mncdnle
-    similar_kmer_criterion <- out$similar_kmer_criterion
-    use_one_sided_pvalue <- out$use_one_sided_pvalue
-    ## haven't seen fit to modify in a while
-    callable_bed <- NULL    
-    ndge <- 3
-    gcW2 <- 5000
-    Klist <- 10
-    ##
-    message(paste0("Analyzing ", species))
-    ##
-    out <- get_per_species_params(species) 
-    ## nCores <- out$nCores ## here for nCores keep the value set above
-    simpleRepeat_file <- out$simpleRepeat_file
-    rmask_file <- out$rmask_file
-    ## vcf_file <- out$vcf_file
-    reference <- out$reference
-    chrlist <- out$chrlist
-    genomeSize <- out$genomeSize
-    lineages <- out$lineages
-    ancestral_lineage <- out$ancestral_lineage
-    outgroups <- out$outgroups
-    lineages_to_build <- out$lineages_to_build
-    ## TODO: make sure this aligns with HATBAG_OUTPUT_DIR specified in Snakefile_reference_order
-    outputDir <- file.path(analysisDir, "hatbag", species, "/")
-    message(outputDir)
-    
-    ##
-    if (1 == 1) {
-        
-        masterDirHDD <- file.path(outputDir, outputDate)
-        dir.create(masterDirHDD, recursive = TRUE)
-        system(paste0("cd ", HATBAG_DIR," && git log | head -n10 > ", outputDir, "/", outputDate, "/HATBAG_head_git_log.txt"))
-        ##
-
-        ## argh - hack for now - using too much ram
-        if (run == "E") {
-            nCores <- max(c(1, floor(nCores / 2)))
-            print(paste0("Lowering nCores to ", nCores))
-        }
-        ## use fewer cores 
-        ## 
-        
-        out <- HATBAG(
-            species = species,
-            run = run,
-            outputDate = outputDate,
-            outputDir = outputDir,
-            vcf_file = vcf_file,
-            reference = reference,
-            chrlist = chrlist,
-            genomeSize = genomeSize,
-            rmask_file = rmask_file,
-            # Klist = Klist,
-            nCores = nCores,
-            lineages = lineages,
-            lineages_to_build = lineages_to_build,
-            ancestral_lineage = ancestral_lineage,
-            outgroups = outgroups,
-            similar_kmer_criterion = similar_kmer_criterion,
-            callable_bed = callable_bed,
-            use_one_sided_pvalue = use_one_sided_pvalue,
-            simpleRepeat_file = simpleRepeat_file,
-            ndge = ndge,
-            mrle = mrle,
-            mncdnle = mncdnle,
-            gcW2 = gcW2,
-            num_non_missing_outgroups_required = num_non_missing_outgroups_required,
-            num_missing_lineages_allowed = num_missing_lineages_allowed,
-            vcf_load_split_num_files = out$vcf_load_split_num_files,
-            Klist = out$Klist,
-            cgte = out$cgte,
-            rgte = out$rgte,
-            n_extra_random_starts = out$n_extra_random_starts,
-            max_iters_atToGC = out$max_iters_atToGC,
-            use_gradient_and_hessian_for_ATGC_model_fitting = out$use_gradient_and_hessian_for_ATGC_model_fitting,
-            ancestral_map_window_size = out$ancestral_map_window_size,
-            n_initial_atToGC_fitting_reps = out$n_initial_atToGC_fitting_reps,
-            skip_at_to_gc_ci_fitting = out$skip_at_to_gc_ci_fitting
-        )
-
-    }
-    for(i in 1:10) {
-        gc(reset = TRUE)
-    }
+# argh - hack for now - using too much ram
+if (to_run == "E") {
+    nCores <- max(c(1, floor(nCores / 2)))
+    print(paste0("Lowering nCores to ", nCores))
 }
 
+# TODO: use fewer cores 
+out <- do.call(
+    HATBAG, 
+    c(list(species=species_order, run=to_run, outputDate=outputDate, outputDir=outputDir, vcf_file=vcf_file, nCores=nCores, callable_bed=callable_bed, ndge=3, gcW2=5000),
+    HATBAG_params_1,
+    HATBAG_params_2
+    )
+)
 
-
-
-
+for(i in 1:10) {
+    gc(reset = TRUE)
+}
 
 quit()
     

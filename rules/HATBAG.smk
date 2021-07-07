@@ -30,7 +30,6 @@ rule HATBAG_HACK_F:
 ##
 ## note, not sure if these should be changed
 ## if the cluster is busy, this will take a while
-## TODO: need to put in required inputs for HATBAG
 def get_hatbag_n_threads(wildcards):
     run = wildcards.run
     if run == "A":
@@ -56,8 +55,11 @@ def get_hatbag_input(wildcards):
     if run == "A":
         return(
             [
-                expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
-
+                f'vcf/{VCF_PREFIX}.filtered.vcf.gz',
+                f'{config["HATBAG_PARAMS"]["reference"]}',
+                # Note: below are necessary, but can't be obtained through Snakemake right now
+                # f'{config["HATBAG_PARAMS"]["simpleRepeat_file"]}',
+                # f'{config["HATBAG_PARAMS"]["rmask_file"]}'
             ]
         )
     if run == "B":
@@ -85,18 +87,8 @@ rule HATBAG_HACK_FUNCTION:
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:
-        'R -f ' + R_DIR + 'run_all.R '
-	'--args '
-	' ' + R_DIR + ' '
-        ' ' + SPECIES_ORDER + ' '
-	' {wildcards.run} '
-	' ' + HATBAG_OUTPUT_DATE + ' '
-	' {params.threads} '
-	' vcf/' + VCF_PREFIX + '.filtered.vcf.gz '
-        ' ' + HATBAG_DIR + ' '
-        ' ' + HATBAG_OUTPUT_DIR + ' '
-        ' ' + HATBAG_DIR + ' '
-	' && touch {output.decoy} '
+        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} {HATBAG_OUTPUT_DATE} {params.threads} vcf/{VCF_PREFIX}.filtered.vcf.gz {HATBAG_DIR} hatbag/{HATBAG_OUTPUT_DIR} && '
+        ' touch {output.decoy} '
 
 
 

@@ -75,7 +75,7 @@ eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECI
 #     other="" # so not passed to snakemake
 
 # fi
-echo "Output in ${ANALYSIS_DIR}"
+echo "Motif Death output in ${ANALYSIS_DIR}"
 
 # eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
 
@@ -88,7 +88,7 @@ echo "Output in ${ANALYSIS_DIR}"
 # TODO: change this to ouput csv. 
 # jq -rs 'reduce .[] as $item ({}; . * $item) ' $json_list > "${SPECIES_ORDER}.json"
 
-LOG_DIR="${ANALYSIS_DIR}/logs/"
+LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}
 mkdir -p ${LOG_DIR}
 
@@ -104,7 +104,7 @@ then
         --snakefile ${SNAKEFILE} \
         -w 30 \
 	 --max-status-checks-per-second 0.1 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o "${ANALYSIS_DIR}"logs/" --jobs ${jobs} \
+        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR} --jobs ${jobs} \
          ${other} ${what} \
         --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
     ## "qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}

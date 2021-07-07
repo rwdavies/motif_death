@@ -173,9 +173,9 @@ rule identify_indels:
         queue = "short.qc"
     wildcard_constraints:
     shell:
-        'if [ \"${{OPERATE_GATK_PER_CHR}}\" == \"FALSE" ]; then '
+        'if [ \"{OPERATE_GATK_PER_CHR}\" == \"FALSE" ]; then '
         'minus_L=\" \" ; else '
-        'minus_L=\"-L ${{GATK_CHR_PREFIX}}{wildcards.chr}\" ; fi && '
+        'minus_L=\"-L {GATK_CHR_PREFIX}{wildcards.chr}\" ; fi && '
         'mkdir -p mapping/{wildcards.species}/intervals && '
         '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T RealignerTargetCreator '
