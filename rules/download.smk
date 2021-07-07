@@ -1,7 +1,7 @@
 rule download_all:
     input:
         expand("mapping/{species}/{units}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
-        expand("mapping/{species}/{units}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"])
+        expand("mapping/{species}/{units}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
         ref = REF_DIR + REF_NAME + ".fa.gz"
         
 # TODO obsolete?
@@ -52,7 +52,7 @@ rule download_ref:
     shell:
         'mkdir -p {REF_DIR} && cd {REF_DIR} && '
         'wget {REF_URL}'
-        
+
 # TODO Obsolete?
 # rule standardize_fastq:
 #     input:

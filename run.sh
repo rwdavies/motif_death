@@ -5,7 +5,7 @@ set -e
 
 if [ -z "$ANALYSIS_DIR" ]
 then
-      echo "\$ANALYSIS_DIR is empty, are you sure you ran '. activate'?"
+      echo "\$ANALYSIS_DIR is undefined, are you sure you ran '. activate'?"
       exit 1
 fi
 
@@ -94,6 +94,8 @@ for name in ${SPECIES_LIST[@]}; do
         [.species, .units.key, .units.value."1", .units.value."2", .n_mapping_pieces, .mapping_queue, .units.value.lb, .units.value.lb_insert_size, .units.value.flowcell_barcode, .units.value.flowcell_lane] | @csv' \
         ${SPECIES_MAP_DIR_NAME}/${name}.json >> ${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
 done
+
+export ORDER_CSV=${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
 
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}

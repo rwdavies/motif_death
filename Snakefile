@@ -1,11 +1,13 @@
 import os
 import pandas as pd
 
-# From Activate
+# From Activate or run.sh
 R_DIR=os.environ["R_DIR"]
 HATBAG_DIR=os.environ["HATBAG_DIR"]
 PYTHON_DIR=os.environ["PYTHON_DIR"]
+ORDER_CSV=os.environ["ORDER_CSV"]
 
+# From config/{order}.json
 VCF_PREFIX = config["VCF_PREFIX"]
 HATBAG_OUTPUT_DIR = config["HATBAG_OUTPUT_DIR"]
 HATBAG_OUTPUT_DATE=config["HATBAG_OUTPUT_DATE"]
@@ -32,6 +34,7 @@ OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
 FASTQ_SUFFIX = config["FASTQ_SUFFIX"]
 CHR_LIST = config["CHR_LIST"]
 
+# From config/filenames.json
 R_GET_GENOME_STATS=R_DIR + config["R_GET_GENOME_STATS"]
 R_GET_PER_SAMPLE_AVERAGE_COV=R_DIR + config["R_GET_PER_SAMPLE_AVERAGE_COV"]
 VCF2TREEMIX=PYTHON_DIR + config["VCF2TREEMIX"]
@@ -56,7 +59,7 @@ for piece in CHR_CHUNKS:
     for chr in CHR_LIST_ONLY_AUTOS:
     	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
 
-order_df = pd.read_csv(config["ORDER_CSV"]).set_index(["species", "units"], drop=False)
+order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 # order_df.index = order_df.index.set_levels([i.astype(str) for i in order_df.index.levels])  # enforce str in index
 
 rule all:
