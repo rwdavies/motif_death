@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 set -e
-. activate
+
+if [ -z "$ANALYSIS_DIR" ]
+then
+      echo "\$ANALYSIS_DIR is undefined, are you sure you ran '. activate'?"
+      exit 1
+fi
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")

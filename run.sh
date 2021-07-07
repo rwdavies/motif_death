@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
-
-set -e
-## . activate # if load activate again, need to account for test ANALYSIS_DIR
-
 ## e.g. run.sh config/test.json all local --dryrun
 
-# component=$1 ## either mapping, preprocess, or 
+set -e
+
+if [ -z "$ANALYSIS_DIR" ]
+then
+      echo "\$ANALYSIS_DIR is empty, are you sure you ran '. activate'?"
+      exit 1
+fi
+
 order_config=$1
 what=$2
 where=$3
@@ -63,18 +66,18 @@ fi
 #     exit 1
 # fi
 
+# if [ $other = "test" ]
+# then
+#     # use ANALYSIS_DIR defined in scripts/test.sh
+#     other="" # so not passed to snakemake
+# fi
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 # From jq docs on how to load variables
 eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECIES_ORDER)"' ${order_config})"
 eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
-
-# if [ $other = "test" ]
-# then
-#     # use ANALYSIS_DIR defined in scripts/test.sh
-#     other="" # so not passed to snakemake
-# fi
 
 echo "Motif Death output in ${ANALYSIS_DIR}"
 
