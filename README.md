@@ -5,6 +5,16 @@ motif_death
 
 This repository contains code to download, pre-process, map, and variant call related species for use in motif death research.
 
+## Warning!
+
+**Repo will only run through for test data in current state, as additional specifications for HATBAG in `R/run_all_functions.R` have not been done for other orders / species.**
+
+## Testing
+
+```
+./scripts/test.sh
+```
+
 ## Workthrough / explanation
 
 ### Set-up

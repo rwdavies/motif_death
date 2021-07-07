@@ -89,8 +89,8 @@ lapply(1:length(info), function(i_species) {
             lb <- paste0("lb", i)
         }
         o <- list(
-            "1" = x[grep("_1.fastq.gz", x2)],
-            "2" = x[grep("_2.fastq.gz", x2)],
+            "1" = paste0("ftp://", x[grep("_1.fastq.gz", x2)]),
+            "2" = paste0("ftp://", x[grep("_2.fastq.gz", x2)]),
             "md5_1" = md5_1,
             "md5_2" = md5_2,            
             "lb" = lb,

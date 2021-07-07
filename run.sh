@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-. activate
+## . activate
 
 ## e.g. run.sh mapping all local gorilla --dryrun
 
@@ -53,7 +53,10 @@ then
     SPECIES_ORDER="canidae"
 elif [ "${species}" == "ursidae" ]
 then
-    SPECIES_ORDER="ursidae"
+    SPECIES_ORDER="ursidae"    
+elif [ "${species}" == "test_pop1" ] || [ "${species}" == "test_pop2" ] || [ "${species}" == "test_outgroup" ]
+then
+    SPECIES_ORDER="test"     
 else
     echo Cannot determine order
     exit 1
@@ -109,6 +112,7 @@ include:
 ' >> ${SNAKEFILE}
 
 cd ${ANALYSIS_DIR}
+
 if [ $where == "cluster" ]
 then
     ##--verbose 

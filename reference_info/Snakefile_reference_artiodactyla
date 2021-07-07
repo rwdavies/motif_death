@@ -1,3 +1,4 @@
+REF_DIR = "ref/"
 REFNAME = "bosTau8"
 REF_URL="http://hgdownload.cse.ucsc.edu/goldenPath/bosTau8/bigZips/bosTau8.fa.gz"
 CHR_LIST_ONLY_AUTOS = list(range(1, 30))
@@ -7,6 +8,7 @@ GATK_CHR_PREFIX = "chr"
 ## CHR_CHUNKS = range(1, 17)
 TREEMIX_THREADS=4
 OPERATE_GATK_PER_CHR="TRUE"
+TREEMIX_K = 5000
 
 ## if reddeer done
 ## TREEMIX_OUTGROUP = "reddeer"
@@ -22,7 +24,7 @@ TREEMIX_PREFIX = VCF_PREFIX
 
 ## updated 2021
 HATBAG_OUTPUT_DIR="artiodactyla"
-HATBAG_OUTPUT_DATE="2021_06_29"
+HATBAG_OUTPUT_DATE="2021_06_30"
 
 
 ## old (2018 and earlier)

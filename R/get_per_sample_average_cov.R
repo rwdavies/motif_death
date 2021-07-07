@@ -4,11 +4,12 @@
 
 ## setwd("/well/davies/users/dcc832/primates/")
 species <- commandArgs(trailingOnly = TRUE)[1]
-ref <- commandArgs(trailingOnly = TRUE)[2]
+ref_dir <- commandArgs(trailingOnly = TRUE)[2]
+ref <- commandArgs(trailingOnly = TRUE)[3]
 ## species <- "chimp"; ref <- "hg38.fa";
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
-ref_summary_file <- paste0("ref/", ref, ".summary.txt")
+ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
 
 
 get_chrlist <- function(ref) {
@@ -23,7 +24,10 @@ get_chrlist <- function(ref) {
         chr_prefix <- ""
     } else if (ref == "canFam3.fa") {
         chrlist <- 1:38
-        chr_prefix <- "chr"    
+        chr_prefix <- "chr"
+    } else if (ref == "ref.fa") { # Test
+        chrlist <- 1:2
+        chr_prefix <- ""
     } else {
         print(paste0("ref = ", ref))
         stop("ref not defined")

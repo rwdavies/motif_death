@@ -37,7 +37,7 @@ rule extract_and_map_fastq_pieces:
         flowcell_lane = lambda wildcards: config["units"][wildcards.units]["flowcell_lane"],
         head=" "
     wildcard_constraints:
-        units='[A-Z0-9-]+',
+        units='[A-Za-z0-9]+',
         piece='\d{1,3}'
     shell:
         'set +o pipefail && '
@@ -45,7 +45,7 @@ rule extract_and_map_fastq_pieces:
         'gunzip -c {input.pen2} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen2}.temp.{wildcards.piece}.gz && '
         'set -o pipefail && '
         '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\tLB:{params.lb}" '
-        ' ref/{REFNAME}.fa -t{params.threads} '
+        ' {REF_DIR}/{REFNAME}.fa -t{params.threads} '
         '{input.pen1}.temp.{wildcards.piece}.gz '
         '{input.pen2}.temp.{wildcards.piece}.gz | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp1.bam && '
@@ -57,7 +57,7 @@ rule extract_and_map_fastq_pieces:
         'PI:{params.lb_insert_size},'
         'PU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES},'
         'LB:{params.lb}'
-        '-t{params.threads} -g ref/{REFNAME} -h ref/{REFNAME} --overwrite --bamkeepgoodreads '
+        '-t{params.threads} -g {REF_DIR}/{REFNAME} -h {REF_DIR}/{REFNAME} --overwrite --bamkeepgoodreads '
         '-M {output.bam}.temp1.bam | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp2.bam && '
         'echo STAMPY DONE && '
@@ -83,7 +83,7 @@ rule merge_mapped_pieces:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '
@@ -103,7 +103,7 @@ rule merge_units:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '
@@ -140,7 +140,7 @@ rule identify_indels:
     input:
         bam = expand("mapping/{species}/{species}.rmdup.bam", species = SPECIES),
         bai = expand("mapping/{species}/{species}.rmdup.bam.bai", species = SPECIES),
-        ref = "ref/" + REFNAME + ".fa"	
+        ref = REF_DIR + REFNAME + ".fa"	
     output:
         outfile = expand("mapping/{species}/intervals/{species}.chr{{chr}}.intervals.list", species = SPECIES)
     params:
@@ -153,7 +153,7 @@ rule identify_indels:
         'minus_L=\" \" ; else '
         'minus_L=\"-L {GATK_CHR_PREFIX}{wildcards.chr}\" ; fi && '
         'mkdir -p mapping/{SPECIES}/intervals && '
-        'java -Xmx8g -jar {GATK} '
+        '{JAVA} -Xmx8g -jar {GATK} '
         '-T RealignerTargetCreator '
         '-R {input.ref} '
         '${{minus_L}} '
@@ -166,7 +166,7 @@ rule realign_around_indels:
     input:
         bam = expand("mapping/{species}/{species}.rmdup.bam", species = SPECIES),
         bai = expand("mapping/{species}/{species}.rmdup.bam.bai", species = SPECIES),
-        ref = "ref/" + REFNAME + ".fa",
+        ref = REF_DIR + REFNAME + ".fa",
         intervals = expand("mapping/{species}/intervals/{species}.chr{{chr}}.intervals.list", species = SPECIES)	
     output:
         bam = expand("mapping/{species}/{species}.chr{{chr}}.realigned.rmdup.bam", species = SPECIES),
@@ -179,7 +179,7 @@ rule realign_around_indels:
         'if [ \"{OPERATE_GATK_PER_CHR}\" == \"FALSE" ]; then '
         'minus_L=\" \" ; else '
         'minus_L=\"-L {GATK_CHR_PREFIX}{wildcards.chr}\" ; fi && '
-        'java -Xmx8g -jar {GATK} '
+        '{JAVA} -Xmx8g -jar {GATK} '
         '-T IndelRealigner '
         '-R {input.ref} '
         '-targetIntervals {input.intervals} '
@@ -239,7 +239,7 @@ rule extract_and_map_single_fastq_pieces:
         flowcell_lane = lambda wildcards: config["units"][wildcards.units]["flowcell_lane"],
         head=" "
     wildcard_constraints:
-        units='[A-Z0-9-]+',
+        units='[A-Za-z0-9]+',
         piece='\d{1,3}'
     shell:
         'set +o pipefail && '
@@ -247,7 +247,7 @@ rule extract_and_map_single_fastq_pieces:
         'set -o pipefail && '
         'echo ====BWA START==== && '
         '{BWA} mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{SPECIES}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES}\\t@LB{params.lb}" '
-        ' ref/{REFNAME}.fa -t{params.threads} '
+        ' {REF_DIR}/{REFNAME}.fa -t{params.threads} '
         '{input.pen}.se.temp.{wildcards.piece}.gz | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp1.bam && '
         'rm {input.pen}.se.temp.{wildcards.piece}.gz && '
@@ -260,7 +260,7 @@ rule extract_and_map_single_fastq_pieces:
         'PI:{params.lb_insert_size},'
         'PU:{params.flowcell_barcode}.{params.flowcell_lane}.{SPECIES},'
         'LB:{params.lb}'
-        '-t{params.threads} -g ref/{REFNAME} -h ref/{REFNAME} --overwrite --bamkeepgoodreads '
+        '-t{params.threads} -g {REF_DIR}/{REFNAME} -h {REF_DIR}/{REFNAME} --overwrite --bamkeepgoodreads '
         '-M {output.bam}.temp1.bam | '
         '{SAMTOOLS} view -Sb - > {output.bam}.temp2.bam && '
         'rm {output.bam}.temp1.bam && '	
@@ -281,7 +281,7 @@ rule merge_se_pieces:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Z0-9-]+'
+        units='[A-Za-z0-9]+'
     shell:
         '{SAMTOOLS} merge {output.bam} {input.bams} && '
         '{SAMTOOLS} index {output.bam} && '

@@ -1,7 +1,7 @@
 ## simple script to look at how callable the reference is
 
-ref_prefix <- commandArgs(trailingOnly = TRUE)[1]
-ref_dir <- "./"
+ref_dir <- commandArgs(trailingOnly = TRUE)[1]
+ref_prefix <- commandArgs(trailingOnly = TRUE)[2]
 ##ref_dir <- "/well/myers/rwdavies/primates/ref/"
 ##ref_prefix <- "hg38.fa"
 ##ref_prefix <- "NCBIM37_um.fa";
@@ -21,7 +21,10 @@ get_chrlist <- function(ref) {
         chr_prefix <- ""
     } else if (ref == "canFam3.fa") {
         chrlist <- 1:38
-        chr_prefix <- "chr"    
+        chr_prefix <- "chr"   
+    } else if (ref == "ref.fa") { # Test
+        chrlist <- 1:2
+        chr_prefix <- ""
     } else {
         print(paste0("ref = ", ref))
         stop("ref not defined")
