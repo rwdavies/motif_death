@@ -22,6 +22,15 @@ then
      jobs=8
 fi
 
+# if $other is integer, use as number of cores
+if [ $other -eq $other ] 2> /dev/null 
+then
+    jobs=$other
+    other="" # so not passed to Snakemake
+fi
+
+echo "Running with ${jobs} cores"
+
 # put this all in config
 ## if [ "${species}" == "human" ] || [ "${species}" == "chimp" ] || [ "${species}" == "gorilla" ] || [ "${species}" == "orangutan" ] || [ "${species}" == "baboon" ] || [ "${species}" == "marmoset" ] ||  [ "${species}" == "baboon" ] || [ "${species}" == "macaque" ] || [ "${species}" == "snubnosedmonkey" ] || [ "${species}" == "vervet" ] || [ "${species}" == "squirrelmonkey" ] || [ "${species}" == "neanderthal" ]  || [ "${species}" == "denisovan" ]
 
@@ -57,19 +66,10 @@ fi
 #     SPECIES_ORDER="canidae"
 # elif [ "${species}" == "ursidae" ]
 # then
-#     SPECIES_ORDER="ursidae"    
-# elif [ "${species}" == "test_pop1" ] || [ "${species}" == "test_pop2" ] || [ "${species}" == "test_outgroup" ]
-# then
-#     SPECIES_ORDER="test"     
+#     SPECIES_ORDER="ursidae"
 # else
 #     echo Cannot determine order
 #     exit 1
-# fi
-
-# if [ $other = "test" ]
-# then
-#     # use ANALYSIS_DIR defined in scripts/test.sh
-#     other="" # so not passed to snakemake
 # fi
 
 SCRIPT=$(readlink -f "$0")

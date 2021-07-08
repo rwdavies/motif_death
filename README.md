@@ -13,7 +13,8 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ```
 . activate
-./scripts/test.sh
+./scripts/test.sh --dryrun # check what will be run (will fail test)
+./scripts/test.sh 4 # specify number of cores, default 8 if left blank
 ```
 
 ## Workthrough / explanation
