@@ -3,27 +3,32 @@
 ##
 rule HATBAG_HACK:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/F_complete"
 
 
 rule HATBAG_HACK_A:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/A_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/A_complete"
 rule HATBAG_HACK_B:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/B_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/B_complete"
+        # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/B_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_C:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/C_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/C_complete"
+        # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/C_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_D:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/D_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/D_complete"
+        # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/D_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_E:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/E_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/E_complete"
+        # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/E_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_F:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/F_complete"
+        # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 
 
 
@@ -55,7 +60,7 @@ def get_hatbag_input(wildcards):
     if run == "A":
         return(
             [
-                f'vcf/{VCF_PREFIX}.filtered.vcf.gz',
+                f'vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz',
                 f'{config["HATBAG_PARAMS"]["reference"]}',
                 # Note: below are necessary, but can't be obtained through Snakemake right now
                 # f'{config["HATBAG_PARAMS"]["simpleRepeat_file"]}',
@@ -72,7 +77,8 @@ def get_hatbag_input(wildcards):
         need = "D"
     if run == "F":
         need = "E"
-    return(expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
+    # return(expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
+    return(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/" + need + "_complete")
 
 
 rule HATBAG_HACK_FUNCTION:
@@ -80,7 +86,7 @@ rule HATBAG_HACK_FUNCTION:
         get_hatbag_input,
 	callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
-        decoy = expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{{{{run}}}}_complete")
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,

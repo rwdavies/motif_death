@@ -27,11 +27,11 @@ print(analysisDir)
 R_DIR <- args[1]
 species_order <- args[2]
 to_run <- args[3]
-outputDate <- args[4]
-nCores <- as.integer(args[5])
-vcf_file <- file.path(getwd(), args[6])
-HATBAG_DIR <- args[7]
-outputDir <- args[8]
+outputDir <- args[4]
+outputDate <- args[5]
+nCores <- as.integer(args[6])
+vcf_file <- file.path(getwd(), args[7])
+HATBAG_DIR <- args[8]
 callable_bed <- args[9]
 
 HATBAG_params_1 <- get_params(outputDate)

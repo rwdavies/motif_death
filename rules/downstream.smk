@@ -1,9 +1,9 @@
 rule downstream_all:
     input:
         [
-	expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
+	f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
 	expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST),
-	expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
+	expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 	]
 
 # rule call_and_tree:
@@ -24,7 +24,7 @@ rule downstream_all:
 
 rule treemix:
     input:
-        expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
+        expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 # rule all_doc:
 #     input:
@@ -37,8 +37,8 @@ rule call_chr:
         bams = expand("mapping/{species}/{species}.{bam_suffix}", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{species}/{species}.{bam_suffix}.bai", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX)
     output:
-        vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
-        tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
+        vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz"),
+        tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz.tbi")
     params:
         N='call_chr',
         threads = GENOTYPING_THREADS,
@@ -57,9 +57,11 @@ rule call_chr:
         '{GENOTYPING_MULTITHREAD_FLAG} {params.threads} '
         '{IBAMS} '
         '${{minus_L}} '
-        '-o vcf/{VCF_PREFIX}.chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz '
+        '-o {output.vcf} '
+        # '-o vcf/{SPECIES_ORDER}/{RUN_ID}/chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz '
         '2> '
-        'vcf/logs/{VCF_PREFIX}.chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz.log '
+        # 'vcf/{SPECIES_ORDER}/{RUN_ID}/chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz.log '
+        '{output.vcf}.log'
 
 # TODO Robbie Temp - delete
 ##        'REGION_START=$(({wildcards.piece} * 10000000 + 1)) && '
@@ -69,12 +71,12 @@ rule call_chr:
 
 rule filter_chr:
     input:
-        input_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
-        input_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX),
+        input_vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz"),
+        input_tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz.tbi"),
         ref = REF_DIR + REF_NAME + ".fa"
     output:
-        filtered_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
-        filtered_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
+        filtered_vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz"),
+        filtered_tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz.tbi")
     params: N='filter_chr', threads=1, queue = "short.qc"
     wildcard_constraints:
         chr = WILDCARD_CHR_CONSTRAINT,
@@ -87,18 +89,19 @@ rule filter_chr:
         '--filterExpression "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" '
         '--filterName "HardFilter" '
         '-o {output.filtered_vcf} 2> '
-        'vcf/logs/{VCF_PREFIX}.chr{chr}.filtered.piece{piece}.vcf.gz.log && '
+        # 'vcf/logs/{VCF_PREFIX}.chr{chr}.filtered.piece{piece}.vcf.gz.log && '
+        '{output.filtered_vcf}.log && '
         'rm {input.input_vcf} && rm {input.input_tbi} '
 
 
 rule merge_chr:
     input:
-        vcf = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
-        tbi = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
+        vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.filtered.piece{{piece}}.vcf.gz", chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
+        tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.filtered.piece{{piece}}.vcf.gz.tbi", chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
         ref = REF_DIR + REF_NAME + ".fa"	
     output:
-        merged_vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
-        merged_tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
+        merged_vcf = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
+        merged_tbi = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz.tbi"
     params: N='merge_chr', threads=1, queue = "short.qc"
     wildcard_constraints:
         chr = WILDCARD_CHR_CONSTRAINT
@@ -192,10 +195,10 @@ rule get_single_callable_regions:
 
 rule prepare_treemix:
     input:
-        merged_vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
-        merged_tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)	
+        merged_vcf = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
+        merged_tbi = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz.tbi"	
     output:
-        treemix_input = expand("treemix/{treemix_prefix}.treemix.frq.gz", treemix_prefix = TREEMIX_PREFIX)
+        treemix_input = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.frq.gz"
     params:
         N='prepare_treemix',
         threads=1,
@@ -208,9 +211,9 @@ rule prepare_treemix:
         
 rule run_treemix:
     input:
-        treemix_input = expand("treemix/{treemix_prefix}.treemix.frq.gz", treemix_prefix = TREEMIX_PREFIX)
+        treemix_input = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.frq.gz"
     output:
-        treemix_output = expand("treemix/{treemix_prefix}.treemix.migrants.{{migrants}}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX)
+        treemix_output = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz"
     params:
         N='run_treemix',
         threads=TREEMIX_THREADS,
@@ -222,12 +225,12 @@ rule run_treemix:
         '${{TREEMIX}} -i {input} -m {wildcards.migrants} -noss -se -k {TREEMIX_K} '
         '-root {TREEMIX_OUTGROUP} '
         '-n_warn 10 '
-        '-o treemix/{TREEMIX_PREFIX}.treemix.migrants.{wildcards.migrants}.out &&'
+        '-o treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{wildcards.migrants}.out &&'
         'echo done treemix && date && '
         'R -f {TREEMIX_R_PLOT} '
         '--args "./" {TREEMIX_R_PLOT_HELPER} '
-        'treemix/{TREEMIX_PREFIX}.treemix.migrants.{wildcards.migrants}.out '
-        'treemix/{TREEMIX_PREFIX}.treemix.frq.gz  && echo done && date'
+        'treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{wildcards.migrants}.out '
+        'treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.frq.gz  && echo done && date'
 
 
 # TODO: obsolete?
