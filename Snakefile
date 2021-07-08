@@ -59,6 +59,11 @@ for piece in CHR_CHUNKS:
     for chr in CHR_LIST_ONLY_AUTOS:
     	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
 
+if OPERATE_GATK_PER_CHR == "FALSE":
+    INDEL_REALIGNMENT_QUEUE="long.qc"
+else:
+    INDEL_REALIGNMENT_QUEUE="short.qc"
+
 order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 # order_df.index = order_df.index.set_levels([i.astype(str) for i in order_df.index.levels])  # enforce str in index
 

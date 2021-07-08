@@ -63,8 +63,8 @@ Note this might take from 30 minutes to a few hours of wall clock time to run pe
 ### B.2 Running the pipeline
 
 ```
-./run.sh config/artiodactyla.json download_all cluster --dryrun ## to check what will be run
-./run.sh config/artiodactyla.json download_all cluster ## to run it
+./run.sh config/artiodactyla.json all cluster --dryrun ## to check what will be run
+./run.sh config/artiodactyla.json all cluster ## to run it
 ```
 
 **Notes:**

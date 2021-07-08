@@ -1,3 +1,4 @@
+# TODO: figure out if below needs to be set as species level?
 # if SPECIES == "marmoset":
 #     FASTQ_SUFFIX = "standardized_phred.fastq.gz"
 
@@ -24,11 +25,6 @@ def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
     filenames = [f"mapping/{wildcards.species}/{u}.bam.bai" for u in units]
     return filenames
-
-if OPERATE_GATK_PER_CHR == "FALSE":
-    INDEL_REALIGNMENT_QUEUE="long.qc"
-else:
-    INDEL_REALIGNMENT_QUEUE="short.qc"
 
 rule map_all:
     input:
@@ -153,9 +149,9 @@ rule mark_duplicates:
         'OUTPUT={output.bam} '
         'MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 '
         'METRICS_FILE={output.bam}.metrics.txt && '
-        'samtools index {output.bam} '#&& '
-        # 'rm {input.bam} && '
-        # 'rm {input.bai}'
+        'samtools index {output.bam} && '
+        'rm {input.bam} && '
+        'rm {input.bai}'
 
 
 rule identify_indels:
