@@ -220,8 +220,6 @@ get_per_species_params <- function(species) {
         reference <- file.path("ref/ref.fa.gz")
         simpleRepeat_file <- file.path("ref/simpleRepeat.gz")
         rmask_file <- file.path("ref/rmask.gz")
-        vcf_file <- NA ##  now specified elsewhere
-        nCores <- NA ## now specified elsewhere
         chrlist <- paste0(1:2)
         genomeSize <- 4e5
         lineages = list(
@@ -401,10 +399,10 @@ get_per_species_params <- function(species) {
     }
     return(
         list(
-            nCores = nCores,
+            # nCores = nCores,
             simpleRepeat_file = simpleRepeat_file,
             rmask_file  = rmask_file,
-            vcf_file = vcf_file,
+            # vcf_file = vcf_file,
             reference = reference,
             chrlist = chrlist,
             genomeSize = genomeSize,

@@ -1,40 +1,45 @@
 #!/usr/bin/env bash
 
-# module load R/3.6.0-foss-2018b
 module load jq/1.6-GCCcore-8.3.0
 # module load SAMtools/1.9-foss-2018b
 # module load HTSlib/1.9-foss-2018b
 export PATH=/apps/well/git/2.3.4/bin/:${PATH}
+export PATH=/apps/well/bwa/0.7.8/:${PATH} # bwa
 export PATH=/apps/well/samtools/1.4.1/bin/:${PATH} # samtools
 export PATH=/apps/well/htslib/1.4.1/bin/:${PATH} # tabix, bgzip
 
-# Do not need to change below:
-export BIN_DIR="/well/davies/users/dcc832/primates/bin/"
-export ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
+export TREEMIX="/apps/well/treemix/20151030-gcc4.9.3/bin/treemix"
+export JAVA="/apps/well/java/jdk1.8.0_45/bin/java"
+# FASTQSOL2PHRED= "/users/flint/rwdavies/personal/bin/fastqSol2Phred/fastqSol2Phred" # TODO obsolete
+export GATK="/apps/well/gatk/3.2-2/GenomeAnalysisTK.jar"
+export PICARD="/apps/well/picard-tools/2.0.1/picard.jar"
+export PLINK="/apps/well/plink/1.90b3/plink" # unsure to export or not?
+# python has to be called by version name
+export PYTHON_278="/apps/well/python/2.7.8/bin/python"
+export PYTHON_352="/apps/well/python/3.5.2-gcc5.4.0/bin/python"
+export STAMPY="/apps/well/stampy/1.0.23-py2.7/stampy.py"
 
+# TODO: put all user stuff here (not in JSON), will be easier for Robbie
 user=`whoami`
 if [ ${user} == "dcc832" ]
 then
     export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/${PATH} # Note - easier than changing R library paths for now
-    # Change the following:
+    # export USER_CONFIG="/users/davies/dcc832/proj/motif_death/config/dcc832.json"
     export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
-    # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
     export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"
     export R_DIR="/users/davies/dcc832/proj/motif_death/R/"
     export HATBAG_DIR="/users/davies/dcc832/proj/HATBAG/"
+    export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"
 elif [ ${user} == "zri347" ]
 then
     module load R/3.6.2-foss-2019b
-    # Change the following:
+    # export USER_CONFIG="/users/davies/zri347/proj/motif_death/config/zri347.json"
     export ANALYSIS_DIR="/well/davies/users/zri347/motif_death_analysis/"
-    # Note: for below used in 'downstream', cannot reference dirs with ~ as cannot resolve reference
     export PYTHON_DIR="/users/davies/zri347/proj/motif_death/python/"
     export R_DIR="/users/davies/zri347/proj/motif_death/R/"
     export HATBAG_DIR="/well/davies/users/zri347/R/HATBAG/"
+    export SNAKEMAKE="/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
 else
     echo ${user} "is uninitialized"
     exit 1
 fi
-
-export SPECIES_MAP_DIR_NAME="species_mapping_info"
-export PATH=${HATBAG_DIR}:${PATH} 

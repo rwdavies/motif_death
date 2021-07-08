@@ -1,36 +1,4 @@
-BAM_SUFFIX = "realigned.rmdup.bam"
-WILDCARD_CHR_CONSTRAINT = '[a-zA-Z0-9]+'
-## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
-GENOTYPING_QUEUE="short.qc"
-GENOTYPING_THREADS=4 ## might get lucky!
-GENOTYPER="UnifiedGenotyper"
-
-if GENOTYPER == "HaplotypeCaller":
-    GENOTYPING_MULTITHREAD_FLAG="-nct"
-elif GENOTYPER == "UnifiedGenotyper":
-    GENOTYPING_MULTITHREAD_FLAG="-nt"
-
-VCF_PREFIX = VCF_PREFIX + ".GATKug"
-
-CHR_CHUNKS = range(1, 2) ## disable - too complicated as crashes if out of rang - run 1 chunk only
-TREEMIX_MIGRANT_RANGE = list(range(0, 10))
-TREEMIX_THREADS=1 ## make smaller for now!
-
-
-IBAMS=""
-for species in SPECIES_LIST:
-    IBAMS = IBAMS + " -I mapping/" + species + "/" + species + "." + BAM_SUFFIX
-
-MERGE_VCF_GATK_INPUT=""
-for piece in CHR_CHUNKS:
-    for chr in CHR_LIST_ONLY_AUTOS:
-    	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
-	
-
-
-
-
-rule all:
+rule downstream_all:
     input:
         [
 	expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
@@ -38,37 +6,34 @@ rule all:
 	expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
 	]
 
+# rule call_and_tree:
+#     input:
+#         [expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX), expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)]
 
+# rule all_calling:
+#     input:
+#         expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX)
 
+# rule all_calling_chr:
+#     input:
+#         expand("vcf/{vcf_prefix}.chr{chr}.piece{piece}.vcf.gz", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS)
 
-rule call_and_tree:
-    input:
-        [expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX), expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)]
-
-rule all_calling:
-    input:
-        expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX)
-
-rule all_calling_chr:
-    input:
-        expand("vcf/{vcf_prefix}.chr{chr}.piece{piece}.vcf.gz", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS)
-
-rule treemix_input:
-    input:
-        expand("treemix/{vcf_prefix}.treemix.frq.gz", vcf_prefix = VCF_PREFIX)
+# rule treemix_input:
+#     input:
+#         expand("treemix/{vcf_prefix}.treemix.frq.gz", vcf_prefix = VCF_PREFIX)
 
 rule treemix:
     input:
         expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
 
-rule all_doc:
-    input:
-        expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST)
+# rule all_doc:
+#     input:
+#         expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST)
 
 
 rule call_chr:
     input:
-        ref = REF_DIR + REFNAME + ".fa",
+        ref = REF_DIR + REF_NAME + ".fa",
         bams = expand("mapping/{species}/{species}.{bam_suffix}", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{species}/{species}.{bam_suffix}.bai", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX)
     output:
@@ -86,7 +51,7 @@ rule call_chr:
         'if [ \"{OPERATE_GATK_PER_CHR}\" == \"FALSE" ]; then '
         'minus_L=\" \" ; else '
         'minus_L=\"-L {GATK_CHR_PREFIX}{wildcards.chr}\" ; fi && '
-        '{JAVA} -Xmx8g -jar {GATK} '
+        '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T {GENOTYPER} '
         '-R {input.ref} '
         '{GENOTYPING_MULTITHREAD_FLAG} {params.threads} '
@@ -101,12 +66,12 @@ rule call_chr:
 ##        'REGION_END=$((({wildcards.piece} + 1) * 10000000)) && '
 ##        '-L {GATK_CHR_PREFIX}{wildcards.chr}:${{REGION_START}}-${{REGION_END}} '
 
-	  
+
 rule filter_chr:
     input:
         input_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
         input_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX),
-        ref = REF_DIR + REFNAME + ".fa"
+        ref = REF_DIR + REF_NAME + ".fa"
     output:
         filtered_vcf = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz", vcf_prefix = VCF_PREFIX),
         filtered_tbi = expand("vcf/{vcf_prefix}.chr{{chr}}.filtered.piece{{piece}}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
@@ -115,7 +80,7 @@ rule filter_chr:
         chr = WILDCARD_CHR_CONSTRAINT,
         piece='\d{1,3}'
     shell:
-        '{JAVA} -Xmx8g -jar {GATK} '
+        '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T VariantFiltration '
         '-R {input.ref} '
         '-V {input.input_vcf} '
@@ -130,7 +95,7 @@ rule merge_chr:
     input:
         vcf = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
         tbi = expand("vcf/{vcf_prefix}.chr{chr}.filtered.piece{piece}.vcf.gz.tbi", vcf_prefix = VCF_PREFIX, chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
-        ref = REF_DIR + REFNAME + ".fa"	
+        ref = REF_DIR + REF_NAME + ".fa"	
     output:
         merged_vcf = expand("vcf/{vcf_prefix}.filtered.vcf.gz", vcf_prefix = VCF_PREFIX),
         merged_tbi = expand("vcf/{vcf_prefix}.filtered.vcf.gz.tbi", vcf_prefix = VCF_PREFIX)
@@ -138,7 +103,7 @@ rule merge_chr:
     wildcard_constraints:
         chr = WILDCARD_CHR_CONSTRAINT
     shell:
-        '{JAVA} -Xmx8g -jar {GATK} '
+        '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T CombineVariants '
         '-R {input.ref} '
         '{MERGE_VCF_GATK_INPUT} '
@@ -147,11 +112,9 @@ rule merge_chr:
         '{output.merged_vcf}.log && '
         'rm {input.vcf} && rm {input.tbi}'
 
-
-
 rule calculate_doc:
     input:
-        ref = REF_DIR + REFNAME + ".fa",
+        ref = REF_DIR + REF_NAME + ".fa",
         bam = expand("mapping/{{species}}/{{species}}.{bam_suffix}", bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{{species}}/{{species}}.{bam_suffix}.bai", bam_suffix = BAM_SUFFIX)
     output:
@@ -164,7 +127,7 @@ rule calculate_doc:
         species='\w{1,40}'	
     shell:
         'mkdir -p coverage && '
-        '{JAVA} -Xmx8g -jar {GATK} '
+        '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T DepthOfCoverage '
         '-R {input.ref} '
         '-L {GATK_CHR_PREFIX}{wildcards.chr} '
@@ -176,30 +139,25 @@ rule calculate_doc:
         'gzip -1 coverage/coverage.{wildcards.species}.chr{wildcards.chr}.txt'
 
 
-
-
 rule prepare_reference:
     input:
-        script = {R_GET_GENOME_STATS},
-        amb = REF_DIR + REFNAME + ".fa.amb",
-        ann = REF_DIR + REFNAME + ".fa.ann"
+        amb = REF_DIR + REF_NAME + ".fa.amb",
+        ann = REF_DIR + REF_NAME + ".fa.ann"
     output:
-        summary = REF_DIR + REFNAME + ".fa.summary.txt"    
+        summary = REF_DIR + REF_NAME + ".fa.summary.txt"    
     params:
         N='prepare_reference',
         threads=1,
         queue = "short.qc"
     wildcard_constraints:
     shell:
-        'R -f {input.script} --args {REF_DIR} {REFNAME}.fa'
-
-
+        'R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REF_NAME}.fa'
 
 
 rule get_callable_regions:
     input:
         infile = expand("coverage/coverage.{{species}}.chr{chr}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
-        summary = REF_DIR + REFNAME + ".fa.summary.txt"
+        summary = REF_DIR + REF_NAME + ".fa.summary.txt"
     output:
         beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS)
     params:
@@ -210,9 +168,8 @@ rule get_callable_regions:
         species='\w{1,40}'
     shell:
         'echo start && '
-        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REFNAME}.fa && '
+        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa && '
         'echo done'
-
 
 
 rule prepare_treemix:
@@ -228,11 +185,9 @@ rule prepare_treemix:
     shell:
         'mkdir -p treemix && '
         'echo recode as treemix format && date && '
-        '{PYTHON_352} {VCF2TREEMIX} {input.merged_vcf} {output.treemix_input} > {output.treemix_input}.log && echo done && date'
+        '${{PYTHON_352}} {VCF2TREEMIX} {input.merged_vcf} {output.treemix_input} > {output.treemix_input}.log && echo done && date'
         
-
-
-
+        
 rule run_treemix:
     input:
         treemix_input = expand("treemix/{treemix_prefix}.treemix.frq.gz", treemix_prefix = TREEMIX_PREFIX)
@@ -246,7 +201,7 @@ rule run_treemix:
         migrants='\d{1,2}'
     shell:
         'echo begin treemix && date &&'
-        '{TREEMIX} -i {input} -m {wildcards.migrants} -noss -se -k {TREEMIX_K} '
+        '${{TREEMIX}} -i {input} -m {wildcards.migrants} -noss -se -k {TREEMIX_K} '
         '-root {TREEMIX_OUTGROUP} '
         '-n_warn 10 '
         '-o treemix/{TREEMIX_PREFIX}.treemix.migrants.{wildcards.migrants}.out &&'
@@ -257,14 +212,15 @@ rule run_treemix:
         'treemix/{TREEMIX_PREFIX}.treemix.frq.gz  && echo done && date'
 
 
-config = {
-  "simple_repeat" : {
-     "yes" : HATBAG_SIMPLE_REPEAT,
-     "no" : "NULL"
-   },
-  "callable_bed" : {
-     "yes" : HATBAG_CALLABLE_BED,
-     "no" : "NULL"
-   }
-}
+# TODO: obsolete?
+# config = {
+#   "simple_repeat" : {
+#      "yes" : HATBAG_SIMPLE_REPEAT,
+#      "no" : "NULL"
+#    },
+#   "callable_bed" : {
+#      "yes" : HATBAG_CALLABLE_BED,
+#      "no" : "NULL"
+#    }
+# }
 

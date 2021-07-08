@@ -1,0 +1,48 @@
+{
+    "SPECIES_ORDER": "test",
+    "SPECIES_LIST": ["test_pop1", "test_pop2", "test_outgroup"],
+    "HATBAG_OUTPUT_DIR": "test_data",
+    "HATBAG_OUTPUT_DATE": "2021_07_06",
+    "REF_NAME": "ref",
+    "REF_URL": "https://storage.googleapis.com/motif_death/test_data/ref.fa.gz",
+    "CHR_LIST_ONLY_AUTOS": [1,2],
+    "CHR_LIST": [1,2],
+    "GATK_CHR_PREFIX": "",
+    "TREEMIX_THREADS": 1,
+    "TREEMIX_K": 10,
+    "OPERATE_GATK_PER_CHR": "TRUE", 
+    "TREEMIX_PREFIX": "test.cbgogw",
+    "VCF_PREFIX": "test.cbgogw.GATKug",
+    "TREEMIX_OUTGROUP": "test_outgroup",
+    "HATBAG_CALLABLE_BED": null,
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "GENOTYPING_QUEUE": "short.qc",
+    "GENOTYPER": "UnifiedGenotyper",
+    "GENOTYPING_THREADS": 4,
+    "HATBAG_PARAMS": {
+        "reference": "ref/ref.fa.gz",
+        "simpleRepeat_file": "ref/simpleRepeat.gz",
+        "rmask_file": "ref/rmask.gz",
+        "nCores": null,
+        "chrlist": [1,2],
+        "genomeSize": 4e5,
+        "lineages": {
+            "test_pop1": "test_pop1",
+            "test_pop2": "test_pop2"
+        },
+        "ancestral_lineage": {
+            "P1P2Anc": ["test_pop1", "test_pop2"]
+        },
+        "outgroups": ["test_outgroup"],
+        "vcf_load_split_num_files": 1,
+        "Klist": 6,
+        "cgte": 0,
+        "rgte": 0,
+        "n_extra_random_starts": 1,
+        "max_iters_atToGC": 10,
+        "use_gradient_and_hessian_for_ATGC_model_fitting": 0,
+        "ancestral_map_window_size": 1e4,
+        "n_initial_atToGC_fitting_reps": 3,
+        "skip_at_to_gc_ci_fitting": true
+    }
+}
