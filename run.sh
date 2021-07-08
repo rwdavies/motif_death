@@ -75,27 +75,27 @@ fi
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
+export ORDER_CSV=${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+
+if [ -f $ORDER_CSV ]
+then
+    rm $ORDER_CSV
+fi
+
 # From jq docs on how to load variables
 eval "$(jq -r '@sh "SPECIES_LIST=( \([.SPECIES_LIST[]]) ) SPECIES_ORDER=\(.SPECIES_ORDER)"' ${order_config})"
 eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
 
 echo "Motif Death output in ${ANALYSIS_DIR}"
 
-if [ -f "${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv" ]
-then
-    rm "${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv"
-fi
-
-echo "species,units,1,2,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > ${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+echo "species,units,1,2,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > $ORDER_CSV
 
 json_list=""
 for name in ${SPECIES_LIST[@]}; do
     jq -r '.units = (.units | to_entries[]) |
         [.species, .units.key, .units.value."1", .units.value."2", .n_mapping_pieces, .mapping_queue, .units.value.lb, .units.value.lb_insert_size, .units.value.flowcell_barcode, .units.value.flowcell_lane] | @csv' \
-        ${SPECIES_MAP_DIR_NAME}/${name}.json >> ${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+        ${SPECIES_MAP_DIR_NAME}/${name}.json >> $ORDER_CSV
 done
-
-export ORDER_CSV=${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
 
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}
