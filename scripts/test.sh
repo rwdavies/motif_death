@@ -45,7 +45,7 @@ for name in $TEST_NAMES; do
         "${SCRIPTPATH}/../species_mapping_info/test_${name}.json" # TODO: change back to SPECIES_MAP_DIR
 done
 
-# Copy reference files
+# # Copy reference files
 REF_DIR="${ANALYSIS_DIR}/ref/"
 mkdir -p $REF_DIR
 rsync -a . $REF_DIR --exclude=*.fastq.gz
