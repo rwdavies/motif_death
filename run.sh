@@ -23,7 +23,7 @@ then
 fi
 
 # if $other is integer, use as number of cores
-if [ $other -eq $other ] 2> /dev/null 
+if [ "$other" -eq "$other" ] 2> /dev/null 
 then
     jobs=$other
     other="" # so not passed to Snakemake
@@ -40,9 +40,6 @@ echo "Running with ${jobs} cores"
 # elif [ "${species}" == "baboon" ] || [ "${species}" == "marmoset" ] ||  [ "${species}" == "baboon" ] || [ "${species}" == "macaque" ]
 # then
 #     SPECIES_ORDER="cercopithecoidea"
-# elif [ "${species}" == "cow" ] || [ "${species}" == "goat" ] || [ "${species}" == "giraffe" ] || [ "${species}" == "okapi" ] || [ "${species}" == "whitetaileddeer" ]  || [ "${species}" == "reddeer" ] || [ "${species}" == "buffalo" ]
-# then
-#     SPECIES_ORDER="artiodactyla"
 # elif [ "${species}" == "FAM" ] || [ "${species}" == "caroli" ] || [ "${species}" == "CAST_EiJ" ] || [ "${species}" == "WSB_EiJ" ] || [ "${species}" == "SPRET_EiJ" ] || [ "${species}" == "PWK_PhJ" ]
 # then
 #     SPECIES_ORDER="mice"
