@@ -7,9 +7,7 @@ HATBAG_DIR=os.environ["HATBAG_DIR"]
 PYTHON_DIR=os.environ["PYTHON_DIR"]
 ORDER_CSV=os.environ["ORDER_CSV"]
 
-# From config/{order}.json
-# HATBAG_OUTPUT_DIR = config["HATBAG_OUTPUT_DIR"]
-# HATBAG_OUTPUT_DATE=config["HATBAG_OUTPUT_DATE"]
+# From config/{order}_{run_id}.json
 RUN_ID=config["RUN_ID"]
 SPECIES_ORDER=config["SPECIES_ORDER"]
 REF_DIR = config["REF_DIR"]
@@ -18,8 +16,6 @@ REF_URL = config["REF_URL"]
 BAM_SUFFIX = config["BAM_SUFFIX"]
 SPECIES_LIST=config["SPECIES_LIST"]
 CHR_LIST_ONLY_AUTOS=config["CHR_LIST_ONLY_AUTOS"]
-# TREEMIX_PREFIX=config["TREEMIX_PREFIX"]
-# VCF_PREFIX = TREEMIX_PREFIX + "GATKug"
 TREEMIX_OUTGROUP=config["TREEMIX_OUTGROUP"]
 GATK_CHR_PREFIX = config["GATK_CHR_PREFIX"]
 OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
@@ -35,6 +31,7 @@ WILDCARD_CHR_CONSTRAINT = config["DEFAULTS"]["WILDCARD_CHR_CONSTRAINT"]
 GENOTYPING_QUEUE=config["DEFAULTS"]["GENOTYPING_QUEUE"]
 GENOTYPING_THREADS=config["DEFAULTS"]["GENOTYPING_THREADS"] ## might get lucky!
 GENOTYPER=config["DEFAULTS"]["GENOTYPER"]
+WILDCARD_UNIT_CONSTRAINT='[A-Za-z0-9]+' # Note: cannot include _ in here, otherwise considers {unit}_1 as unit?
 
 # From config/filenames.json
 R_GET_GENOME_STATS=R_DIR + config["R_GET_GENOME_STATS"]

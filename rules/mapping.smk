@@ -35,11 +35,16 @@ rule extract_and_map_fastq_pieces:
     input:
         pen1 = expand("mapping/{{species}}/{{units}}_1.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
         pen2 = expand("mapping/{{species}}/{{units}}_2.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
-        ref = REF_DIR + REF_NAME + ".fa",
-        ref_sa = REF_DIR + REF_NAME + ".fa.sa",
-        ref_fai = REF_DIR + REF_NAME + ".fa.fai",
-        ref_dict = REF_DIR + REF_NAME + ".dict",
-        ref_stidx = REF_DIR + REF_NAME + ".stidx"
+        # ref = REF_DIR + REF_NAME + ".fa",
+        # ref_sa = REF_DIR + REF_NAME + ".fa.sa",
+        # ref_fai = REF_DIR + REF_NAME + ".fa.fai",
+        # ref_dict = REF_DIR + REF_NAME + ".dict",
+        # ref_stidx = REF_DIR + REF_NAME + ".stidx"
+        ref = ancient(REF_DIR + REF_NAME + ".fa"),
+        ref_sa = ancient(REF_DIR + REF_NAME + ".fa.sa"),
+        ref_fai = ancient(REF_DIR + REF_NAME + ".fa.fai"),
+        ref_dict = ancient(REF_DIR + REF_NAME + ".dict"),
+        ref_stidx = ancient(REF_DIR + REF_NAME + ".stidx")
     output:
         bam = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam")),
         bai = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam.bai"))
@@ -54,7 +59,7 @@ rule extract_and_map_fastq_pieces:
         flowcell_lane = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "flowcell_lane"],
         head=" "
     wildcard_constraints:
-        units='[A-Za-z0-9]+',
+        units=WILDCARD_UNIT_CONSTRAINT,
         piece='\d{1,3}'
     shell:
         'set +o pipefail && '
@@ -102,7 +107,7 @@ rule merge_mapped_pieces:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Za-z0-9_]+',
+        units=WILDCARD_UNIT_CONSTRAINT,
         piece='\d{1,3}'
     shell:
         'samtools merge {output.bam} {input.bams} && '
@@ -123,7 +128,7 @@ rule merge_units:
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units='[A-Za-z0-9]+'
+        units=WILDCARD_UNIT_CONSTRAINT
     shell:
         'samtools merge {output.bam} {input.bams} && '
         'samtools index {output.bam} '
@@ -158,7 +163,8 @@ rule identify_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        ref = REF_DIR + REF_NAME + ".fa"	
+        ref = ancient(REF_DIR + REF_NAME + ".fa")
+        # ref = REF_DIR + REF_NAME + ".fa"
     output:
         outfile = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")
     params:
@@ -184,7 +190,8 @@ rule realign_around_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        ref = REF_DIR + REF_NAME + ".fa",
+        # ref = REF_DIR + REF_NAME + ".fa",
+        ref = ancient(REF_DIR + REF_NAME + ".fa"),
         intervals = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")	
     output:
         bam = expand("mapping/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bam"),

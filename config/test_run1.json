@@ -9,7 +9,6 @@
     "TREEMIX_OUTGROUP": "test_outgroup",
     "GATK_CHR_PREFIX": "",
     "OPERATE_GATK_PER_CHR": "TRUE", 
-    "TREEMIX_PREFIX": "test.cbgogw",
     "HATBAG_CALLABLE_BED": null,
     "DEFAULTS": {
         "TREEMIX_THREADS": 1,
