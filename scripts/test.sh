@@ -16,8 +16,8 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 SIMULATE_DIR="${SCRIPTPATH}/../"simulate_input/ # in top level of motif_death
 export ANALYSIS_DIR="${SCRIPTPATH}/../"simulate_results/ # in top level of motif_death
 TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test_run1.json"
-eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER) RUN_ID=\(.RUN_ID)"' ${TEST_CONFIG_PATH})"
-HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${SPECIES_ORDER}/${RUN_ID}"
+eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER) RUN_ID=\(.RUN_ID) HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR)"' ${TEST_CONFIG_PATH})"
+FULL_HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${SPECIES_ORDER}/${RUN_ID}/${HATBAG_OUTPUT_DIR}"
 
 if [ -d "${SIMULATE_DIR}" ]
 then
@@ -59,7 +59,7 @@ cd "${SCRIPTPATH}/../"
 # Check test here
 
 # Test test_file exists
-test_file=${HATBAG_OUTPUT_DIR}/F_document/qq.losslin.all.K6.png
+test_file=${FULL_HATBAG_OUTPUT_DIR}/F_document/qq.losslin.all.K6.png
 if test -f "${test_file}"; then
     echo "test passed; ${test_file} exists"
 else
@@ -68,4 +68,4 @@ else
 fi
 
 # Test significant k-mers
-./R/test_HATBAG.R ${HATBAG_OUTPUT_DIR}
+./R/test_HATBAG.R ${FULL_HATBAG_OUTPUT_DIR}

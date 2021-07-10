@@ -3,31 +3,31 @@
 ##
 rule HATBAG_HACK:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/F_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete"
 
 
 rule HATBAG_HACK_A:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/A_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/A_complete"
 rule HATBAG_HACK_B:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/B_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/B_complete"
         # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/B_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_C:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/C_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/C_complete"
         # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/C_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_D:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/D_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/D_complete"
         # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/D_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_E:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/E_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/E_complete"
         # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/E_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 rule HATBAG_HACK_F:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/F_complete"
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete"
         # expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
 
 
@@ -78,7 +78,7 @@ def get_hatbag_input(wildcards):
     if run == "F":
         need = "E"
     # return(expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
-    return(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/" + need + "_complete")
+    return(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/" + need + "_complete")
 
 
 rule HATBAG_HACK_FUNCTION:
@@ -86,7 +86,7 @@ rule HATBAG_HACK_FUNCTION:
         get_hatbag_input,
 	callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
-        decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{{{{run}}}}_complete")
+        decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/{{{{run}}}}_complete")
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,
@@ -94,7 +94,7 @@ rule HATBAG_HACK_FUNCTION:
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:
-        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} {HATBAG_OUTPUT_DATE} {params.threads} vcf/{VCF_PREFIX}.filtered.vcf.gz {HATBAG_DIR} hatbag/{HATBAG_OUTPUT_DIR} {input.callable_bed} && '
+        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} hatbag/{SPECIES_ORDER}/{RUN_ID} {HATBAG_OUTPUT_DIR} {params.threads} vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz {HATBAG_DIR} {input.callable_bed} && '
         ' touch {output.decoy} '
 
 

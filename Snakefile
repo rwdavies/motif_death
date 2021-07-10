@@ -9,6 +9,7 @@ ORDER_CSV=os.environ["ORDER_CSV"]
 
 # From config/{order}_{run_id}.json
 RUN_ID=config["RUN_ID"]
+HATBAG_OUTPUT_DIR=config["HATBAG_OUTPUT_DIR"]
 SPECIES_ORDER=config["SPECIES_ORDER"]
 REF_DIR = config["REF_DIR"]
 REF_NAME = config["REF_NAME"]
@@ -68,7 +69,7 @@ order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 
 rule all:
     input:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/F_complete",
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete",
         expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 include: "rules/download.smk"

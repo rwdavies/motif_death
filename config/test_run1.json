@@ -2,6 +2,7 @@
     "SPECIES_ORDER": "test",
     "RUN_ID": "run1",
     "SPECIES_LIST": ["test_pop1", "test_pop2", "test_outgroup"],
+    "HATBAG_OUTPUT_DIR": "20210710",
     "REF_NAME": "ref",
     "REF_URL": "https://storage.googleapis.com/motif_death/test_data/ref.fa.gz",
     "CHR_LIST_ONLY_AUTOS": [1,2],
