@@ -40,7 +40,6 @@ convert_dict_to_chrlist <- function(dict_file, min_size = 1e6) {
 
 # TODO: species should be order?
 get_per_species_params <- function(species) {
-    lineages_to_build <- NULL
     # if (species == "primates") {
     #     nCores <- 10
     #     simpleRepeat_file <- "/data/smew1/rdavies/motifLossAnalysis/primates/hg38.simpleRepeat.gz"
@@ -185,21 +184,23 @@ get_per_species_params <- function(species) {
     if (species == "ruminantia" | species == "artiodactyla") {
         return(
             list(
+                lineages_to_build = NULL,
                 ## have manually rsynced these over
-                reference <- file.path("ref/bosTau8.fa.gz")
-                simpleRepeat_file <- file.path("external/bosTau8.simpleRepeat.gz")
-                rmask_file <- file.path("external/bosTau8.rmsk.gz")
-                vcf_file <- NA ##  now specified elsewhere
+                reference = file.path("ref/bosTau8.fa.gz"),
+                simpleRepeat_file = file.path("external/bosTau8.simpleRepeat.gz"),
+                rmask_file = file.path("external/bosTau8.rmsk.gz"),
+                vcf_file = NA, ##  now specified elsewhere
                 ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
                 ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
                 ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
-                nCores <- NA ## now specified elsewhere
+                nCores = NA, ## now specified elsewhere
                 ## simpleRepeat_file <- "/bosTau8.simpleRepeat.gz"
                 ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
                 ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
                 ## rmask_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bosTau8.rmsk.gz"
-                chrlist <- paste0("chr", 1:29)
-                genomeSize <- 2670044500
+                chrlist = paste0("chr", 1:29),
+                genomeSize = 2670044500,
+                lineages_to_build = NULL,
                 lineages = list(
                     "cow" = "cow",
                     "buffalo" = "buffalo",
@@ -209,10 +210,10 @@ get_per_species_params <- function(species) {
                     "giraffe" = "giraffe",
                     "okapi" = "okapi",
                     "AOGi" = c("giraffe", "okapi")
-                )
+                ),
                 ancestral_lineage = list(
                     "AOGiACBG" = c("AOGi", "ACBG")
-                )
+                ),
                 # outgroups = c("reddeer", "whitetaileddeer")
                 ## if no reddeer (yet)
                 outgroups = c("whitetaileddeer")
@@ -222,29 +223,30 @@ get_per_species_params <- function(species) {
     if (species == "test") {
         return(
             list(
+                lineages_to_build = NULL,
                 ## have manually rsynced these over
-                reference = file.path("ref/ref.fa.gz")
-                simpleRepeat_file = file.path("ref/simpleRepeat.gz")
-                rmask_file = file.path("ref/rmask.gz")
-                chrlist = paste0(1:2)
-                genomeSize = 4e5
+                reference = file.path("ref/ref.fa.gz"),
+                simpleRepeat_file = file.path("ref/simpleRepeat.gz"),
+                rmask_file = file.path("ref/rmask.gz"),
+                chrlist = paste0(1:2),
+                genomeSize = 4e5,
                 lineages = list(
                     "test_pop1" = "test_pop1",
                     "test_pop2" = "test_pop2"
-                )
+                ),
                 ancestral_lineage = list(
                     "P1P2Anc" = c("test_pop1", "test_pop2")
-                )
-                outgroups = c("test_outgroup")
-                vcf_load_split_num_files = 1
-                Klist = 6
-                cgte = 0
-                rgte = 0
-                n_extra_random_starts = 1 ## since slow
-                max_iters_atToGC = 10 ## also since slow, who cares what parameters are! 
-                use_gradient_and_hessian_for_ATGC_model_fitting = FALSE ## disable as uses nlminb which is slow with these
-                ancestral_map_window_size = 1e4
-                n_initial_atToGC_fitting_reps = 3
+                ),
+                outgroups = c("test_outgroup"),
+                vcf_load_split_num_files = 1,
+                Klist = 6,
+                cgte = 0,
+                rgte = 0,
+                n_extra_random_starts = 1, ## since slow
+                max_iters_atToGC = 10, ## also since slow, who cares what parameters are! 
+                use_gradient_and_hessian_for_ATGC_model_fitting = FALSE, ## disable as uses nlminb which is slow with these
+                ancestral_map_window_size = 1e4,
+                n_initial_atToGC_fitting_reps = 3,
                 skip_at_to_gc_ci_fitting = TRUE
             )
         )

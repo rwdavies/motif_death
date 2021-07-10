@@ -8,7 +8,7 @@ then
       exit 1
 fi
 
-other=$1 # n_cores if integer, or can be `--dryrun`
+other=$1 # n_cores if integer, or can be `--dryrun`, `--debug-dag`, `--reason`
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
