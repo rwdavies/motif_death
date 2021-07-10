@@ -35,16 +35,16 @@ rule extract_and_map_fastq_pieces:
     input:
         pen1 = expand("mapping/{{species}}/{{units}}_1.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
         pen2 = expand("mapping/{{species}}/{{units}}_2.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
-        # ref = REF_DIR + REF_NAME + ".fa",
-        # ref_sa = REF_DIR + REF_NAME + ".fa.sa",
-        # ref_fai = REF_DIR + REF_NAME + ".fa.fai",
-        # ref_dict = REF_DIR + REF_NAME + ".dict",
-        # ref_stidx = REF_DIR + REF_NAME + ".stidx"
-        ref = ancient(REF_DIR + REF_NAME + ".fa"),
-        ref_sa = ancient(REF_DIR + REF_NAME + ".fa.sa"),
-        ref_fai = ancient(REF_DIR + REF_NAME + ".fa.fai"),
-        ref_dict = ancient(REF_DIR + REF_NAME + ".dict"),
-        ref_stidx = ancient(REF_DIR + REF_NAME + ".stidx")
+        ref = REF_DIR + REF_NAME + ".fa",
+        ref_sa = REF_DIR + REF_NAME + ".fa.sa",
+        ref_fai = REF_DIR + REF_NAME + ".fa.fai",
+        ref_dict = REF_DIR + REF_NAME + ".dict",
+        ref_stidx = REF_DIR + REF_NAME + ".stidx"
+        # ref = ancient(REF_DIR + REF_NAME + ".fa"),
+        # ref_sa = ancient(REF_DIR + REF_NAME + ".fa.sa"),
+        # ref_fai = ancient(REF_DIR + REF_NAME + ".fa.fai"),
+        # ref_dict = ancient(REF_DIR + REF_NAME + ".dict"),
+        # ref_stidx = ancient(REF_DIR + REF_NAME + ".stidx")
     output:
         bam = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam")),
         bai = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam.bai"))
@@ -163,8 +163,8 @@ rule identify_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        ref = ancient(REF_DIR + REF_NAME + ".fa")
-        # ref = REF_DIR + REF_NAME + ".fa"
+        # ref = ancient(REF_DIR + REF_NAME + ".fa")
+        ref = REF_DIR + REF_NAME + ".fa"
     output:
         outfile = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")
     params:
@@ -190,8 +190,8 @@ rule realign_around_indels:
     input:
         bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
-        # ref = REF_DIR + REF_NAME + ".fa",
-        ref = ancient(REF_DIR + REF_NAME + ".fa"),
+        ref = REF_DIR + REF_NAME + ".fa",
+        # ref = ancient(REF_DIR + REF_NAME + ".fa"),
         intervals = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")	
     output:
         bam = expand("mapping/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bam"),
