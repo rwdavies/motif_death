@@ -184,16 +184,15 @@ get_per_species_params <- function(species) {
     if (species == "ruminantia" | species == "artiodactyla") {
         return(
             list(
-                lineages_to_build = NULL,
                 ## have manually rsynced these over
                 reference = file.path("ref/bosTau8.fa.gz"),
                 simpleRepeat_file = file.path("external/bosTau8.simpleRepeat.gz"),
                 rmask_file = file.path("external/bosTau8.rmsk.gz"),
-                vcf_file = NA, ##  now specified elsewhere
+                # vcf_file = NA, ##  now specified elsewhere
                 ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
                 ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
                 ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
-                nCores = NA, ## now specified elsewhere
+                # nCores = NA, ## now specified elsewhere
                 ## simpleRepeat_file <- "/bosTau8.simpleRepeat.gz"
                 ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
                 ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
