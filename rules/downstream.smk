@@ -202,7 +202,7 @@ rule prepare_treemix:
     params:
         N='prepare_treemix',
         threads=1,
-        queue = "short.qc"
+        queue = "short.qc@@short.hge" # TODO: change back to all nodes if can figure out 'bash illegal instruction...' error on `${{PYTHON_352}} ...`
     shell:
         'mkdir -p treemix && '
         'echo recode as treemix format && date && '
@@ -217,11 +217,11 @@ rule run_treemix:
     params:
         N='run_treemix',
         threads=TREEMIX_THREADS,
-        queue = "short.qc"
+        queue = "short.qc@@short.hge" # TODO: change back to all nodes if can figure out 'bash illegal instruction...' error on `${{TREEMIX}} ...`
     wildcard_constraints:
         migrants='\d{1,2}'
     shell:
-        'echo begin treemix && date &&'
+        'echo begin treemix && date && '
         '${{TREEMIX}} -i {input} -m {wildcards.migrants} -noss -se -k {TREEMIX_K} '
         '-root {TREEMIX_OUTGROUP} '
         '-n_warn 10 '
