@@ -62,9 +62,8 @@ def get_hatbag_input(wildcards):
             [
                 f'vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz',
                 f'{config["HATBAG_PARAMS"]["reference"]}',
-                # Note: below are necessary, but can't be obtained through Snakemake right now
-                # f'{config["HATBAG_PARAMS"]["simpleRepeat_file"]}',
-                # f'{config["HATBAG_PARAMS"]["rmask_file"]}'
+                f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
+                f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz"
             ]
         )
     if run == "B":

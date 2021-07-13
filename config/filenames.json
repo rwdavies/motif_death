@@ -4,6 +4,7 @@
     "SPECIES_MAP_DIR_NAME": "species_mapping_info",
     "REF_DIR": "ref/",
     "MAPPING_DIR": "mapping/",
+    "EXTERNAL_DIR": "external/",
     "comment": "below must be in R_DIR and PYTHON_DIR",
     "TREEMIX_R_PLOT": "plotDataAfterTreeMix.R",
     "TREEMIX_R_PLOT_HELPER": "treemix_plotting_funcs.R",

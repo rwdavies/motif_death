@@ -2,6 +2,8 @@ rule download_all:
     input:
         expand("mapping/{species}/{units}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
         expand("mapping/{species}/{units}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
+        EXTERNAL_DIR + REF_NAME + ".simpleRepeat.gz",
+        EXTERNAL_DIR + REF_NAME + ".rmsk.gz",
         ref = REF_DIR + REF_NAME + ".fa.gz"
         
 # TODO obsolete?
@@ -52,6 +54,51 @@ rule download_ref:
     shell:
         'mkdir -p {REF_DIR} && cd {REF_DIR} && '
         'wget {REF_URL}'
+
+rule download_rmask:
+    # Note: Adds header if not present
+    input:
+    output:
+        rmask = EXTERNAL_DIR + REF_NAME + ".rmsk.gz"
+    params: N='download_rmask', threads=1, queue = "short.qc"
+    shell:
+        """
+        set -e
+        mkdir -p {EXTERNAL_DIR}
+        wget -O {output.rmask} {rmask_URL}
+        if [ $(gunzip -c {output.rmask} | head -1 | cut -d$'\t' -f1) != '#bin' ]
+        then
+            echo Adding header to rmask file
+            gunzip -c {output.rmask} > {EXTERNAL_DIR}/temp.rmsk
+            echo -e {RMASK_HEADER} | cat - {EXTERNAL_DIR}/temp.rmsk > {EXTERNAL_DIR}/{REF_NAME}.rmsk
+            gzip -f {EXTERNAL_DIR}/{REF_NAME}.rmsk
+        fi
+        # rm {EXTERNAL_DIR}/temp.rmsk
+        """
+
+rule download_simple_repeat:
+    # Note: Adds header if not present
+    input:
+    output:
+        simpleRepeat = EXTERNAL_DIR + REF_NAME + ".simpleRepeat.gz"
+    params:
+        N='download_simple_repeat',
+        threads=1,
+        queue = "short.qc"
+    shell:
+        """
+        set -e
+        mkdir -p {EXTERNAL_DIR} 
+        wget -O {output.simpleRepeat} {simpleRepeat_URL} 
+        if [ $(gunzip -c {output.simpleRepeat} | head -1 | cut -d$'\t' -f1) != '#bin' ]
+        then
+            echo Adding header to simpleRepeat file
+            gunzip -c {output.simpleRepeat} > {EXTERNAL_DIR}temp.simpleRepeat
+            echo -e {SIMPLE_REPEAT_HEADER} | cat - {EXTERNAL_DIR}temp.simpleRepeat > {EXTERNAL_DIR}{REF_NAME}.simpleRepeat
+            gzip -f {EXTERNAL_DIR}{REF_NAME}.simpleRepeat
+        fi
+        rm {EXTERNAL_DIR}temp.simpleRepeat
+        """
 
 # TODO Obsolete?
 # rule standardize_fastq:

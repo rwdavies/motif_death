@@ -12,6 +12,7 @@ RUN_ID=config["RUN_ID"]
 HATBAG_OUTPUT_DIR=config["HATBAG_OUTPUT_DIR"]
 SPECIES_ORDER=config["SPECIES_ORDER"]
 REF_DIR = config["REF_DIR"]
+EXTERNAL_DIR = config["EXTERNAL_DIR"]
 REF_NAME = config["REF_NAME"]
 REF_URL = config["REF_URL"]
 BAM_SUFFIX = config["BAM_SUFFIX"]
@@ -33,6 +34,12 @@ GENOTYPING_QUEUE=config["DEFAULTS"]["GENOTYPING_QUEUE"]
 GENOTYPING_THREADS=config["DEFAULTS"]["GENOTYPING_THREADS"] ## might get lucky!
 GENOTYPER=config["DEFAULTS"]["GENOTYPER"]
 WILDCARD_UNIT_CONSTRAINT='[A-Za-z0-9]+' # Note: cannot include _ in here, otherwise considers {unit}_1 as unit?
+
+simpleRepeat_URL = config["HATBAG_PARAMS"]["simpleRepeat_URL"]
+rmask_URL = config["HATBAG_PARAMS"]["rmask_URL"]
+# Note: need escaped single quotes on below to evaluate correctly
+SIMPLE_REPEAT_HEADER = "\'#bin\tchrom\tchromStart\tchromEnd\tname\tperiod\tcopyNum\tconsensusSize\tperMatch\tperIndel\tscore\tA\tC\tG\tT\tentropy\tsequence\'"
+RMASK_HEADER = "\'#bin\tswScore\tmilliDiv\tmilliDel\tmilliIns\tgenoName\tgenoStart\tgenoEnd\tgenoLeft\tstrand\trepName\trepClass\trepFamily\trepStart\trepEnd\trepLeft\tid\'"
 
 # From config/filenames.json
 R_GET_GENOME_STATS=R_DIR + config["R_GET_GENOME_STATS"]
