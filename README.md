@@ -56,6 +56,7 @@ In this config, you must set SPECIES_ORDER (e.g., "artiodactyla"), SPECIES_LIST 
 By assumption, only 1 reference is used for any species in a given SPECIES_ORDER.
 This means once a species is mapped, it will not be remapped if reused in a different run, and files are available in `{ANALYSIS_DIR}/mapping/{species}`.
 VCF, Treemix, and HATBAG are all run specific (as each run could have different group of species), so their output is in e.g., `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/...`.
+HATBAG has an additional HATBAG_OUTPUT_DIR parameter, so you can rerun the same SPECIES_ORDER, RUN_ID with different HATBAG settings, with output in `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/`.
 
 ### B.1. Downloading files
 
