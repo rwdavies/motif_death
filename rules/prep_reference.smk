@@ -19,7 +19,6 @@ rule unzip_ref:
 rule bwa_mem_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa"
-        # ref = ancient(REF_DIR + REF_NAME + ".fa")
     output:
         REF_DIR + REF_NAME + ".fa.sa",
         REF_DIR + REF_NAME + ".fa.amb",
@@ -32,7 +31,6 @@ rule bwa_mem_ref:
 rule faidx_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa"
-        # ref = ancient(REF_DIR + REF_NAME + ".fa")
     output:
         ref = REF_DIR + REF_NAME + ".fa.fai"
     params: N='faidx_ref', threads=1, queue = "short.qc"
@@ -43,7 +41,6 @@ rule faidx_ref:
 rule picard_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa"
-        # ref = ancient(REF_DIR + REF_NAME + ".fa")
     output:
         ref = REF_DIR + REF_NAME + ".dict"
     params: N='picard_ref', threads=1, queue = "short.qc"
@@ -54,7 +51,6 @@ rule picard_ref:
 rule stampy_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa"
-        # ref = ancient(REF_DIR + REF_NAME + ".fa")
     output:
         REF_DIR + REF_NAME + ".sthash",
         REF_DIR + REF_NAME + ".stidx"
