@@ -1,8 +1,5 @@
 ##library("data.table")
 
-
-
-## setwd("/well/davies/users/dcc832/primates/")
 species <- commandArgs(trailingOnly = TRUE)[1]
 ref_dir <- commandArgs(trailingOnly = TRUE)[2]
 ref <- commandArgs(trailingOnly = TRUE)[3]
@@ -10,33 +7,9 @@ ref <- commandArgs(trailingOnly = TRUE)[3]
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
 ## species <- "test_pop1"; ref_dir <- "ref/"; ref <- "ref.fa"
+max_chr <- commandArgs(trailingOnly = TRUE)[4]
 ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
-
-
-get_chrlist <- function(ref) {
-    if (ref == "bosTau8.fa") {
-        chrlist <- 1:29
-        chr_prefix <- "chr"
-    } else if (ref == "hg38.fa") {
-        chrlist <- 1:22
-        chr_prefix <- "chr"
-    } else if (ref == "NCBIM37_um.fa") {
-        chrlist <- 1:19
-        chr_prefix <- ""
-    } else if (ref == "canFam3.fa") {
-        chrlist <- 1:38
-        chr_prefix <- "chr"
-    } else if (ref == "ref.fa") { # Test
-        chrlist <- 1:2
-        chr_prefix <- ""
-    } else {
-        print(paste0("ref = ", ref))
-        stop("ref not defined")
-    }
-    return(list(chrlist = chrlist, chr_prefix = chr_prefix))
-}
-    
-chrlist <- get_chrlist(ref)$chrlist
+chrlist <- 1:max_chr
 
 RData_file_function <- function(species, chr)
     paste0("coverage/coverage.", species, ".chr", chr, ".RData")
