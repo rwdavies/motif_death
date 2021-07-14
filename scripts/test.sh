@@ -17,6 +17,7 @@ SIMULATE_DIR="${SCRIPTPATH}/../"simulate_input/ # in top level of motif_death
 export ANALYSIS_DIR="${SCRIPTPATH}/../"simulate_results/ # in top level of motif_death
 TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test_run1.json"
 eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER) RUN_ID=\(.RUN_ID) HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR)"' ${TEST_CONFIG_PATH})"
+eval "$(jq -r '@sh "REF_DIR=\(.REF_DIR) EXTERNAL_DIR=\(.EXTERNAL_DIR) SPECIES_MAPPING_INFO_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' ${SCRIPTPATH}/../config/filenames.json)"
 FULL_HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${SPECIES_ORDER}/${RUN_ID}/${HATBAG_OUTPUT_DIR}"
 
 if [ -d "${SIMULATE_DIR}" ]
@@ -48,9 +49,12 @@ for name in $TEST_NAMES; do
 done
 
 ## Copy reference files
-REF_DIR="${ANALYSIS_DIR}/ref/"
-mkdir -p $REF_DIR
-rsync -a . $REF_DIR --exclude=*.fastq.gz
+TEST_REF_DIR="${ANALYSIS_DIR}/${REF_DIR}"
+TEST_EXTERNAL_DIR="${ANALYSIS_DIR}/${EXTERNAL_DIR}"
+mkdir -p $TEST_REF_DIR $TEST_EXTERNAL_DIR
+rsync -a ref.fa.gz ${TEST_REF_DIR} # --exclude=*.fastq.gz
+rsync -a rmask.gz ${TEST_EXTERNAL_DIR}ref.rmsk.gz # --exclude=*.fastq.gz
+rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
 

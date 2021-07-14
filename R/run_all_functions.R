@@ -219,14 +219,52 @@ get_per_species_params <- function(species) {
             )
         )
     }
+    if (species == "whippomorpha") {
+        return(
+            list(
+                ## have manually rsynced these over
+                reference = file.path("ref/balAcu1.fa.gz"),
+                simpleRepeat_file = file.path("external/balAcu1.simpleRepeat.gz"),
+                rmask_file = file.path("external/balAcu1.rmsk.gz"),
+                # vcf_file = NA, ##  now specified elsewhere
+                ## /data/smew1/rdavies/motifLossAnalysis/ruminantia
+                ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
+                ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
+                # nCores = NA, ## now specified elsewhere
+                ## simpleRepeat_file <- "/bosTau8.simpleRepeat.gz"
+                ## reference <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/ref/bosTau8.fa.gz"
+                ## vcf_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bovidae.cbgogwd.GATKug.filtered.vcf.gz"
+                ## rmask_file <- "/data/smew1/rdavies/motifLossAnalysis/ruminantia/bosTau8.rmsk.gz"
+                chrlist = paste0("chr", 1:21),
+                genomeSize = 2670044500,
+                lineages_to_build = NULL,
+                lineages = list(
+                    "cow" = "cow",
+                    "buffalo" = "buffalo",
+                    "ACB" = c("cow", "buffalo"),
+                    "goat" = "goat",
+                    "ACBG" = c("ACB", "goat"),
+                    "giraffe" = "giraffe",
+                    "okapi" = "okapi",
+                    "AOGi" = c("giraffe", "okapi")
+                ),
+                ancestral_lineage = list(
+                    "AOGiACBG" = c("AOGi", "ACBG")
+                ),
+                # outgroups = c("reddeer", "whitetaileddeer")
+                ## if no reddeer (yet)
+                outgroups = c("whitetaileddeer")
+            )
+        )
+    }
     if (species == "test") {
         return(
             list(
                 lineages_to_build = NULL,
                 ## have manually rsynced these over
                 reference = file.path("ref/ref.fa.gz"),
-                simpleRepeat_file = file.path("ref/simpleRepeat.gz"),
-                rmask_file = file.path("ref/rmask.gz"),
+                simpleRepeat_file = file.path("external/ref.simpleRepeat.gz"),
+                rmask_file = file.path("external/ref.rmsk.gz"),
                 chrlist = paste0(1:2),
                 genomeSize = 4e5,
                 lineages = list(

@@ -22,8 +22,8 @@
     },
     "HATBAG_PARAMS": {
         "reference": "ref/ref.fa.gz",
-        "simpleRepeat_file": "ref/simpleRepeat.gz",
-        "rmask_file": "ref/rmask.gz",
+        "simpleRepeat_URL": "ref/simpleRepeat.gz",
+        "rmask_URL": "ref/rmask.gz",
         "nCores": null,
         "chrlist": [1,2],
         "genomeSize": 4e5,
