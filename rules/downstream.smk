@@ -151,12 +151,11 @@ rule prepare_reference:
     params:
         N='prepare_reference',
         threads=1,
-        queue = "short.qc",
-        max_chr = max(CHR_LIST_ONLY_AUTOS)
+        queue = "short.qc"
     wildcard_constraints:
     shell:
         """
-        R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REF_NAME}.fa {params.max_chr} {GATK_CHR_PREFIX}
+        R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REF_NAME}.fa {GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         """
 
 
@@ -170,14 +169,13 @@ rule get_callable_regions:
     params:
         N='get_callable_regions',
         threads = 2,
-        queue = "short.qc",
-        max_chr = max(CHR_LIST_ONLY_AUTOS)
+        queue = "short.qc"
     wildcard_constraints:
         species='\w{1,40}'
     shell:
         """
         echo start get_callable_regions
-        R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa {params.max_chr}
+        R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa {CHR_LIST_ONLY_AUTOS}
         echo done get_callable_regions
         """
 

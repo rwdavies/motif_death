@@ -7,9 +7,10 @@ ref <- commandArgs(trailingOnly = TRUE)[3]
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
 ## species <- "test_pop1"; ref_dir <- "ref/"; ref <- "ref.fa"
-max_chr <- commandArgs(trailingOnly = TRUE)[4]
+chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
+
 ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
-chrlist <- 1:max_chr
+# chrlist <- 1:max_chr
 
 RData_file_function <- function(species, chr)
     paste0("coverage/coverage.", species, ".chr", chr, ".RData")

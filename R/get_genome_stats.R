@@ -2,9 +2,10 @@
 
 ref_dir <- commandArgs(trailingOnly = TRUE)[1]
 ref_prefix <- commandArgs(trailingOnly = TRUE)[2]
-max_chr <- commandArgs(trailingOnly = TRUE)[3]
-chr_prefix <- commandArgs(trailingOnly = TRUE)[4]
-chrlist <- 1:max_chr
+chr_prefix <- commandArgs(trailingOnly = TRUE)[3]
+chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
+# chr_prefix <- commandArgs(trailingOnly = TRUE)[4]
+# chrlist <- 1:max_chr
 
 ## use /data/wildmice/ref$ cat NCBIM37_um.fa.amb to figure out the N's
 amb <- read.table(paste0(ref_dir, ref_prefix, ".amb"))
