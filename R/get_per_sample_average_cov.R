@@ -9,8 +9,9 @@ ref <- commandArgs(trailingOnly = TRUE)[3]
 ## species <- "test_pop1"; ref_dir <- "ref/"; ref <- "ref.fa"
 chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
 
+chrlist <- as.numeric(chrlist) # will read in as string from shell
+
 ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
-# chrlist <- 1:max_chr
 
 RData_file_function <- function(species, chr)
     paste0("coverage/coverage.", species, ".chr", chr, ".RData")
@@ -18,8 +19,6 @@ RData_file_function <- function(species, chr)
 
 rebuild <- FALSE
 message("First pass")
-
-chr <- chrlist[1]
 
 depth_sum <- 0
 for(chr in chrlist) {

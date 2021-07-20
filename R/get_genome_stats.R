@@ -4,8 +4,6 @@ ref_dir <- commandArgs(trailingOnly = TRUE)[1]
 ref_prefix <- commandArgs(trailingOnly = TRUE)[2]
 chr_prefix <- commandArgs(trailingOnly = TRUE)[3]
 chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
-# chr_prefix <- commandArgs(trailingOnly = TRUE)[4]
-# chrlist <- 1:max_chr
 
 ## use /data/wildmice/ref$ cat NCBIM37_um.fa.amb to figure out the N's
 amb <- read.table(paste0(ref_dir, ref_prefix, ".amb"))
@@ -16,8 +14,7 @@ ann <- read.table(paste0(ref_dir, ref_prefix, ".ann"),sep="\t")
 to_start <- paste0("^0 ", chr_prefix, chrlist, " ")
 w <- sapply(to_start, function(x) grep(x, ann[, 1]))
 m <- t(sapply(strsplit(as.character(ann[w + 1, 1]), " "), I))
-annL3 <- cbind(chr = chrlist, start = as.numeric(m[, 1]), length = as.numeric(m[, 2]), N = 0)
-
+annL3 <- cbind(chr = as.numeric(chrlist), start = as.numeric(m[, 1]), length = as.numeric(m[, 2]), N = 0)
 
 ## loop through each, partition appropriately
 prev <- 0
