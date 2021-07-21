@@ -214,9 +214,9 @@ rule merge_realigned_bams:
         bam = expand("mapping/{{species}}/{{species}}.realigned.rmdup.bam"),
         bai = expand("mapping/{{species}}/{{species}}.realigned.rmdup.bam.bai")
     params:
-        N='merge_units',
+        N='merge_bams',
         threads=1,
-        queue = "short.qc"
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
     shell:
         'samtools merge {output.bam} {input.bams} && '
