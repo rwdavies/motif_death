@@ -32,10 +32,10 @@ nCores <- as.integer(args[5])
 vcf_file <- file.path(getwd(), args[6])
 HATBAG_DIR <- args[7]
 outputDir <- args[8]
+callable_bed <- args[9]
 
 HATBAG_params_1 <- get_params(outputDate)
 HATBAG_params_2 <- get_per_species_params(species_order)
-callable_bed <- NULL    
 ndge <- 3
 gcW2 <- 5000
 # Klist <- 10 # 6 for test
@@ -56,7 +56,7 @@ if (to_run == "E") {
 # TODO: use fewer cores 
 out <- do.call(
     HATBAG, 
-    c(list(species=species_order, run=to_run, outputDate=outputDate, outputDir=outputDir, vcf_file=vcf_file, nCores=nCores, callable_bed=callable_bed, ndge=3, gcW2=5000),
+    c(list(species=species_order, run=to_run, outputDate=outputDate, outputDir=outputDir, vcf_file=vcf_file, nCores=nCores, callable_bed=callable_bed, ndge=ndge, gcW2=gcW2),
     HATBAG_params_1,
     HATBAG_params_2
     )

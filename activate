@@ -7,6 +7,7 @@ export PATH=/apps/well/git/2.3.4/bin/:${PATH}
 export PATH=/apps/well/bwa/0.7.8/:${PATH} # bwa
 export PATH=/apps/well/samtools/1.4.1/bin/:${PATH} # samtools
 export PATH=/apps/well/htslib/1.4.1/bin/:${PATH} # tabix, bgzip
+export PATH=/apps/well/bedtools/2.27.0/bin/:${PATH} # bedtools, multiIntersectBed 
 
 export TREEMIX="/apps/well/treemix/20151030-gcc4.9.3/bin/treemix"
 export JAVA="/apps/well/java/jdk1.8.0_45/bin/java"
@@ -23,7 +24,7 @@ export STAMPY="/apps/well/stampy/1.0.23-py2.7/stampy.py"
 user=`whoami`
 if [ ${user} == "dcc832" ]
 then
-    export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/${PATH} # Note - easier than changing R library paths for now
+    export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/:${PATH} # Note - easier than changing R library paths for now
     # export USER_CONFIG="/users/davies/dcc832/proj/motif_death/config/dcc832.json"
     export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
     export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"

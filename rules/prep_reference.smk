@@ -19,7 +19,9 @@ rule bwa_mem_ref:
     input:
         ref = REF_DIR + REF_NAME + ".fa"
     output:
-        REF_DIR + REF_NAME + ".fa.sa"
+        REF_DIR + REF_NAME + ".fa.sa",
+        REF_DIR + REF_NAME + ".fa.amb",
+        REF_DIR + REF_NAME + ".fa.ann"
     params: N='bwa_mem_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '

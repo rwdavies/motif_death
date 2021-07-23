@@ -159,7 +159,8 @@ rule get_callable_regions:
         infile = expand("coverage/coverage.{{species}}.chr{chr}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
         summary = REF_DIR + REF_NAME + ".fa.summary.txt"
     output:
-        beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS)
+        beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
+	merged_bed = "coverage/coverage.{species}.callableOnly.bed"
     params:
         N='get_callable_regions',
         threads = 2,
@@ -168,8 +169,25 @@ rule get_callable_regions:
         species='\w{1,40}'
     shell:
         'echo start && '
-        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa && '
-        'echo done'
+        'R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa '
+        '&& echo done'
+
+CALLABLE_MIN_N=CALLABLE_MIN_FRACTION * len(SPECIES_LIST)
+
+rule get_single_callable_regions:
+    input:
+        beds = expand("coverage/coverage.{species}.callableOnly.bed", species = SPECIES_LIST)
+    output:
+        bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+    params:
+        N='get_single_callable_regions',
+        threads = 1,
+        queue = "short.qc"
+    shell:
+        """
+        multiIntersectBed -i {input.beds} | awk '{{if($4 >= ({CALLABLE_MIN_N})) {{print $1"\t"$2"\t"$3}}}}' > {output.bed}
+        """
+
 
 
 rule prepare_treemix:
