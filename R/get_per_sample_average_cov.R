@@ -139,4 +139,13 @@ for(chr in chrlist) {
     unlink(RData_file)
 }
 
+message("Merge them")
+outfile <- paste0("coverage/coverage.", species, ".callableOnly.bed")
+unlink(outfile)
+for(chr in chrlist) {
+    infile <- paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed")
+    system(paste0("cat ", infile, " >> ", outfile))
+}
+
+
 quit(status = 0)
