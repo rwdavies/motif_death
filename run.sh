@@ -73,6 +73,7 @@ SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 export ORDER_CSV=${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+export ORDER_CONFIG="${SCRIPTPATH}/${order_config}"
 
 if [ -f $ORDER_CSV ]
 then
@@ -112,7 +113,7 @@ then
 	 --max-status-checks-per-second 0.1 \
         --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \
          ${other} ${what} \
-        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
+        --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
     ## qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]
 then
@@ -120,7 +121,7 @@ then
         --snakefile ${SNAKEFILE} \
         --jobs ${jobs} \
         ${other} ${what} \
-        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
+        --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
 echo done
 else
     echo bad where: ${where}

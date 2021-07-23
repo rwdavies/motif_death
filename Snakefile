@@ -6,6 +6,7 @@ R_DIR=os.environ["R_DIR"]
 HATBAG_DIR=os.environ["HATBAG_DIR"]
 PYTHON_DIR=os.environ["PYTHON_DIR"]
 ORDER_CSV=os.environ["ORDER_CSV"]
+ORDER_CONFIG=os.environ["ORDER_CONFIG"]
 
 # From config/{order}_{run_id}.json
 RUN_ID=config["RUN_ID"]
@@ -35,8 +36,8 @@ GENOTYPING_THREADS=config["DEFAULTS"]["GENOTYPING_THREADS"] ## might get lucky!
 GENOTYPER=config["DEFAULTS"]["GENOTYPER"]
 WILDCARD_UNIT_CONSTRAINT='[A-Za-z0-9]+' # Note: cannot include _ in here, otherwise considers {unit}_1 as unit?
 
-simpleRepeat_URL = config["HATBAG_PARAMS"]["simpleRepeat_URL"]
-rmask_URL = config["HATBAG_PARAMS"]["rmask_URL"]
+simpleRepeat_URL = config["simpleRepeat_URL"]
+rmask_URL = config["rmask_URL"]
 # Note: need escaped single quotes on below to evaluate correctly
 SIMPLE_REPEAT_HEADER = "\'#bin\tchrom\tchromStart\tchromEnd\tname\tperiod\tcopyNum\tconsensusSize\tperMatch\tperIndel\tscore\tA\tC\tG\tT\tentropy\tsequence\'"
 RMASK_HEADER = "\'#bin\tswScore\tmilliDiv\tmilliDel\tmilliIns\tgenoName\tgenoStart\tgenoEnd\tgenoLeft\tstrand\trepName\trepClass\trepFamily\trepStart\trepEnd\trepLeft\tid\'"
@@ -77,7 +78,7 @@ order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 rule all:
     input:
         f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete",
-        expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
+        # expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 include: "rules/download.smk"
 include: "rules/prep_reference.smk"

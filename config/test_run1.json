@@ -11,6 +11,8 @@
     "GATK_CHR_PREFIX": "",
     "OPERATE_GATK_PER_CHR": "TRUE", 
     "HATBAG_CALLABLE_BED": null,
+    "simpleRepeat_URL": "",
+    "rmask_URL": "",
     "DEFAULTS": {
         "TREEMIX_THREADS": 1,
         "TREEMIX_K": 10,
@@ -21,11 +23,6 @@
         "CALLABLE_MIN_FRACTION": 0.75
     },
     "HATBAG_PARAMS": {
-        "reference": "ref/ref.fa.gz",
-        "simpleRepeat_URL": "ref/simpleRepeat.gz",
-        "rmask_URL": "ref/rmask.gz",
-        "nCores": null,
-        "chrlist": [1,2],
         "genomeSize": 4e5,
         "lineages": {
             "test_pop1": "test_pop1",
