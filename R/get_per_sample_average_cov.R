@@ -9,6 +9,7 @@ ref <- commandArgs(trailingOnly = TRUE)[3]
 ## species <- "chimp"; ref <- "hg38.fa";
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
+## species <- "test_pop1"; ref_dir <- "ref/"; ref <- "ref.fa"
 ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
 
 
@@ -40,15 +41,17 @@ chrlist <- get_chrlist(ref)$chrlist
 RData_file_function <- function(species, chr)
     paste0("coverage/coverage.", species, ".chr", chr, ".RData")
 
-depth_sum <- 0
+
+rebuild <- FALSE
 message("First pass")
 
 chr <- chrlist[1]
 
+depth_sum <- 0
 for(chr in chrlist) {
     message(paste0(chr, ", ", date()))
     RData_file <- RData_file_function(species, chr)
-    if (file.exists(RData_file) == FALSE) {
+    if (rebuild | (file.exists(RData_file) == FALSE)) {
         input_file <- paste0("coverage/coverage.", species, ".chr", chr, ".txt.gz")
         if (file.exists(input_file) == FALSE)
             stop(paste0("Cannot find file:", input_file))
@@ -61,7 +64,8 @@ for(chr in chrlist) {
         message(paste0("extract depth"))
         depth <- as.integer(system(paste0("cut -f2 ", f, " | sed 1d"), intern = TRUE))
         message(paste0("extract L"))        
-        L <- as.integer(system(paste0("cut -f1 ", f, " | sed 1d | cut -c ", 5 + nchar(chr), "-"), intern = TRUE))
+        ## L <- as.integer(system(paste0("cut -f1 ", f, " | sed 1d | cut -c ", 5 + nchar(chr), "-"), intern = TRUE))
+        L <- as.integer(system(paste0("cut -f1 ", f, " | sed 1d | cut -f2 --delimiter=':' "), intern = TRUE))
         ## data <- fread(
         ##     f, data.table = FALSE, nrows = nrows,
         ##     colClasses = c("character", "integer"),
@@ -121,7 +125,7 @@ for(chr in chrlist) {
     message("make bed and save")
     ## turn into bed file
     bed <- cbind(chr, L[starts] - 1, L[ends], callable[starts])
-    callable_bed <- bed[bed[, 4] == 1, 1:3]
+    callable_bed <- bed[bed[, 4] == 1, 1:3, drop = FALSE]
     write.table(
         callable_bed,
         file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
