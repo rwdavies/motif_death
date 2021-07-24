@@ -1,10 +1,29 @@
+#!/usr/bin/env Rscript
+
+library(argparse)
 ## simple script to look at how callable the reference is
 
-ref_dir <- commandArgs(trailingOnly = TRUE)[1]
-ref_prefix <- commandArgs(trailingOnly = TRUE)[2]
-chr_prefix <- commandArgs(trailingOnly = TRUE)[3]
-chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
+parser <- ArgumentParser()
+parser$add_argument("--ref_dir")
+parser$add_argument("--ref_prefix")
+parser$add_argument("--chr_prefix", type = "character", default = "")
+parser$add_argument("chrlist", type= "integer", nargs='*')
 
+# args        <- parser$parse_args()
+# working.dir <- args$working.dir
+# ref_dir <- commandArgs(trailingOnly = TRUE)[1]
+# ref_prefix <- commandArgs(trailingOnly = TRUE)[2]
+# chr_prefix <- commandArgs(trailingOnly = TRUE)[3]
+# chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
+
+args <- parser$parse_args()
+ref_dir <- args$ref_dir
+ref_prefix <- args$ref_prefix
+chr_prefix <- args$chr_prefix
+chrlist <- args$chrlist
+
+# message("prefix:", chr_prefix)
+# message("chrlist:", chrlist)
 ## use /data/wildmice/ref$ cat NCBIM37_um.fa.amb to figure out the N's
 amb <- read.table(paste0(ref_dir, ref_prefix, ".amb"))
 amb2=amb[-1,]

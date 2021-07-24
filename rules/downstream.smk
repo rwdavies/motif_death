@@ -155,7 +155,7 @@ rule prepare_reference:
     wildcard_constraints:
     shell:
         """
-        R -f {R_GET_GENOME_STATS} --args {REF_DIR} {REF_NAME}.fa {GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
+        {R_GET_GENOME_STATS} --ref_dir={REF_DIR} --ref_prefix={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         """
 
 
