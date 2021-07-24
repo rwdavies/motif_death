@@ -19,6 +19,7 @@
     "GENOTYPING_QUEUE": "short.qc",
     "GENOTYPER": "UnifiedGenotyper",
     "GENOTYPING_THREADS": 4,
+    "CALLABLE_MIN_FRACTION": 0.75,
     "HATBAG_PARAMS": {
         "reference": "ref/ref.fa.gz",
         "simpleRepeat_file": "ref/simpleRepeat.gz",

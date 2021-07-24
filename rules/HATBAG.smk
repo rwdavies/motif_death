@@ -77,7 +77,8 @@ def get_hatbag_input(wildcards):
 
 rule HATBAG_HACK_FUNCTION:
     input:
-        get_hatbag_input
+        get_hatbag_input,
+	callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
         decoy = expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
     params:
@@ -87,7 +88,7 @@ rule HATBAG_HACK_FUNCTION:
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:
-        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} {HATBAG_OUTPUT_DATE} {params.threads} vcf/{VCF_PREFIX}.filtered.vcf.gz {HATBAG_DIR} hatbag/{HATBAG_OUTPUT_DIR} && '
+        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} {HATBAG_OUTPUT_DATE} {params.threads} vcf/{VCF_PREFIX}.filtered.vcf.gz {HATBAG_DIR} hatbag/{HATBAG_OUTPUT_DIR} {input.callable_bed} && '
         ' touch {output.decoy} '
 
 
