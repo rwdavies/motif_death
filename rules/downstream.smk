@@ -33,7 +33,7 @@ rule treemix:
 
 rule call_chr:
     input:
-        ref = REF_DIR + REF_NAME + ".fa",
+        ref = f"{REF_DIR}/{REF_NAME}.fa",
         bams = expand("mapping/{species}/{species}.{bam_suffix}", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{species}/{species}.{bam_suffix}.bai", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX)
     output:
@@ -73,7 +73,7 @@ rule filter_chr:
     input:
         input_vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz"),
         input_tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz.tbi"),
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
         filtered_vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz"),
         filtered_tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz.tbi")
@@ -98,7 +98,7 @@ rule merge_chr:
     input:
         vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.filtered.piece{{piece}}.vcf.gz", chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
         tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.filtered.piece{{piece}}.vcf.gz.tbi", chr = CHR_LIST_ONLY_AUTOS, piece = CHR_CHUNKS),
-        ref = REF_DIR + REF_NAME + ".fa"	
+        ref = f"{REF_DIR}/{REF_NAME}.fa"	
     output:
         merged_vcf = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
         merged_tbi = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz.tbi"
@@ -117,7 +117,7 @@ rule merge_chr:
 
 rule calculate_doc:
     input:
-        ref = REF_DIR + REF_NAME + ".fa",
+        ref = f"{REF_DIR}/{REF_NAME}.fa",
         bam = expand("mapping/{{species}}/{{species}}.{bam_suffix}", bam_suffix = BAM_SUFFIX),
         bais = expand("mapping/{{species}}/{{species}}.{bam_suffix}.bai", bam_suffix = BAM_SUFFIX)
     output:
@@ -144,10 +144,10 @@ rule calculate_doc:
 
 rule prepare_reference:
     input:
-        amb = REF_DIR + REF_NAME + ".fa.amb",
-        ann = REF_DIR + REF_NAME + ".fa.ann"
+        amb = f"{REF_DIR}/{REF_NAME}.fa.amb",
+        ann = f"{REF_DIR}/{REF_NAME}.fa.ann"
     output:
-        summary = REF_DIR + REF_NAME + ".fa.summary.txt"    
+        summary = f"{REF_DIR}/{REF_NAME}.fa.summary.txt"
     params:
         N='prepare_reference',
         threads=1,
@@ -162,7 +162,7 @@ rule prepare_reference:
 rule get_callable_regions:
     input:
         infile = expand("coverage/coverage.{{species}}.chr{chr}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
-        summary = REF_DIR + REF_NAME + ".fa.summary.txt"
+        summary = f"{REF_DIR}/{REF_NAME}.fa.summary.txt"
     output:
         beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
 	merged_bed = "coverage/coverage.{species}.callableOnly.bed"

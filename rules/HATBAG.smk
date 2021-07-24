@@ -56,9 +56,9 @@ def get_hatbag_input(wildcards):
         return(
             [
                 f'vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz',
-                f"{EXTERNAL_DIR}{REF_NAME}.simpleRepeat.gz",
-                f"{EXTERNAL_DIR}{REF_NAME}.rmsk.gz",
-                f"{REF_DIR}{REF_NAME}.fa.gz"
+                f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
+                f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
+                f"{REF_DIR}/{REF_NAME}.fa.gz"
             ]
         )
     if run == "B":
@@ -92,12 +92,11 @@ rule HATBAG_HACK_FUNCTION:
         outputDir="hatbag/{SPECIES_ORDER}/{RUN_ID}"
         echo HATBAG output in ${{outputDir}}
         {HATBAG_DIR}HATBAG.R --species={SPECIES_ORDER} --run={wildcards.run} --outputDir=${{outputDir}} \
-            --simpleRepeat_file={EXTERNAL_DIR}{REF_NAME}.simpleRepeat.gz --rmask_file={EXTERNAL_DIR}{REF_NAME}.rmsk.gz \
-            --reference={REF_DIR}{REF_NAME}.fa.gz --outputDate={HATBAG_OUTPUT_DIR} --vcf_file=vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz \
+            --simpleRepeat_file={EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz --rmask_file={EXTERNAL_DIR}/{REF_NAME}.rmsk.gz \
+            --reference={REF_DIR}/{REF_NAME}.fa.gz --outputDate={HATBAG_OUTPUT_DIR} --vcf_file=vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz \
             --nCores={params.threads} --config_json_path={ORDER_CONFIG} --callable_bed={input.callable_bed}
         touch {output.decoy}
         """
-        # cd {HATBAG_DIR} && git log | head -n10 > ${{outputDir}}/{HATBAG_OUTPUT_DIR}/HATBAG_head_git_log.txt
 
 
 

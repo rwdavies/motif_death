@@ -2,9 +2,9 @@ rule download_all:
     input:
         expand("mapping/{species}/{units}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
         expand("mapping/{species}/{units}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
-        EXTERNAL_DIR + REF_NAME + ".simpleRepeat.gz",
-        EXTERNAL_DIR + REF_NAME + ".rmsk.gz",
-        ref = REF_DIR + REF_NAME + ".fa.gz"
+        f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
+        f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
+        ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
         
 # TODO obsolete?
 # rule all_standardized_phred:
@@ -49,7 +49,7 @@ rule download_fastq_2:
 rule download_ref:
     input:
     output:
-        ref = REF_DIR + REF_NAME + ".fa.gz"
+        ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
     params: N='make_ref', threads=1, queue = "short.qc"
     shell:
         'mkdir -p {REF_DIR} && cd {REF_DIR} && '
@@ -59,7 +59,7 @@ rule download_rmask:
     # Note: Adds header if not present
     input:
     output:
-        rmask = EXTERNAL_DIR + REF_NAME + ".rmsk.gz"
+        rmask = f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz"
     params: N='download_rmask', threads=1, queue = "short.qc"
     shell:
         """
@@ -79,7 +79,7 @@ rule download_simple_repeat:
     # Note: Adds header if not present
     input:
     output:
-        simpleRepeat = EXTERNAL_DIR + REF_NAME + ".simpleRepeat.gz"
+        simpleRepeat = f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz"
     params:
         N='download_simple_repeat',
         threads=1,
@@ -91,11 +91,11 @@ rule download_simple_repeat:
         if [ $(gunzip -c {output.simpleRepeat} | head -1 | cut -d$'\t' -f1) != '#bin' ]
         then
             echo Adding header to simpleRepeat file
-            gunzip -c {output.simpleRepeat} > {EXTERNAL_DIR}temp.simpleRepeat
-            echo -e {SIMPLE_REPEAT_HEADER} | cat - {EXTERNAL_DIR}temp.simpleRepeat > {EXTERNAL_DIR}{REF_NAME}.simpleRepeat
-            gzip -f {EXTERNAL_DIR}{REF_NAME}.simpleRepeat
+            gunzip -c {output.simpleRepeat} > {EXTERNAL_DIR}/temp.simpleRepeat
+            echo -e {SIMPLE_REPEAT_HEADER} | cat - {EXTERNAL_DIR}/temp.simpleRepeat > {EXTERNAL_DIR}/{REF_NAME}.simpleRepeat
+            gzip -f {EXTERNAL_DIR}/{REF_NAME}.simpleRepeat
         fi
-        rm {EXTERNAL_DIR}temp.simpleRepeat
+        rm {EXTERNAL_DIR}/temp.simpleRepeat
         """
 
 # TODO Obsolete?

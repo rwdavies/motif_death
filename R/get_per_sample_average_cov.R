@@ -11,7 +11,7 @@ chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
 
 chrlist <- as.numeric(chrlist) # will read in as string from shell
 
-ref_summary_file <- paste0(ref_dir, ref, ".summary.txt")
+ref_summary_file <- file.path(ref_dir, paste0(ref, ".summary.txt"))
 
 RData_file_function <- function(species, chr)
     paste0("coverage/coverage.", species, ".chr", chr, ".RData")

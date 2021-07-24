@@ -49,11 +49,11 @@ for name in $TEST_NAMES; do
 done
 
 ## Copy reference files
-TEST_REF_DIR="${ANALYSIS_DIR}/${REF_DIR}"
-TEST_EXTERNAL_DIR="${ANALYSIS_DIR}/${EXTERNAL_DIR}"
+TEST_REF_DIR="${ANALYSIS_DIR}/${REF_DIR}/"
+TEST_EXTERNAL_DIR="${ANALYSIS_DIR}/${EXTERNAL_DIR}/"
 mkdir -p $TEST_REF_DIR $TEST_EXTERNAL_DIR
-rsync -a ref.fa.gz ${TEST_REF_DIR} # --exclude=*.fastq.gz
-rsync -a rmask.gz ${TEST_EXTERNAL_DIR}ref.rmsk.gz # --exclude=*.fastq.gz
+rsync -a ref.fa.gz ${TEST_REF_DIR}
+rsync -a rmask.gz ${TEST_EXTERNAL_DIR}ref.rmsk.gz
 rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
