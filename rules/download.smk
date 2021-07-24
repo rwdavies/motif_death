@@ -63,7 +63,6 @@ rule download_rmask:
     params: N='download_rmask', threads=1, queue = "short.qc"
     shell:
         """
-        set -e
         mkdir -p {EXTERNAL_DIR}
         wget -O {output.rmask} {rmask_URL}
         if [ $(gunzip -c {output.rmask} | head -1 | cut -d$'\t' -f1) != '#bin' ]
@@ -73,7 +72,7 @@ rule download_rmask:
             echo -e {RMASK_HEADER} | cat - {EXTERNAL_DIR}/temp.rmsk > {EXTERNAL_DIR}/{REF_NAME}.rmsk
             gzip -f {EXTERNAL_DIR}/{REF_NAME}.rmsk
         fi
-        # rm {EXTERNAL_DIR}/temp.rmsk
+        rm {EXTERNAL_DIR}/temp.rmsk
         """
 
 rule download_simple_repeat:
@@ -87,7 +86,6 @@ rule download_simple_repeat:
         queue = "short.qc"
     shell:
         """
-        set -e
         mkdir -p {EXTERNAL_DIR} 
         wget -O {output.simpleRepeat} {simpleRepeat_URL} 
         if [ $(gunzip -c {output.simpleRepeat} | head -1 | cut -d$'\t' -f1) != '#bin' ]

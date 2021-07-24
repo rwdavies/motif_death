@@ -10,7 +10,6 @@
     "TREEMIX_OUTGROUP": "test_outgroup",
     "GATK_CHR_PREFIX": "",
     "OPERATE_GATK_PER_CHR": "TRUE", 
-    "HATBAG_CALLABLE_BED": null,
     "simpleRepeat_URL": "",
     "rmask_URL": "",
     "DEFAULTS": {
