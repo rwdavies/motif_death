@@ -8,14 +8,17 @@ then
       exit 1
 fi
 
+other=$1 # n_cores if integer, or can be `--dryrun`, `--debug-dag`, `--reason`
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 SIMULATE_DIR="${SCRIPTPATH}/../"simulate_input/ # in top level of motif_death
 export ANALYSIS_DIR="${SCRIPTPATH}/../"simulate_results/ # in top level of motif_death
-TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test.json"
-eval "$(jq -r '@sh "HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR) HATBAG_OUTPUT_DATE=\(.HATBAG_OUTPUT_DATE)"' ${TEST_CONFIG_PATH})"
-HATBAG_TEST_DIR="${ANALYSIS_DIR}hatbag/${HATBAG_OUTPUT_DIR}/${HATBAG_OUTPUT_DATE}"
+TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test_run1.json"
+eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER) RUN_ID=\(.RUN_ID) HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR)"' ${TEST_CONFIG_PATH})"
+eval "$(jq -r '@sh "REF_DIR=\(.REF_DIR) EXTERNAL_DIR=\(.EXTERNAL_DIR) SPECIES_MAPPING_INFO_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' ${SCRIPTPATH}/../config/filenames.json)"
+FULL_HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${SPECIES_ORDER}/${RUN_ID}/${HATBAG_OUTPUT_DIR}"
 
 if [ -d "${SIMULATE_DIR}" ]
 then
@@ -45,20 +48,22 @@ for name in $TEST_NAMES; do
         "${SCRIPTPATH}/../species_mapping_info/test_${name}.json" # TODO: change back to SPECIES_MAP_DIR
 done
 
-# # Copy reference files
-REF_DIR="${ANALYSIS_DIR}/ref/"
-mkdir -p $REF_DIR
-rsync -a . $REF_DIR --exclude=*.fastq.gz
+## Copy reference files
+TEST_REF_DIR="${ANALYSIS_DIR}/${REF_DIR}/"
+TEST_EXTERNAL_DIR="${ANALYSIS_DIR}/${EXTERNAL_DIR}/"
+mkdir -p $TEST_REF_DIR $TEST_EXTERNAL_DIR
+rsync -a ref.fa.gz ${TEST_REF_DIR}
+rsync -a rmask.gz ${TEST_EXTERNAL_DIR}ref.rmsk.gz
+rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
 
-## TODO: be able to set number of cores when running
-./run.sh config/test.json all local
+./run.sh config/test_run1.json all local $other
 
 # Check test here
 
 # Test test_file exists
-test_file=${HATBAG_TEST_DIR}/F_document/qq.losslin.all.K6.png
+test_file=${FULL_HATBAG_OUTPUT_DIR}/F_document/qq.losslin.all.K6.png
 if test -f "${test_file}"; then
     echo "test passed; ${test_file} exists"
 else
@@ -67,4 +72,4 @@ else
 fi
 
 # Test significant k-mers
-./R/test_HATBAG.R ${HATBAG_TEST_DIR}
+./R/test_HATBAG.R ${FULL_HATBAG_OUTPUT_DIR}

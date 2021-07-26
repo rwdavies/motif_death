@@ -3,27 +3,27 @@
 ##
 rule HATBAG_HACK:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete"
 
 
 rule HATBAG_HACK_A:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/A_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/A_complete"
 rule HATBAG_HACK_B:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/B_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/B_complete"
 rule HATBAG_HACK_C:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/C_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/C_complete"
 rule HATBAG_HACK_D:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/D_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/D_complete"
 rule HATBAG_HACK_E:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/E_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/E_complete"
 rule HATBAG_HACK_F:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete"
 
 
 
@@ -55,11 +55,10 @@ def get_hatbag_input(wildcards):
     if run == "A":
         return(
             [
-                f'vcf/{VCF_PREFIX}.filtered.vcf.gz',
-                f'{config["HATBAG_PARAMS"]["reference"]}',
-                # Note: below are necessary, but can't be obtained through Snakemake right now
-                # f'{config["HATBAG_PARAMS"]["simpleRepeat_file"]}',
-                # f'{config["HATBAG_PARAMS"]["rmask_file"]}'
+                f'vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz',
+                f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
+                f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
+                f"{REF_DIR}/{REF_NAME}.fa.gz"
             ]
         )
     if run == "B":
@@ -72,15 +71,15 @@ def get_hatbag_input(wildcards):
         need = "D"
     if run == "F":
         need = "E"
-    return(expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/" + need + "_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE))
+    return(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/" + need + "_complete")
 
 
 rule HATBAG_HACK_FUNCTION:
     input:
         get_hatbag_input,
-	callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+	    callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
-        decoy = expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/{{run}}_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE)
+        decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/{{{{run}}}}_complete")
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,
@@ -88,8 +87,16 @@ rule HATBAG_HACK_FUNCTION:
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:
-        '{R_DIR}run_all.R {R_DIR} {SPECIES_ORDER} {wildcards.run} {HATBAG_OUTPUT_DATE} {params.threads} vcf/{VCF_PREFIX}.filtered.vcf.gz {HATBAG_DIR} hatbag/{HATBAG_OUTPUT_DIR} {input.callable_bed} && '
-        ' touch {output.decoy} '
+        """
+        echo HATBAG analyzing {SPECIES_ORDER}
+        outputDir="hatbag/{SPECIES_ORDER}/{RUN_ID}"
+        echo HATBAG output in ${{outputDir}}
+        {HATBAG_DIR}HATBAG.R --species={SPECIES_ORDER} --run={wildcards.run} --outputDir=${{outputDir}} \
+            --simpleRepeat_file={EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz --rmask_file={EXTERNAL_DIR}/{REF_NAME}.rmsk.gz \
+            --reference={REF_DIR}/{REF_NAME}.fa.gz --outputDate={HATBAG_OUTPUT_DIR} --vcf_file=vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz \
+            --nCores={params.threads} --config_json_path={ORDER_CONFIG} --callable_bed={input.callable_bed}
+        touch {output.decoy}
+        """
 
 
 

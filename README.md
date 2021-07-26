@@ -13,7 +13,8 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ```
 . activate
-./scripts/test.sh
+./scripts/test.sh --dryrun # check what will be run (will fail test)
+./scripts/test.sh 4 # specify number of cores, default 8 if left blank
 ```
 
 ## Workthrough / explanation
@@ -48,8 +49,14 @@ R -f R/prepare_inputs.R --args artiodactyla
 
 ### B Motif Death & HATBAG run
 
-For a given run, titled 'artiodactyla', consisting of several species e.g. goat, cow.
-Once you have `species_mapping_info/{species}.json` for all species you are interested in (from step A), create `config/artiodactyla.json` with all arguments for motif death and HATBAG (you can reference .jsons for other orders in the same folder).
+Once you have `species_mapping_info/{species}.json` for all desired species, you can configure a Motif Death & HATBAG run.
+These is done by writing a `config/{...}.json` (see `config/test_run1.json` for reference).
+In this config, you must set SPECIES_ORDER (e.g., "artiodactyla"), SPECIES_LIST (e.g., ["cow", "buffalo"]) and RUN_ID (e.g., "20200706"), amongst other variables, which determins output locations.
+
+By assumption, only 1 reference is used for any species in a given SPECIES_ORDER.
+This means once a species is mapped, it will not be remapped if reused in a different run, and files are available in `{ANALYSIS_DIR}/mapping/{species}`.
+VCF, Treemix, and HATBAG are all run specific (as each run could have different group of species), so their output is in e.g., `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/...`.
+HATBAG has an additional HATBAG_OUTPUT_DIR parameter, so you can rerun the same SPECIES_ORDER, RUN_ID with different HATBAG settings, with output in `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/`.
 
 ### B.1. Downloading files
 

@@ -22,6 +22,15 @@ then
      jobs=8
 fi
 
+# if $other is integer, use as number of cores
+if [ "$other" -eq "$other" ] 2> /dev/null 
+then
+    jobs=$other
+    other="" # so not passed to Snakemake
+fi
+
+echo "Running with ${jobs} cores"
+
 # put this all in config
 ## if [ "${species}" == "human" ] || [ "${species}" == "chimp" ] || [ "${species}" == "gorilla" ] || [ "${species}" == "orangutan" ] || [ "${species}" == "baboon" ] || [ "${species}" == "marmoset" ] ||  [ "${species}" == "baboon" ] || [ "${species}" == "macaque" ] || [ "${species}" == "snubnosedmonkey" ] || [ "${species}" == "vervet" ] || [ "${species}" == "squirrelmonkey" ] || [ "${species}" == "neanderthal" ]  || [ "${species}" == "denisovan" ]
 
@@ -31,9 +40,6 @@ fi
 # elif [ "${species}" == "baboon" ] || [ "${species}" == "marmoset" ] ||  [ "${species}" == "baboon" ] || [ "${species}" == "macaque" ]
 # then
 #     SPECIES_ORDER="cercopithecoidea"
-# elif [ "${species}" == "cow" ] || [ "${species}" == "goat" ] || [ "${species}" == "giraffe" ] || [ "${species}" == "okapi" ] || [ "${species}" == "whitetaileddeer" ]  || [ "${species}" == "reddeer" ] || [ "${species}" == "buffalo" ]
-# then
-#     SPECIES_ORDER="artiodactyla"
 # elif [ "${species}" == "FAM" ] || [ "${species}" == "caroli" ] || [ "${species}" == "CAST_EiJ" ] || [ "${species}" == "WSB_EiJ" ] || [ "${species}" == "SPRET_EiJ" ] || [ "${species}" == "PWK_PhJ" ]
 # then
 #     SPECIES_ORDER="mice"
@@ -57,25 +63,17 @@ fi
 #     SPECIES_ORDER="canidae"
 # elif [ "${species}" == "ursidae" ]
 # then
-#     SPECIES_ORDER="ursidae"    
-# elif [ "${species}" == "test_pop1" ] || [ "${species}" == "test_pop2" ] || [ "${species}" == "test_outgroup" ]
-# then
-#     SPECIES_ORDER="test"     
+#     SPECIES_ORDER="ursidae"
 # else
 #     echo Cannot determine order
 #     exit 1
-# fi
-
-# if [ $other = "test" ]
-# then
-#     # use ANALYSIS_DIR defined in scripts/test.sh
-#     other="" # so not passed to snakemake
 # fi
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
 export ORDER_CSV=${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv
+export ORDER_CONFIG="${SCRIPTPATH}/${order_config}"
 
 if [ -f $ORDER_CSV ]
 then
@@ -115,7 +113,7 @@ then
 	 --max-status-checks-per-second 0.1 \
         --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \
          ${other} ${what} \
-        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
+        --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
     ## qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
 elif [ $where == "local" ]
 then
@@ -123,7 +121,7 @@ then
         --snakefile ${SNAKEFILE} \
         --jobs ${jobs} \
         ${other} ${what} \
-        --configfiles "${SCRIPTPATH}/${order_config}" "${SCRIPTPATH}/config/filenames.json"
+        --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
 echo done
 else
     echo bad where: ${where}

@@ -6,34 +6,41 @@ R_DIR=os.environ["R_DIR"]
 HATBAG_DIR=os.environ["HATBAG_DIR"]
 PYTHON_DIR=os.environ["PYTHON_DIR"]
 ORDER_CSV=os.environ["ORDER_CSV"]
+ORDER_CONFIG=os.environ["ORDER_CONFIG"]
 
-# From config/{order}.json
-VCF_PREFIX = config["VCF_PREFIX"]
-HATBAG_OUTPUT_DIR = config["HATBAG_OUTPUT_DIR"]
-HATBAG_OUTPUT_DATE=config["HATBAG_OUTPUT_DATE"]
-HATBAG_PARAMS=config["HATBAG_PARAMS"]
+# From config/{order}_{run_id}.json
+RUN_ID=config["RUN_ID"]
+HATBAG_OUTPUT_DIR=config["HATBAG_OUTPUT_DIR"]
 SPECIES_ORDER=config["SPECIES_ORDER"]
 REF_DIR = config["REF_DIR"]
+EXTERNAL_DIR = config["EXTERNAL_DIR"]
 REF_NAME = config["REF_NAME"]
 REF_URL = config["REF_URL"]
 BAM_SUFFIX = config["BAM_SUFFIX"]
-WILDCARD_CHR_CONSTRAINT = config["WILDCARD_CHR_CONSTRAINT"]
-## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
-GENOTYPING_QUEUE=config["GENOTYPING_QUEUE"]
-GENOTYPING_THREADS=config["GENOTYPING_THREADS"] ## might get lucky!
-GENOTYPER=config["GENOTYPER"]
 SPECIES_LIST=config["SPECIES_LIST"]
 CHR_LIST_ONLY_AUTOS=config["CHR_LIST_ONLY_AUTOS"]
-VCF_PREFIX=config["VCF_PREFIX"]
-TREEMIX_PREFIX=config["TREEMIX_PREFIX"]
-TREEMIX_K=config["TREEMIX_K"]
 TREEMIX_OUTGROUP=config["TREEMIX_OUTGROUP"]
-TREEMIX_THREADS=config["TREEMIX_THREADS"]
-CALLABLE_MIN_FRACTION=config["CALLABLE_MIN_FRACTION"]
 GATK_CHR_PREFIX = config["GATK_CHR_PREFIX"]
 OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
 FASTQ_SUFFIX = config["FASTQ_SUFFIX"]
 CHR_LIST = config["CHR_LIST"]
+HATBAG_PARAMS=config["HATBAG_PARAMS"]
+
+TREEMIX_THREADS=config["DEFAULTS"]["TREEMIX_THREADS"]
+CALLABLE_MIN_FRACTION=config["DEFAULTS"]["CALLABLE_MIN_FRACTION"]
+TREEMIX_K=config["DEFAULTS"]["TREEMIX_K"]
+WILDCARD_CHR_CONSTRAINT = config["DEFAULTS"]["WILDCARD_CHR_CONSTRAINT"]
+## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
+GENOTYPING_QUEUE=config["DEFAULTS"]["GENOTYPING_QUEUE"]
+GENOTYPING_THREADS=config["DEFAULTS"]["GENOTYPING_THREADS"] ## might get lucky!
+GENOTYPER=config["DEFAULTS"]["GENOTYPER"]
+WILDCARD_UNIT_CONSTRAINT='[A-Za-z0-9]+' # Note: cannot include _ in here, otherwise considers {unit}_1 as unit?
+
+simpleRepeat_URL = config["simpleRepeat_URL"]
+rmask_URL = config["rmask_URL"]
+# Note: need escaped single quotes on below to evaluate correctly
+SIMPLE_REPEAT_HEADER = "\'#bin\tchrom\tchromStart\tchromEnd\tname\tperiod\tcopyNum\tconsensusSize\tperMatch\tperIndel\tscore\tA\tC\tG\tT\tentropy\tsequence\'"
+RMASK_HEADER = "\'#bin\tswScore\tmilliDiv\tmilliDel\tmilliIns\tgenoName\tgenoStart\tgenoEnd\tgenoLeft\tstrand\trepName\trepClass\trepFamily\trepStart\trepEnd\trepLeft\tid\'"
 
 # From config/filenames.json
 R_GET_GENOME_STATS=R_DIR + config["R_GET_GENOME_STATS"]
@@ -58,7 +65,7 @@ for species in SPECIES_LIST:
 MERGE_VCF_GATK_INPUT=""
 for piece in CHR_CHUNKS:
     for chr in CHR_LIST_ONLY_AUTOS:
-    	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + " -V vcf/" + VCF_PREFIX + ".chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
+    	MERGE_VCF_GATK_INPUT = MERGE_VCF_GATK_INPUT + f" -V vcf/{SPECIES_ORDER}/{RUN_ID}/" + "chr" + str(chr) + ".filtered.piece" + str(piece) + ".vcf.gz"
 
 if OPERATE_GATK_PER_CHR == "FALSE":
     INDEL_REALIGNMENT_QUEUE="long.qc"
@@ -70,8 +77,8 @@ order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 
 rule all:
     input:
-        expand("hatbag/{hatbag_output_dir}/{hatbag_output_date}/F_complete", hatbag_output_dir = HATBAG_OUTPUT_DIR, hatbag_output_date = HATBAG_OUTPUT_DATE),
-        expand("treemix/{treemix_prefix}.treemix.migrants.{migrants}.out.treeout.gz", treemix_prefix = TREEMIX_PREFIX, migrants = TREEMIX_MIGRANT_RANGE)
+        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete",
+        # expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 include: "rules/download.smk"
 include: "rules/prep_reference.smk"

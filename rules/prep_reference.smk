@@ -1,15 +1,16 @@
 rule reference_all:
     input:
-        REF_DIR + REF_NAME + ".fa.sa",
-        REF_DIR + REF_NAME + ".fa.fai",
-        REF_DIR + REF_NAME + ".dict",
-        REF_DIR + REF_NAME + ".stidx"
+        f"{REF_DIR}/{REF_NAME}.fa.sa",
+        f"{REF_DIR}/{REF_NAME}.fa.fai",
+        f"{REF_DIR}/{REF_NAME}.dict",
+        f"{REF_DIR}/{REF_NAME}.stidx"
 
 rule unzip_ref:
     input:
-        ref = REF_DIR + REF_NAME + ".fa.gz"
+        ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
+        # ref = ancient(f"{REF_DIR}/{REF_NAME}.fa.gz")
     output:
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     params: N='unzip_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
@@ -17,11 +18,11 @@ rule unzip_ref:
 
 rule bwa_mem_ref:
     input:
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        REF_DIR + REF_NAME + ".fa.sa",
-        REF_DIR + REF_NAME + ".fa.amb",
-        REF_DIR + REF_NAME + ".fa.ann"
+        f"{REF_DIR}/{REF_NAME}.fa.sa",
+        f"{REF_DIR}/{REF_NAME}.fa.amb",
+        f"{REF_DIR}/{REF_NAME}.fa.ann"
     params: N='bwa_mem_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
@@ -29,9 +30,9 @@ rule bwa_mem_ref:
 
 rule faidx_ref:
     input:
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        ref = REF_DIR + REF_NAME + ".fa.fai"
+        ref = f"{REF_DIR}/{REF_NAME}.fa.fai"
     params: N='faidx_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
@@ -39,9 +40,9 @@ rule faidx_ref:
 
 rule picard_ref:
     input:
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        ref = REF_DIR + REF_NAME + ".dict"
+        ref = f"{REF_DIR}/{REF_NAME}.dict"
     params: N='picard_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
@@ -49,10 +50,10 @@ rule picard_ref:
 
 rule stampy_ref:
     input:
-        ref = REF_DIR + REF_NAME + ".fa"
+        ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        REF_DIR + REF_NAME + ".sthash",
-        REF_DIR + REF_NAME + ".stidx"
+        f"{REF_DIR}/{REF_NAME}.sthash",
+        f"{REF_DIR}/{REF_NAME}.stidx"
     params: N='stampy_ref', threads=1, queue = "short.qc"
     shell:
         'cd {REF_DIR} && '
