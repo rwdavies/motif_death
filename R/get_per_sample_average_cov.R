@@ -60,7 +60,7 @@ for(chr in chrlist) {
         }
         ##unlink(input_file)        
     } else {
-        message("load")
+        message("load existing Rdata")
         load(RData_file)
     }
     depth_sum <- depth_sum + sum(as.numeric(depth), na.rm = TRUE)
@@ -99,13 +99,16 @@ for(chr in chrlist) {
     ## turn into bed file
     bed <- cbind(chr, L[starts] - 1, L[ends], callable[starts])
     callable_bed <- bed[bed[, 4] == 1, 1:3, drop = FALSE]
-    write.table(
-        callable_bed,
-        file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
-        row.names = FALSE,
-        col.names = FALSE,
-        sep = "\t",
-        quote = FALSE
+    withr::with_options(
+        c(scipen = 10), # stop numbers from output in scientific notation
+        write.table(
+            callable_bed,
+            file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
+            row.names = FALSE,
+            col.names = FALSE,
+            sep = "\t",
+            quote = FALSE
+        )
     )
     ##message("remove RData files")
     RData_file <- RData_file_function(species, chr)

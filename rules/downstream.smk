@@ -58,9 +58,7 @@ rule call_chr:
         '{IBAMS} '
         '${{minus_L}} '
         '-o {output.vcf} '
-        # '-o vcf/{SPECIES_ORDER}/{RUN_ID}/chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz '
         '2> '
-        # 'vcf/{SPECIES_ORDER}/{RUN_ID}/chr{wildcards.chr}.piece{wildcards.piece}.vcf.gz.log '
         '{output.vcf}.log'
 
 # TODO Robbie Temp - delete
@@ -89,7 +87,6 @@ rule filter_chr:
         '--filterExpression "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0" '
         '--filterName "HardFilter" '
         '-o {output.filtered_vcf} 2> '
-        # 'vcf/logs/{VCF_PREFIX}.chr{chr}.filtered.piece{piece}.vcf.gz.log && '
         '{output.filtered_vcf}.log && '
         'rm {input.input_vcf} && rm {input.input_tbi} '
 
@@ -151,7 +148,7 @@ rule prepare_reference:
     params:
         N='prepare_reference',
         threads=1,
-        queue = "short.qc"
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
     shell:
         """
@@ -165,11 +162,11 @@ rule get_callable_regions:
         summary = f"{REF_DIR}/{REF_NAME}.fa.summary.txt"
     output:
         beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
-	merged_bed = "coverage/coverage.{species}.callableOnly.bed"
+	    merged_bed = "coverage/coverage.{species}.callableOnly.bed"
     params:
         N='get_callable_regions',
         threads = 2,
-        queue = "short.qc"
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
         species='\w{1,40}'
     shell:
@@ -193,6 +190,11 @@ rule get_single_callable_regions:
     shell:
         """
         multiIntersectBed -i {input.beds} | awk '{{if($4 >= ({CALLABLE_MIN_N})) {{print $1"\t"$2"\t"$3}}}}' > {output.bed}
+        if [ ! -s {output.bed} ]
+        then
+            echo "Error: file {output.bed} is empty"
+            exit 1
+        fi
         """
 
 
@@ -206,7 +208,7 @@ rule prepare_treemix:
     params:
         N='prepare_treemix',
         threads=1,
-        queue = "short.qc@@short.hge" # TODO: change back to all nodes if can figure out 'bash illegal instruction...' error on `${{PYTHON_352}} ...`
+        queue = "short.qc@@short.hge"
     shell:
         'mkdir -p treemix && '
         'echo recode as treemix format && date && '
@@ -221,7 +223,7 @@ rule run_treemix:
     params:
         N='run_treemix',
         threads=TREEMIX_THREADS,
-        queue = "short.qc@@short.hge" # TODO: change back to all nodes if can figure out 'bash illegal instruction...' error on `${{TREEMIX}} ...`
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
         migrants='\d{1,2}'
     shell:
