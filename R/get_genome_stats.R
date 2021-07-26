@@ -15,12 +15,6 @@ ref_dir <- args$ref_dir
 ref <- args$ref
 chr_prefix <- args$chr_prefix
 chr_nums <- args$chrlist
-
-# ref_dir <- "ref"
-# ref <- "ref.fa"
-# chr_prefix <- ""
-# chr_nums <- c(1,2)
-
 chrlist <- paste0(chr_prefix, chr_nums)
 
 ## use /data/wildmice/ref$ cat NCBIM37_um.fa.amb to figure out the N's
@@ -32,7 +26,13 @@ ann <- read.table(file.path(ref_dir, paste0(ref, ".ann")),sep="\t")
 to_start <- paste0("^0 ", chrlist, " ")
 w <- sapply(to_start, function(x) grep(x, ann[, 1]))
 m <- t(sapply(strsplit(as.character(ann[w + 1, 1]), " "), I))
-annL3 <- data.frame(chr = chrlist, start = as.numeric(m[, 1]), length = as.numeric(m[, 2]), N = 0, stringsAsFactors = FALSE)
+annL3 <- data.frame(
+    chr = chrlist,
+    start = as.numeric(m[, 1]),
+    length = as.numeric(m[, 2]),
+    N = 0,
+    stringsAsFactors = FALSE
+)
 
 ## loop through each, partition appropriately
 prev <- 0
