@@ -152,7 +152,7 @@ rule prepare_reference:
     wildcard_constraints:
     shell:
         """
-        {R_GET_GENOME_STATS} --ref_dir={REF_DIR} --ref_prefix={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
+        {R_GET_GENOME_STATS} --ref_dir={REF_DIR} --ref={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         """
 
 
@@ -172,7 +172,7 @@ rule get_callable_regions:
     shell:
         """
         echo start get_callable_regions
-        R -f {R_GET_PER_SAMPLE_AVERAGE_COV} --args {wildcards.species} {REF_DIR} {REF_NAME}.fa {CHR_LIST_ONLY_AUTOS}
+        {R_GET_PER_SAMPLE_AVERAGE_COV} --species={wildcards.species} --ref_dir={REF_DIR} --ref={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         echo done get_callable_regions
         """
 
@@ -190,7 +190,7 @@ rule get_single_callable_regions:
     shell:
         """
         multiIntersectBed -i {input.beds} | awk '{{if($4 >= ({CALLABLE_MIN_N})) {{print $1"\t"$2"\t"$3}}}}' > {output.bed}
-        if [ ! -s {output.bed} ]
+        if [ ! -s {output.bed} ] # raise error if output is empty
         then
             echo "Error: file {output.bed} is empty"
             exit 1
