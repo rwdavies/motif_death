@@ -1,0 +1,48 @@
+{
+    "SPECIES_ORDER": "whippomorpha",
+    "RUN_ID": "20210713",
+    "SPECIES_LIST": ["minkewhale", "belugawhale", "killerwhale", "pygmyspermwhale", "amazonriverdolphin"],
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "balAcu1",
+    "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/bigZips/balAcu1.fa.gz",
+    "CHR_LIST_ONLY_AUTOS": [7095,7096,7194,7273,7341,7401,7436,7470,7508,7539,7568,7598,7599,7625,7651,7679,7703,7719,7749,7780,7797,7819,7836,7837,7855,7868,7886,7904,7922,7937,7951,7964,7979,7994,7995,8011,8027,8041,8052,8063,8075,8086,8097,8108,8119,8186,8230,8275,8308,8341,8342,8353,8375,8396,8438,8449,8461,8554,8639],
+    "CHR_LIST": [7095,7096,7194,7273,7341,7401,7436,7470,7508,7539,7568,7598,7599,7625,7651,7679,7703,7719,7749,7780,7797,7819,7836,7837,7855,7868,7886,7904,7922,7937,7951,7964,7979,7994,7995,8011,8027,8041,8052,8063,8075,8086,8097,8108,8119,8186,8230,8275,8308,8341,8342,8353,8375,8396,8438,8449,8461,8554,8639],
+    "GATK_CHR_PREFIX": "KI53",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "minkewhale",
+    "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/simpleRepeat.txt.gz",
+    "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/rmsk.txt.gz",
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    },
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2431671281,
+        "lineages": {
+            "belugawhale": "belugawhale",
+            "killerwhale": "killerwhale",
+            "AncBelKil": ["killerwhale", "belugawhale"],
+            "amazonriverdolphin": "amazonriverdolphin",
+            "AncBelKilAma": ["AncBelKil", "amazonriverdolphin"],
+            "pygmyspermwhale": "pygmyspermwhale"
+        },
+        "ancestral_lineage": {
+            "AncBelKilAmaPyg": ["AncBelKilAma", "pygmyspermwhale"]
+        },
+        "outgroups": ["minkewhale"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    }
+}
