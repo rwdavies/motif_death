@@ -1,0 +1,50 @@
+{
+    "SPECIES_ORDER": "artiodactyla",
+    "RUN_ID": "20210708",
+    "SPECIES_LIST": ["buffalo", "cow", "giraffe", "goat", "okapi", "whitetaileddeer"],
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "bosTau8",
+    "REF_URL": "http://hgdownload.cse.ucsc.edu/goldenPath/bosTau8/bigZips/bosTau8.fa.gz",
+    "CHR_LIST_ONLY_AUTOS": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29],
+    "CHR_LIST": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,"X"],
+    "GATK_CHR_PREFIX": "chr",
+    "OPERATE_GATK_PER_CHR": "TRUE", 
+    "TREEMIX_OUTGROUP": "whitetaileddeer",
+    "simpleRepeat_URL": "TODO",
+    "rmask_URL": "TODO",
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    },
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2670044500,
+        "lineages": {
+            "cow": "cow",
+            "buffalo": "buffalo",
+            "ACB": ["cow", "buffalo"],
+            "goat": "goat",
+            "ACBG": ["ACB", "goat"],
+            "giraffe": "giraffe",
+            "okapi": "okapi",
+            "AOGi": ["giraffe", "okapi"]
+        },
+        "ancestral_lineage": {
+            "AOGiACBG": ["AOGi", "ACBG"]
+        },
+        "outgroups": ["whitetaileddeer"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    }
+}
