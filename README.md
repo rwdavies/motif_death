@@ -23,10 +23,6 @@ All packages and user-specific paths are specified in `activate`. **A new user s
     * Note: you should be able to ignore pdflatex errors that arise during installation
     * Note: Make sure you add `options(bitmapType='cairo')` to `~/.Rprofile` as specified in cluster instructions ([more details](https://stackoverflow.com/questions/24999983/r-unable-to-start-device-png-capabilities-has-true-for-png))
 1. You can install your own version of **Snakemake** and specify it in `activate`. See [Snakemake docs](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for more instructions, which requires first installing conda or mamba, and then installing snakemake within an environment.
-1. You may also need to allow execution of the following files as programs:
-    ```
-    chmod +x run.sh R/get_genome_stats.R R/get_per_sample_average_cov.R
-    ```
 
 **Before running any other steps, ensure you run the following first:**
 
