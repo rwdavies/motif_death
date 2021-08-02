@@ -4,15 +4,15 @@
 
 # TODO: replace with one function
 def get_bam_pieces(wildcards):
-    n_mapping_pieces = order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"]
-    pieces = range(1, int(n_mapping_pieces + 1), 1)
-    filenames = [f"mapping/{wildcards.species}/{wildcards.units}_piece{i}.bam" for i in pieces]
+    unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
+    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
+    filenames = expand(rules.extract_and_map_fastq_pieces.output.bam, **wildcards, piece=pieces)
     return filenames
 
 def get_bai_pieces(wildcards):
-    n_mapping_pieces = order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"]
-    pieces = range(1, int(n_mapping_pieces + 1), 1)
-    filenames = [f"mapping/{wildcards.species}/{wildcards.units}_piece{i}.bam.bai" for i in pieces]
+    unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
+    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
+    filenames = expand(rules.extract_and_map_fastq_pieces.output.bai, **wildcards, piece=pieces)
     return filenames
 
 # TODO: replace with one function
@@ -26,45 +26,63 @@ def get_bai_units(wildcards):
     filenames = [f"mapping/{wildcards.species}/{u}.bam.bai" for u in units]
     return filenames
 
+
 rule map_all:
     input:
         expand("mapping/{species}/{species}.realigned.rmdup.bam", species = order_df["species"])
 
+
+checkpoint chunk_fastq:
+    input:
+        pen1 = f"mapping/{{species}}/{{units}}_1.{FASTQ_SUFFIX}",
+        pen2 = f"mapping/{{species}}/{{units}}_2.{FASTQ_SUFFIX}",
+    output:
+        unit_dir = directory("mapping/{species}/temp/{units}")
+    params:
+        N='chunk_fastq',
+        n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"]
+    wildcard_constraints:
+        units=WILDCARD_UNIT_CONSTRAINT
+    shell:
+        """
+        mkdir -p {output.unit_dir}
+        # Note: bash math below. division returns integer only. must be multiple of 4 as fasta is in 4 line pieces.
+        lines_per_chunk=$(($(gunzip -c {input.pen1} | wc -l) / {params.n_mapping_pieces}))
+        lines_per_chunk=$(($lines_per_chunk - $(($lines_per_chunk % 4))))
+        zcat {input.pen1} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/1.{FASTQ_SUFFIX}.temp.
+        zcat {input.pen2} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/2.{FASTQ_SUFFIX}.temp.
+        """
+
+
 ## make head this for faster version "| head -n 400"
 rule extract_and_map_fastq_pieces:
     input:
-        pen1 = expand("mapping/{{species}}/{{units}}_1.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
-        pen2 = expand("mapping/{{species}}/{{units}}_2.{fastq_suffix}", fastq_suffix = FASTQ_SUFFIX),
+        pen1_chunk = f"mapping/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
+        pen2_chunk = f"mapping/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
         ref_sa = f"{REF_DIR}/{REF_NAME}.fa.sa",
         ref_fai = f"{REF_DIR}/{REF_NAME}.fa.fai",
         ref_dict = f"{REF_DIR}/{REF_NAME}.dict",
         ref_stidx = f"{REF_DIR}/{REF_NAME}.stidx"
     output:
-        bam = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam")),
-        bai = temp(expand("mapping/{{species}}/{{units}}_piece{{piece}}.bam.bai"))
+        bam = temp("mapping/{species}/temp/{units}/piece.{piece}.bam"),
+        bai = temp("mapping/{species}/temp/{units}/piece.{piece}.bam.bai")
     params:
         N='map',
         threads=1,
-        n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"],
         queue = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "mapping_queue"],
         lb = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "lb"],
         lb_insert_size = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "lb_insert_size"],
         flowcell_barcode = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "flowcell_barcode"],
-        flowcell_lane = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "flowcell_lane"],
-        head=" "
+        flowcell_lane = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "flowcell_lane"]
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT,
-        piece='\d{1,3}'
+        piece='\D{1,3}'
     shell:
-        'set +o pipefail && '
-        'gunzip -c {input.pen1} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen1}.temp.{wildcards.piece}.gz && '
-        'gunzip -c {input.pen2} {params.head} | awk \'{{ if( ((int((NR - 1) / 4) ) % {params.n_mapping_pieces}) == ({wildcards.piece} - 1)) {{print $0 }} }} \' | gzip -1 > {input.pen2}.temp.{wildcards.piece}.gz && '
-        'set -o pipefail && '
         'bwa mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{wildcards.species}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{wildcards.species}\\tLB:{params.lb}" '
         ' {input.ref} -t{params.threads} '
-        '{input.pen1}.temp.{wildcards.piece}.gz '
-        '{input.pen2}.temp.{wildcards.piece}.gz | '
+        '{input.pen1_chunk} '
+        '{input.pen2_chunk} | '
         'samtools view -Sb - > {output.bam}.temp1.bam && '
         '${{PYTHON_278}} ${{STAMPY}} '
         '--readgroup='
@@ -78,46 +96,39 @@ rule extract_and_map_fastq_pieces:
         '-M {output.bam}.temp1.bam | '
         'samtools view -Sb - > {output.bam}.temp2.bam && '
         'echo STAMPY DONE && '
-        'samtools sort -T mapping/{wildcards.species}/ -o {output.bam} {output.bam}.temp2.bam && '
-        'samtools index {output.bam} && '
-        'rm {output.bam}.temp1.bam && '	
-        'rm {output.bam}.temp2.bam && '
-        'rm {input.pen1}.temp.{wildcards.piece}.gz {input.pen2}.temp.{wildcards.piece}.gz'
+        'samtools sort -T mapping/{wildcards.species}/temp/{wildcards.units}/ -o {output.bam} {output.bam}.temp2.bam && '
+        'samtools index {output.bam} '
 
 
 ## after STAMPY command maybe --sensitive
 ## make head this for faster version "| head -n 400"
-# TODO: how to get pieces per species?
 rule merge_mapped_pieces:
     input:
-        # bams = expand("mapping/{{species}}/{{units}}_piece{piece}.bam", piece = get_n_mapping_pieces),
-        # bais = expand("mapping/{{species}}/{{units}}_piece{piece}.bam.bai", piece = get_n_mapping_pieces)
         bams = get_bam_pieces,
         bais = get_bai_pieces
     output:
-        bam = temp(expand("mapping/{{species}}/{{units}}.bam")),
-        bai = temp(expand("mapping/{{species}}/{{units}}.bam.bai"))
+        bam = temp("mapping/{species}/{units}.bam"),
+        bai = temp("mapping/{species}/{units}.bam.bai")
     params:
         N='merge_pieces',
         threads=1,
         queue = "long.qc"
     wildcard_constraints:
-        units=WILDCARD_UNIT_CONSTRAINT,
-        piece='\d{1,3}'
+        units=WILDCARD_UNIT_CONSTRAINT
     shell:
-        'samtools merge {output.bam} {input.bams} && '
-        'samtools index {output.bam} '
+        """
+        samtools merge {output.bam} {input.bams}
+        samtools index {output.bam}
+        """
 
  
 rule merge_units:
     input:
-        # bams = expand("mapping/{{species}}/{units}.bam", units = order_df.loc[("test_pop1"), "units"].values),
-        # bais = expand("mapping/{{species}}/{units}.bam.bai", units = order_df.loc[("test_pop1"), "units"].values)
         bams = get_bam_units,
         bais = get_bai_units
     output:
-        bam = temp(expand("mapping/{{species}}/{{species}}.bam")),
-        bai = temp(expand("mapping/{{species}}/{{species}}.bam.bai"))
+        bam = temp("mapping/{species}/{species}.bam"),
+        bai = temp("mapping/{species}/{species}.bam.bai")
     params:
         N='merge_units',
         threads=1,
@@ -125,18 +136,20 @@ rule merge_units:
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
-        'samtools merge {output.bam} {input.bams} && '
-        'samtools index {output.bam} '
+        """
+        samtools merge {output.bam} {input.bams}
+        samtools index {output.bam}
+        """
 
 
 # can be done at the end due to library usage
 rule mark_duplicates:
     input:
-        bam = expand("mapping/{{species}}/{{species}}.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.bam.bai")
+        bam = "mapping/{species}/{species}.bam",
+        bai = "mapping/{species}/{species}.bam.bai"
     output:
-        bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai")
+        bam = temp("mapping/{species}/{species}.rmdup.bam"),
+        bai = temp("mapping/{species}/{species}.rmdup.bam.bai")
     params:
         N='rmdup',
         threads=3,
@@ -149,18 +162,16 @@ rule mark_duplicates:
         'OUTPUT={output.bam} '
         'MAX_FILE_HANDLES_FOR_READ_ENDS_MAP=1000 '
         'METRICS_FILE={output.bam}.metrics.txt && '
-        'samtools index {output.bam} && '
-        'rm {input.bam} && '
-        'rm {input.bai}'
+        'samtools index {output.bam}'
 
 
 rule identify_indels:
     input:
-        bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
+        bam = "mapping/{species}/{species}.rmdup.bam",
+        bai = "mapping/{species}/{species}.rmdup.bam.bai",
         ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        outfile = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")
+        outfile = "mapping/{species}/intervals/{species}.chr{chr}.intervals.list"
     params:
         N='indel_identify',
         threads=1,
@@ -182,13 +193,13 @@ rule identify_indels:
 
 rule realign_around_indels:
     input:
-        bam = expand("mapping/{{species}}/{{species}}.rmdup.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.rmdup.bam.bai"),
+        bam = "mapping/{species}/{species}.rmdup.bam",
+        bai = "mapping/{species}/{species}.rmdup.bam.bai",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
-        intervals = expand("mapping/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list")	
+        intervals = "mapping/{species}/intervals/{species}.chr{chr}.intervals.list"
     output:
-        bam = expand("mapping/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bai")
+        bam = temp("mapping/{species}/{species}.chr{chr}.realigned.rmdup.bam"),
+        bai = temp("mapping/{species}/{species}.chr{chr}.realigned.rmdup.bai")
     params:
         N='apply_indel',
         threads=1,
@@ -211,20 +222,18 @@ rule merge_realigned_bams:
         bams = expand("mapping/{{species}}/{{species}}.chr{chr}.realigned.rmdup.bam", chr = CHR_LIST),
         bais = expand("mapping/{{species}}/{{species}}.chr{chr}.realigned.rmdup.bai", chr = CHR_LIST)
     output:
-        bam = expand("mapping/{{species}}/{{species}}.realigned.rmdup.bam"),
-        bai = expand("mapping/{{species}}/{{species}}.realigned.rmdup.bam.bai")
+        bam = "mapping/{species}/{species}.realigned.rmdup.bam",
+        bai = "mapping/{species}/{species}.realigned.rmdup.bam.bai"
     params:
         N='merge_bams',
         threads=1,
         queue = "short.qc@@short.hge"
     wildcard_constraints:
     shell:
-        'samtools merge {output.bam} {input.bams} && '
-        'samtools index {output.bam} && '
-        'rm {input.bams} && '
-        'rm {input.bais} && '
-        'rm mapping/{wildcards.species}/{wildcards.species}.rmdup.bam && '
-        'rm mapping/{wildcards.species}/{wildcards.species}.rmdup.bam.bai '	
+        """
+        samtools merge {output.bam} {input.bams}
+        samtools index {output.bam}
+        """
 
 
 
