@@ -112,17 +112,18 @@ for(chr in chr_nums) {
     ## turn into bed file
     bed <- data.frame(paste0(chr_prefix, chr), L[starts] - 1, L[ends], callable[starts], stringsAsFactors = FALSE)
     callable_bed <- bed[bed[, 4] == 1, 1:3, drop = FALSE]
-    withr::with_options(
-        c(scipen = 10), # stop numbers from output in scientific notation
-        write.table(
-            callable_bed,
-            file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
-            row.names = FALSE,
-            col.names = FALSE,
-            sep = "\t",
-            quote = FALSE
-        )
+
+    options(scipen=10) # stop numbers from output in scientific notation
+    write.table(
+        callable_bed,
+        file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
+        row.names = FALSE,
+        col.names = FALSE,
+        sep = "\t",
+        quote = FALSE
     )
+    options(scipen=0)
+    
     ##message("remove RData files")
     RData_file <- RData_file_function(species, chr)
     unlink(RData_file)
