@@ -119,6 +119,8 @@ rule merge_mapped_pieces:
         """
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
+        # TODO: below is hack as snakemake temp(directory(...)) not working
+        rm -r mapping/{wildcards.species}/temp 
         """
 
  
