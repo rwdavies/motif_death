@@ -1,15 +1,28 @@
-##library("data.table")
+#!/usr/bin/env Rscript
 
-species <- commandArgs(trailingOnly = TRUE)[1]
-ref_dir <- commandArgs(trailingOnly = TRUE)[2]
-ref <- commandArgs(trailingOnly = TRUE)[3]
+library(argparse)
+
+parser <- ArgumentParser()
+parser$add_argument("--species")
+parser$add_argument("--ref_dir")
+parser$add_argument("--ref")
+parser$add_argument("--chr_prefix", type = "character", default = "")
+parser$add_argument("chrlist", type= "integer", nargs='*')
+
+args <- parser$parse_args()
+species <- args$species
+ref_dir <- args$ref_dir
+ref <- args$ref
+chr_prefix <- args$chr_prefix
+chr_nums <- args$chrlist
+
+chr_nums <- as.numeric(chr_nums)
+chrlist <- paste0(chr_prefix, chr_nums)
+
 ## species <- "chimp"; ref <- "hg38.fa";
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"
 ## species <- "test_pop1"; ref_dir <- "ref/"; ref <- "ref.fa"
-chrlist <- commandArgs(trailingOnly = TRUE)[-c(1,2,3)]
-
-chrlist <- as.numeric(chrlist) # will read in as string from shell
 
 ref_summary_file <- file.path(ref_dir, paste0(ref, ".summary.txt"))
 
@@ -21,7 +34,7 @@ rebuild <- FALSE
 message("First pass")
 
 depth_sum <- 0
-for(chr in chrlist) {
+for(chr in chr_nums) {
     message(paste0(chr, ", ", date()))
     RData_file <- RData_file_function(species, chr)
     if (rebuild | (file.exists(RData_file) == FALSE)) {
@@ -60,7 +73,7 @@ for(chr in chrlist) {
         }
         ##unlink(input_file)        
     } else {
-        message("load")
+        message("load existing Rdata")
         load(RData_file)
     }
     depth_sum <- depth_sum + sum(as.numeric(depth), na.rm = TRUE)
@@ -83,7 +96,7 @@ cat(av_cov, file = paste0("coverage/average.", species, ".txt"))
 
 
 message("Second pass")
-for(chr in chrlist) {
+for(chr in chr_nums) {
     message(chr)
     message("load")
     load(file = paste0("coverage/coverage.", species, ".chr", chr, ".RData"))
@@ -97,8 +110,10 @@ for(chr in chrlist) {
     ends <- c(which(d != 0), length(callable))
     message("make bed and save")
     ## turn into bed file
-    bed <- cbind(chr, L[starts] - 1, L[ends], callable[starts])
+    bed <- data.frame(paste0(chr_prefix, chr), L[starts] - 1, L[ends], callable[starts], stringsAsFactors = FALSE)
     callable_bed <- bed[bed[, 4] == 1, 1:3, drop = FALSE]
+
+    options(scipen=10) # stop numbers from output in scientific notation
     write.table(
         callable_bed,
         file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
@@ -107,6 +122,8 @@ for(chr in chrlist) {
         sep = "\t",
         quote = FALSE
     )
+    options(scipen=0)
+    
     ##message("remove RData files")
     RData_file <- RData_file_function(species, chr)
     unlink(RData_file)
@@ -115,7 +132,7 @@ for(chr in chrlist) {
 message("Merge them")
 outfile <- paste0("coverage/coverage.", species, ".callableOnly.bed")
 unlink(outfile)
-for(chr in chrlist) {
+for(chr in chr_nums) {
     infile <- paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed")
     system(paste0("cat ", infile, " >> ", outfile))
 }

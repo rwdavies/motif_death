@@ -1,30 +1,38 @@
 #!/usr/bin/env Rscript
 
 library(argparse)
+
 ## simple script to look at how callable the reference is
 
 parser <- ArgumentParser()
 parser$add_argument("--ref_dir")
-parser$add_argument("--ref_prefix")
+parser$add_argument("--ref")
 parser$add_argument("--chr_prefix", type = "character", default = "")
 parser$add_argument("chrlist", type= "integer", nargs='*')
 
 args <- parser$parse_args()
 ref_dir <- args$ref_dir
-ref_prefix <- args$ref_prefix
+ref <- args$ref
 chr_prefix <- args$chr_prefix
-chrlist <- args$chrlist
+chr_nums <- args$chrlist
+chrlist <- paste0(chr_prefix, chr_nums)
 
 ## use /data/wildmice/ref$ cat NCBIM37_um.fa.amb to figure out the N's
-amb <- read.table(file.path(ref_dir, paste0(ref_prefix, ".amb")))
+amb <- read.table(file.path(ref_dir, paste0(ref, ".amb")))
 amb2=amb[-1,]
 
 ## tricky 
-ann <- read.table(file.path(ref_dir, paste0(ref_prefix, ".ann")),sep="\t")
-to_start <- paste0("^0 ", chr_prefix, chrlist, " ")
+ann <- read.table(file.path(ref_dir, paste0(ref, ".ann")),sep="\t")
+to_start <- paste0("^0 ", chrlist, " ")
 w <- sapply(to_start, function(x) grep(x, ann[, 1]))
 m <- t(sapply(strsplit(as.character(ann[w + 1, 1]), " "), I))
-annL3 <- cbind(chr = as.numeric(chrlist), start = as.numeric(m[, 1]), length = as.numeric(m[, 2]), N = 0)
+annL3 <- data.frame(
+    chr = chrlist,
+    start = as.numeric(m[, 1]),
+    length = as.numeric(m[, 2]),
+    N = 0,
+    stringsAsFactors = FALSE
+)
 
 ## loop through each, partition appropriately
 prev <- 0
@@ -46,7 +54,7 @@ if (sum(is.na(annL4)) > 0)
 
 write.table(
     annL4,
-    file = file.path(ref_dir, paste0(ref_prefix, ".summary.txt")),
+    file = file.path(ref_dir, paste0(ref, ".summary.txt")),
     row.names = FALSE,
     col.names = TRUE,
     sep = "\t",
