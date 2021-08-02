@@ -5,10 +5,6 @@ motif_death
 
 This repository contains code to download, pre-process, map, and variant call related species for use in motif death research.
 
-## Warning!
-
-**Repo will only run through for test data in current state, as additional specifications for HATBAG in `R/run_all_functions.R` have not been done for other orders / species.**
-
 ## Testing
 
 ```
@@ -29,6 +25,7 @@ All packages and user-specific paths are specified in `activate`. **A new user s
 1. You can install your own version of **Snakemake** and specify it in `activate`. See [Snakemake docs](https://snakemake.readthedocs.io/en/stable/getting_started/installation.html) for more instructions, which requires first installing conda or mamba, and then installing snakemake within an environment.
 
 **Before running any other steps, ensure you run the following first:**
+
 ```
 . activate
 ```
@@ -55,7 +52,7 @@ In this config, you must set SPECIES_ORDER (e.g., "artiodactyla"), SPECIES_LIST 
 
 By assumption, only 1 reference is used for any species in a given SPECIES_ORDER.
 This means once a species is mapped, it will not be remapped if reused in a different run, and files are available in `{ANALYSIS_DIR}/mapping/{species}`.
-VCF, Treemix, and HATBAG are all run specific (as each run could have different group of species), so their output is in e.g., `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/...`.
+VCF, Treemix, and HATBAG are all RUN_ID specific (as each run could have different group of species), so their output is in e.g., `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/...`.
 HATBAG has an additional HATBAG_OUTPUT_DIR parameter, so you can rerun the same SPECIES_ORDER, RUN_ID with different HATBAG settings, with output in `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/`.
 
 ### B.1. Downloading files
@@ -79,19 +76,17 @@ Mapping: This might take a few hours, or a few days to run through, depending on
 
 Downstream: Once all the samples from an order have been downloaded and mapped, it is time to call variants, and calculate depth of coverage, from which callable regions are derived, where "callable region" means regions where we can reasonably expect to call variants.
 
-Downstream: The above should also run treemix (can be manually run using `./run.sh config/artiodactyla.json treemix cluster`), which creates some plots in the analysis directory `treemix/` which shows the relationship between samples. This is pre-supposed in most cases, i.e. based on prior evidence, we assume a relationship between samples, though ideally we would get this from this plot. This is currently maually interpreted / assumed, though it would be good it this could be automated (at least, the within tree relationships - probably OK to assume the outgroup). The results from this (the interpreted results) are currently used in `R/run_all_functions.R` which should probably be automated.
+Downstream: The above should also run treemix (can be manually run using `./run.sh config/artiodactyla.json treemix cluster`), which creates some plots in the analysis directory `treemix/` which shows the relationship between samples. This is pre-supposed in most cases, i.e. based on prior evidence, we assume a relationship between samples and specify this in the config json, though ideally we would get this from this plot. This is currently manually interpreted / assumed, though it would be good it this could be automated (at least, the within tree relationships - probably OK to assume the outgroup).
 
 HATBAG: HATBAG itself is a relatively OK piece of code. It can be run from the command line.  The current integration of this into the script is very hacky. It should work - it does work - but it is inelegant, and was put together now in a brute force fashion (previously this ran on a single compute server with 300+ GB of RAM, rather than on a cluster). Old code towards this goal (in `HATBAG.smk`) still exists but isn't quite working.  
 
 ## Appendix
-Fixed directory and filenames specified in `config/filenames.json`.
+Directory paths and filenames specified in `config/filenames.json`.
 
 ## TODOs
 
 * Mapping: Note that the number of cores being used per chromosome is a parameter set somewhere, one option is to make this parameter more visible, another is to break the region into chunks and call the genome in chunks them combine back together. This would run faster and more easily on the cluster but requires some coding.
 * Once mapping complete and BAM OK, add in deletion of original fastq files (now done manually)
-* `get_per_sample_average_cor.R` requires manual intervention to set list of chromosomes for new species, fix this so it runs automatically
-* HATBAG requires manual downloading of files (explanation of how this was done, and how this might be automated, to be discussed in time) from UCSC as specified in `R/run_all_functions.R` for now (simpleRepeat file, rmask file). This also requires manual specification of paths and values in `R/run_all_functions.R`
 * Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`
 * Make HATBAG use far far fewer temporary files in steps B -> C (and later?)
 * Check out Step C, gainat, nonRepeat, artiodactyla, took ~6 hours?
