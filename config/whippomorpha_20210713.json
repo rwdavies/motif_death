@@ -12,10 +12,10 @@
     "TREEMIX_OUTGROUP": "minkewhale",
     "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/simpleRepeat.txt.gz",
     "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/rmsk.txt.gz",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "DEFAULTS": {
         "TREEMIX_THREADS": 1,
         "TREEMIX_K": 5000,
-        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
         "GENOTYPING_QUEUE": "short.qc",
         "GENOTYPER": "UnifiedGenotyper",
         "GENOTYPING_THREADS": 4,

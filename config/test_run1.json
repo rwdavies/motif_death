@@ -12,10 +12,10 @@
     "OPERATE_GATK_PER_CHR": "TRUE", 
     "simpleRepeat_URL": "",
     "rmask_URL": "",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "DEFAULTS": {
         "TREEMIX_THREADS": 1,
         "TREEMIX_K": 10,
-        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
         "GENOTYPING_QUEUE": "short.qc",
         "GENOTYPER": "UnifiedGenotyper",
         "GENOTYPING_THREADS": 4,
