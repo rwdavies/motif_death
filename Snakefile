@@ -60,7 +60,7 @@ elif GENOTYPER == "UnifiedGenotyper":
 
 IBAMS=""
 for species in SPECIES_LIST:
-    IBAMS = IBAMS + " -I mapping/" + species + "/" + species + "." + BAM_SUFFIX
+    IBAMS = IBAMS + f" -I mapping/{SPECIES_ORDER}/{species}/{species}.{BAM_SUFFIX}"
 
 MERGE_VCF_GATK_INPUT=""
 for piece in CHR_CHUNKS:

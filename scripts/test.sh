@@ -39,13 +39,13 @@ TEST_NAMES=$(find *.fastq.gz | cut -d _ -f 1 | uniq)
 for name in $TEST_NAMES; do
     # echo $name
     # copy fastqs
-    SPECIES_DIR="${ANALYSIS_DIR}/mapping/test_${name}"
+    SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/test_${name}"
     mkdir -p $SPECIES_DIR
     rsync -a "${name}"* $SPECIES_DIR
     # create json
     jq --null-input --arg species "test_$name" --arg unit "$name" \
         '{"species": $species, "n_mapping_pieces": 20, "platform": "Illumina", "mapping_queue": "short.qc", "units": {($unit): {"1": "dummy_URL", "2": "dummy_URL", "lb": "dummyout", "lb_insert_size": "100", "flowcell_barcode": "X1", "flowcell_lane": "1"}}}' > \
-        "${SCRIPTPATH}/../species_mapping_info/test_${name}.json" # TODO: change back to SPECIES_MAP_DIR
+        "${SCRIPTPATH}/../${SPECIES_MAP_DIR_NAME}/test_${name}.json"
 done
 
 ## Copy reference files

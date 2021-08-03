@@ -18,26 +18,26 @@ def get_bai_pieces(wildcards):
 # TODO: replace with one function
 def get_bam_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{wildcards.species}/{u}.bam" for u in units]
+    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{u}.bam" for u in units]
     return filenames
 
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{wildcards.species}/{u}.bam.bai" for u in units]
+    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{u}.bam.bai" for u in units]
     return filenames
 
 
 rule map_all:
     input:
-        expand("mapping/{species}/{species}.realigned.rmdup.bam", species = order_df["species"])
+        expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.realigned.rmdup.bam", species = order_df["species"])
 
 
 checkpoint chunk_fastq:
     input:
-        pen1 = f"mapping/{{species}}/{{units}}_1.{FASTQ_SUFFIX}",
-        pen2 = f"mapping/{{species}}/{{units}}_2.{FASTQ_SUFFIX}",
+        pen1 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.{FASTQ_SUFFIX}",
+        pen2 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.{FASTQ_SUFFIX}",
     output:
-        unit_dir = directory("mapping/{species}/temp/{units}")
+        unit_dir = directory(f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}")
     params:
         N='chunk_fastq',
         threads=1,
@@ -59,16 +59,16 @@ checkpoint chunk_fastq:
 ## make head this for faster version "| head -n 400"
 rule extract_and_map_fastq_pieces:
     input:
-        pen1_chunk = f"mapping/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
-        pen2_chunk = f"mapping/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
+        pen1_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
+        pen2_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
         ref_sa = f"{REF_DIR}/{REF_NAME}.fa.sa",
         ref_fai = f"{REF_DIR}/{REF_NAME}.fa.fai",
         ref_dict = f"{REF_DIR}/{REF_NAME}.dict",
         ref_stidx = f"{REF_DIR}/{REF_NAME}.stidx"
     output:
-        bam = temp("mapping/{species}/temp/{units}/piece.{piece}.bam"),
-        bai = temp("mapping/{species}/temp/{units}/piece.{piece}.bam.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/piece.{{piece}}.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/piece.{{piece}}.bam.bai")
     params:
         N='map',
         threads=1,
@@ -98,7 +98,7 @@ rule extract_and_map_fastq_pieces:
         '-M {output.bam}.temp1.bam | '
         'samtools view -Sb - > {output.bam}.temp2.bam && '
         'echo STAMPY DONE && '
-        'samtools sort -T mapping/{wildcards.species}/temp/{wildcards.units}/ -o {output.bam} {output.bam}.temp2.bam && '
+        'samtools sort -T mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/ -o {output.bam} {output.bam}.temp2.bam && '
         'samtools index {output.bam} '
 
 
@@ -109,8 +109,8 @@ rule merge_mapped_pieces:
         bams = get_bam_pieces,
         bais = get_bai_pieces
     output:
-        bam = temp("mapping/{species}/{units}.bam"),
-        bai = temp("mapping/{species}/{units}.bam.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}.bam.bai")
     params:
         N='merge_pieces',
         threads=1,
@@ -122,7 +122,7 @@ rule merge_mapped_pieces:
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
         # TODO: below is hack as snakemake temp(directory(...)) not working
-        rm -r mapping/{wildcards.species}/temp 
+        rm -r mapping/{SPECIES_ORDER}/{wildcards.species}/temp 
         """
 
  
@@ -131,8 +131,8 @@ rule merge_units:
         bams = get_bam_units,
         bais = get_bai_units
     output:
-        bam = temp("mapping/{species}/{species}.bam"),
-        bai = temp("mapping/{species}/{species}.bam.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.bam.bai")
     params:
         N='merge_units',
         threads=1,
@@ -149,11 +149,11 @@ rule merge_units:
 # can be done at the end due to library usage
 rule mark_duplicates:
     input:
-        bam = "mapping/{species}/{species}.bam",
-        bai = "mapping/{species}/{species}.bam.bai"
+        bam = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.bam",
+        bai = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.bam.bai"
     output:
-        bam = temp("mapping/{species}/{species}.rmdup.bam"),
-        bai = temp("mapping/{species}/{species}.rmdup.bam.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam.bai")
     params:
         N='rmdup',
         threads=3,
@@ -171,11 +171,11 @@ rule mark_duplicates:
 
 rule identify_indels:
     input:
-        bam = "mapping/{species}/{species}.rmdup.bam",
-        bai = "mapping/{species}/{species}.rmdup.bam.bai",
+        bam = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam",
+        bai = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam.bai",
         ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
-        outfile = "mapping/{species}/intervals/{species}.chr{chr}.intervals.list"
+        outfile = f"mapping/{SPECIES_ORDER}/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list"
     params:
         N='indel_identify',
         threads=1,
@@ -185,7 +185,7 @@ rule identify_indels:
         'if [ \"{OPERATE_GATK_PER_CHR}\" == \"FALSE" ]; then '
         'minus_L=\" \" ; else '
         'minus_L=\"-L {GATK_CHR_PREFIX}{wildcards.chr}\" ; fi && '
-        'mkdir -p mapping/{wildcards.species}/intervals && '
+        'mkdir -p mapping/{SPECIES_ORDER}/{wildcards.species}/intervals && '
         '${{JAVA}} -Xmx8g -jar ${{GATK}} '
         '-T RealignerTargetCreator '
         '-R {input.ref} '
@@ -197,13 +197,13 @@ rule identify_indels:
 
 rule realign_around_indels:
     input:
-        bam = "mapping/{species}/{species}.rmdup.bam",
-        bai = "mapping/{species}/{species}.rmdup.bam.bai",
+        bam = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam",
+        bai = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.rmdup.bam.bai",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
-        intervals = "mapping/{species}/intervals/{species}.chr{chr}.intervals.list"
+        intervals = f"mapping/{SPECIES_ORDER}/{{species}}/intervals/{{species}}.chr{{chr}}.intervals.list"
     output:
-        bam = temp("mapping/{species}/{species}.chr{chr}.realigned.rmdup.bam"),
-        bai = temp("mapping/{species}/{species}.chr{chr}.realigned.rmdup.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.chr{{chr}}.realigned.rmdup.bai")
     params:
         N='apply_indel',
         threads=1,
@@ -223,11 +223,11 @@ rule realign_around_indels:
 
 rule merge_realigned_bams:
     input:
-        bams = expand("mapping/{{species}}/{{species}}.chr{chr}.realigned.rmdup.bam", chr = CHR_LIST),
-        bais = expand("mapping/{{species}}/{{species}}.chr{chr}.realigned.rmdup.bai", chr = CHR_LIST)
+        bams = expand(f"mapping/{SPECIES_ORDER}/{{{{species}}}}/{{{{species}}}}.chr{{chr}}.realigned.rmdup.bam", chr = CHR_LIST),
+        bais = expand(f"mapping/{SPECIES_ORDER}/{{{{species}}}}/{{{{species}}}}.chr{{chr}}.realigned.rmdup.bai", chr = CHR_LIST)
     output:
-        bam = "mapping/{species}/{species}.realigned.rmdup.bam",
-        bai = "mapping/{species}/{species}.realigned.rmdup.bam.bai"
+        bam = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}",
+        bai = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}.bai"
     params:
         N='merge_bams',
         threads=1,

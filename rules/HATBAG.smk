@@ -77,7 +77,7 @@ def get_hatbag_input(wildcards):
 rule HATBAG_HACK_FUNCTION:
     input:
         get_hatbag_input,
-	    callable_bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+	    callable_bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
         decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/{{{{run}}}}_complete")
     params:
