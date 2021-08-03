@@ -40,6 +40,8 @@ checkpoint chunk_fastq:
         unit_dir = directory("mapping/{species}/temp/{units}")
     params:
         N='chunk_fastq',
+        threads=1,
+        queue = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "mapping_queue"],
         n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"]
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
