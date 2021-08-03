@@ -46,14 +46,41 @@ R -f R/prepare_inputs.R --args artiodactyla
 
 ### B Motif Death & HATBAG run
 
-Once you have `species_mapping_info/{species}.json` for all desired species, you can configure a Motif Death & HATBAG run.
-These is done by writing a `config/{...}.json` (see `config/test_run1.json` for reference).
-In this config, you must set SPECIES_ORDER (e.g., "artiodactyla"), SPECIES_LIST (e.g., ["cow", "buffalo"]) and RUN_ID (e.g., "20200706"), amongst other variables, which determins output locations.
+Once you have `species_mapping_info/{species}.json` for all desired species, you can run the pipeline.
+First, write a `config/{...}.json` (see `config/test_run1.json` for reference).
+In this config, you must set `SPECIES_ORDER` (e.g., artiodactyla), `SPECIES_LIST` (e.g. cow, buffalo) and `RUN_ID` (e.g., 20200706), amongst other variables.
 
-By assumption, only 1 reference is used for any species in a given SPECIES_ORDER.
-This means once a species is mapped, it will not be remapped if reused in a different run, and files are available in `{ANALYSIS_DIR}/mapping/{species}`.
-VCF, Treemix, and HATBAG are all RUN_ID specific (as each run could have different group of species), so their output is in e.g., `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/...`.
-HATBAG has an additional HATBAG_OUTPUT_DIR parameter, so you can rerun the same SPECIES_ORDER, RUN_ID with different HATBAG settings, with output in `{ANALYSIS_DIR}/vcf/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/`.
+By assumption, one reference is used for all mapping within a given `SPECIES_ORDER`.
+This means once a species is mapped, it will not be remapped if used in a different run.
+To re-map species with a different reference, you should create a new config with a different `SPECIES_ORDER`.
+This will redownload fastqs in a different folder, so manage storage space.
+
+VCF, Treemix, and HATBAG are all run specific (as you can have multiple runs within the same order with different species).
+HATBAG has an additional `HATBAG_OUTPUT_DIR` parameter, so you can rerun the same order and run with different HATBAG settings.  
+
+The resulting folder structure is below:
+
+```
+{ANALYSIS_DIR}
+├── external # rmasks, simpleRepeats downloaded here
+├── ref # references downloaded here
+├── mapping
+│   └── {SPECIES_ORDER}
+│       └── {species} # fastq downloaded here and mapped
+├── coverage
+│   └── {SPECIES_ORDER}
+├── treemix
+│   └── {SPECIES_ORDER}
+│       └── {RUN_ID}
+├── vcf
+│   └── {SPECIES_ORDER}
+│       └── {RUN_ID}
+├── hatbag
+│   └── {SPECIES_ORDER}
+│       └── {RUN_ID}
+│           └── {HATBAG_OUTPUT_DIR}
+└── logs # snakemake logs
+```
 
 ### B.1. Downloading files
 
