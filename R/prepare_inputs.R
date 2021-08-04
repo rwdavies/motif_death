@@ -17,26 +17,34 @@
 
 R_DIR <- Sys.getenv("R_DIR")
 ENA_DIR <- Sys.getenv("ENA_DIR")
-SPECIES_MAP_DIR_NAME <- Sys.getenv("SPECIES_MAP_DIR_NAME")
 group <- commandArgs(trailingOnly = TRUE)
 
 # TODO Robbie temp
 if (1 == 0) {
-    
+
+    R_DIR <- "~/proj/motif_death/R/"
+    ENA_DIR <- "/well/davies/shared/motif_death_resources/Other ENA excel/"
     ANALYSIS_DIR='/well/myers/rwdavies/primates/'
-    R_DIR="~/proj/motif_death/R/"
-    ENA_DIR="/well/davies/shared/motif_death_resources/Other ENA excel/"
     group <- "artiodactyla"
     
 }
 
-source(file.path(R_DIR, "prepare_inputs_functions.R"))
-dir.create(file.path(SPECIES_MAP_DIR_NAME))
+## hacky - move to motif_death home
+setwd(file.path(dirname(R_DIR)))
+
+## ugh, good enough for now
+library(jsonlite)
+config_json_path <- file.path(dirname(R_DIR), "config", "filenames.json")
+config <- fromJSON(config_json_path)
+SPECIES_MAP_DIR_NAME <- config[["SPECIES_MAP_DIR_NAME"]]
+
 
 
 ## choose
 if (group == "artiodactyla") {
     info <- get_artiodactyla_info()
+} else if (group == "avian") {
+    info <- get_bird_info()
 } else {
     stop("fix this file!")
 }
