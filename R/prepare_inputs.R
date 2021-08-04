@@ -31,13 +31,14 @@ if (1 == 0) {
 
 ## hacky - move to motif_death home
 setwd(file.path(dirname(R_DIR)))
+source(file.path(R_DIR, "prepare_inputs_functions.R"))
 
 ## ugh, good enough for now
 library(jsonlite)
 config_json_path <- file.path(dirname(R_DIR), "config", "filenames.json")
 config <- fromJSON(config_json_path)
 SPECIES_MAP_DIR_NAME <- config[["SPECIES_MAP_DIR_NAME"]]
-
+print(SPECIES_MAP_DIR_NAME)
 
 
 ## choose
