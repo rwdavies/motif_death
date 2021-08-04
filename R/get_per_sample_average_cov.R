@@ -8,7 +8,7 @@ parser$add_argument("--species")
 parser$add_argument("--ref_dir")
 parser$add_argument("--ref")
 parser$add_argument("--chr_prefix", type = "character", default = "")
-parser$add_argument("chrlist", type= "integer", nargs='*')
+parser$add_argument("chrlist", type= "character", nargs='*')
 
 args <- parser$parse_args()
 order <- args$order
@@ -18,7 +18,6 @@ ref <- args$ref
 chr_prefix <- args$chr_prefix
 chr_nums <- args$chrlist
 
-chr_nums <- as.numeric(chr_nums)
 chrlist <- paste0(chr_prefix, chr_nums)
 
 ## species <- "chimp"; ref <- "hg38.fa";
