@@ -58,8 +58,11 @@ rule download_ref:
         ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
     params: N='make_ref', threads=1, queue = "short.qc"
     shell:
-        'mkdir -p {REF_DIR} && cd {REF_DIR} && '
-        'wget {REF_URL}'
+        """
+        mkdir -p {REF_DIR}
+        cd {REF_DIR}
+        wget -O {REF_NAME}.fa.gz {REF_URL}
+        """
 
 rule download_rmask:
     # Note: Adds header if not present
