@@ -12,7 +12,7 @@ fi
 order_config=$1
 what=$2
 where=$3
-other=${@:4} # all other CLI arguments passed to snakemake
+other=("${@:4}") # all other CLI arguments passed to snakemake. if is_test, should be first item.
 
 if [ "$where" == "cluster" ]
 then
@@ -22,13 +22,19 @@ then
      jobs=8
 fi
 
-# if $other is integer, use as number of cores
-if [ "$other" -eq "$other" ] 2> /dev/null 
+# if $other first element is_test, run in test mode
+is_test=false
+if [ "${other[0]}" == "is_test" ]
 then
-    jobs=$other
-    other="" # so not passed to Snakemake
+    is_test=true
+    other=("${other[@]:1}")
 fi
-
+# if $other next element is integer, use as number of cores
+if [ "${other[0]}" -eq "${other[0]}" ] 2> /dev/null 
+then
+    jobs=${other[0]}
+    other=("${other[@]:1}")
+fi
 echo "Running with ${jobs} cores"
 
 SCRIPT=$(readlink -f "$0")
@@ -36,21 +42,21 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 export ORDER_CONFIG="${SCRIPTPATH}/${order_config}"
 
-# From jq docs on how to load variables
-# SPECIES_LIST=( $(jq -r '.SPECIES_LIST | keys[]' ${order_config}) )
+# Note: From jq docs on how to load variables
 eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER)"' ${order_config})"
 eval "$(jq -r '@sh "SPECIES_MAP_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' config/filenames.json)"
 
 echo "Motif Death output in ${ANALYSIS_DIR}"
 
-export ORDER_CSV="${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv"
-
-if [ -f $ORDER_CSV ]
+if [ "$is_test" = false ]
 then
-    rm $ORDER_CSV
+    export ORDER_CSV="${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv"
+    if [ -f $ORDER_CSV ]
+    then
+        rm $ORDER_CSV
+    fi
+    R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
 fi
-
-R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
 
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}
