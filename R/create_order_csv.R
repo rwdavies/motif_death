@@ -24,11 +24,12 @@ for (species in names(config$SPECIES_LIST)) {
 
     species_table[is.na(species_table$nominal_length), 'nominal_length'] <- 200
 
+    species_table$flowcell_lane <- 1:nrow(species_table)
+    species_table$flowcell_barcode <- sub("^", "X", species_table$flowcell_lane)
+
     order_df <- rbind(order_df, species_table)
 }
 
-order_df$flowcell_barcode <- "X1"
-order_df$flowcell_lane <- "1"
 order_df$mapping_queue <- "short.qc@@short.hge"
 
 # Rename columns
