@@ -1,7 +1,20 @@
 {
     "SPECIES_ORDER": "test",
     "RUN_ID": "run1",
-    "SPECIES_LIST": ["test_pop1", "test_pop2", "test_outgroup"],
+    "SPECIES_LIST": {
+        "test_pop1": {
+            "ENA_LINK": "",
+            "RUN_ACCESSION": ["pop1"]
+        },
+        "test_pop2": {
+            "ENA_LINK": "",
+            "RUN_ACCESSION": ["pop2"]
+        },
+        "test_outgroup": {
+            "ENA_LINK": "",
+            "RUN_ACCESSION": ["outgroup"]
+        }
+    },
     "HATBAG_OUTPUT_DIR": "20210710",
     "REF_NAME": "ref",
     "REF_URL": "https://storage.googleapis.com/motif_death/test_data/ref.fa.gz",
@@ -13,14 +26,6 @@
     "simpleRepeat_URL": "",
     "rmask_URL": "",
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
-    "DEFAULTS": {
-        "TREEMIX_THREADS": 1,
-        "TREEMIX_K": 10,
-        "GENOTYPING_QUEUE": "short.qc",
-        "GENOTYPER": "UnifiedGenotyper",
-        "GENOTYPING_THREADS": 4,
-        "CALLABLE_MIN_FRACTION": 0.75
-    },
     "HATBAG_PARAMS": {
         "genomeSize": 4e5,
         "lineages": {
@@ -41,5 +46,13 @@
         "ancestral_map_window_size": 1e4,
         "n_initial_atToGC_fitting_reps": 3,
         "skip_at_to_gc_ci_fitting": true
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 10,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
     }
 }
