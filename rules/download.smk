@@ -1,3 +1,7 @@
+def get_ftp_paths(species, units):
+    urls = order_df.loc[(species, units), "fastq_ftp"].split(';')
+    return [f"ftp://{url}" for url in urls]
+
 rule download_all:
     input:
         expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
@@ -18,7 +22,7 @@ rule download_fastq:
     params:
         N='download_fastq',
         threads=1,
-        path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "fastq_ftp"].split(';')
+        paths = lambda wildcards: get_ftp_paths(wildcards.species, wildcards.units)
     wildcard_constraints:
         units='\D{1,8}\d{0,9}',
         pen='\d',
@@ -29,28 +33,8 @@ rule download_fastq:
         cd mapping/{SPECIES_ORDER}
         mkdir -p {wildcards.species}
         cd {wildcards.species}
-        wget {params.path}
+        wget {params.paths}
         """
-
-# rule download_fastq_2:
-#     output:
-#         f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.fastq.gz"
-#     params:
-#         N='download_fastq',
-#         threads=1,
-#         path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "2"]
-#     wildcard_constraints:
-#         units='\D{1,8}\d{0,9}',
-#         pen='\d',
-#         queue="short.qc"
-#     shell:
-#         """
-#         mkdir -p mapping/{SPECIES_ORDER}
-#         cd mapping/{SPECIES_ORDER}
-#         mkdir -p {wildcards.species}
-#         cd {wildcards.species}
-#         wget {params.path}
-#         """
 
 rule download_ref:
     input:
