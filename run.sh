@@ -50,7 +50,7 @@ then
     rm $ORDER_CSV
 fi
 
-R -f R/create_order_csv.R --args $ORDER_CONFIG $SPECIES_MAP_DIR_NAME
+R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
 
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}

@@ -2,18 +2,15 @@ library(jsonlite)
 
 args <- commandArgs(trailingOnly = TRUE)
 config_json_path <- args[1]
-species_map_dir <- args[2]
+order_csv_path <- args[2]
 
 config <- fromJSON(config_json_path)
 
 order_df <- data.frame()
 for (species in names(config$SPECIES_LIST)) {
     species_prj <- config$SPECIES_LIST[[species]]$ENA_PRJ
-    print(species_prj)
     species_units <- config$SPECIES_LIST[[species]]$RUN_ACCESSION
-    print(species_units)
     species_url <- paste0("https://www.ebi.ac.uk/ena/portal/api/filereport?accession=",species_prj,"&result=read_run&fields=run_accession,library_name,nominal_length,fastq_ftp,study_accession,scientific_name,instrument_platform,fastq_bytes,fastq_md5,sample_accession&format=tsv&download=true")
-    print(species_url)
     species_table <- read.table(file = species_url, sep = '\t', header = TRUE)
     species_table$species <- species
     species_table <- species_table[species_table$run_accession %in% species_units, ]
@@ -34,6 +31,10 @@ order_df$flowcell_barcode <- "X1"
 order_df$flowcell_lane <- "1"
 order_df$mapping_queue <- "short.qc@@short.hge"
 
-order_csv_path <- paste0(species_map_dir,"/",config$SPECIES_ORDER,".csv")
+# Rename columns
+names(order_df)[names(order_df) == "library_name"] <- "lb"
+names(order_df)[names(order_df) == "nominal_length"] <- "lb_insert_size"
+names(order_df)[names(order_df) == "run_accession"] <- "units"
+
 write.csv(order_df, order_csv_path, row.names = FALSE)
 message("Order dataframe saved in ", order_csv_path)

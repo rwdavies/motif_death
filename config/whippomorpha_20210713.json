@@ -65,5 +65,5 @@
         "GENOTYPER": "UnifiedGenotyper",
         "GENOTYPING_THREADS": 4,
         "CALLABLE_MIN_FRACTION": 0.75
-    },
+    }
 }
