@@ -5,12 +5,13 @@ config_json_path <- args[1]
 order_csv_path <- args[2]
 
 config <- fromJSON(config_json_path)
+ena_cols = "run_accession,library_name,nominal_length,fastq_ftp,study_accession,scientific_name,instrument_platform,fastq_bytes,fastq_md5,sample_accession"
 
 order_df <- data.frame()
 for (species in names(config$SPECIES_LIST)) {
     species_prj <- config$SPECIES_LIST[[species]]$ENA_PRJ
     species_units <- config$SPECIES_LIST[[species]]$RUN_ACCESSION
-    species_url <- paste0("https://www.ebi.ac.uk/ena/portal/api/filereport?accession=",species_prj,"&result=read_run&fields=run_accession,library_name,nominal_length,fastq_ftp,study_accession,scientific_name,instrument_platform,fastq_bytes,fastq_md5,sample_accession&format=tsv&download=true")
+    species_url <- paste0("https://www.ebi.ac.uk/ena/portal/api/filereport?accession=",species_prj,"&result=read_run&fields=",ena_cols,"&format=tsv&download=true")
     species_table <- read.table(file = species_url, sep = '\t', header = TRUE)
     species_table$species <- species
     species_table <- species_table[species_table$run_accession %in% species_units, ]
