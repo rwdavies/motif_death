@@ -78,7 +78,7 @@ order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 rule all:
     input:
         f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete",
-        # expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
+        expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 include: "rules/download.smk"
 include: "rules/prep_reference.smk"

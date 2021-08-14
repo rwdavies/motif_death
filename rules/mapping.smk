@@ -18,12 +18,12 @@ def get_bai_pieces(wildcards):
 # TODO: replace with one function
 def get_bam_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{u}.bam" for u in units]
+    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
     return filenames
 
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{u}.bam.bai" for u in units]
+    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam.bai" for u in units]
     return filenames
 
 
@@ -109,20 +109,18 @@ rule merge_mapped_pieces:
         bams = get_bam_pieces,
         bais = get_bai_pieces
     output:
-        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}.bam"),
-        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}.bam.bai")
+        bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.unit{{units}}.bam"),
+        bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.unit{{units}}.bam.bai")
     params:
         N='merge_pieces',
         threads=1,
-        queue = "long.qc"
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
-        # TODO: below is hack as snakemake temp(directory(...)) not working
-        rm -r mapping/{SPECIES_ORDER}/{wildcards.species}/temp 
         """
 
  
@@ -136,13 +134,15 @@ rule merge_units:
     params:
         N='merge_units',
         threads=1,
-        queue = "long.qc"
+        queue = "short.qc@@short.hge"
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
+        # TODO: below is hack as snakemake temp(directory(...)) not working
+        rm -rf mapping/{SPECIES_ORDER}/{wildcards.species}/temp
         """
 
 
@@ -157,7 +157,7 @@ rule mark_duplicates:
     params:
         N='rmdup',
         threads=3,
-        queue = "long.qc"
+        queue = "short.qc@@short.hge"
     shell:
         'ulimit -n 4096 && ${{JAVA}} -Xmx16G -jar ${{PICARD}} MarkDuplicates '
         'ASSUME_SORTED=false '
