@@ -45,6 +45,12 @@ def get_hatbag_n_threads(wildcards):
     if run == "F":
         return(1)
 
+def get_hatbag_queue(wildcards):
+    run = wildcards.run
+    if run == "F":
+        return "long.qc@@long.hge"
+    else:
+        return "short.qc@@short.hge"
 
 # TODO: obsolete?
 # def get_input_bam(wildcards):
@@ -83,7 +89,7 @@ rule HATBAG_HACK_FUNCTION:
     params:
         N='hatbag_test',
         threads=get_hatbag_n_threads,
-        queue="short.qc@@short.hge" # TODO: change back if can figure out problem on other nodes
+        queue=get_hatbag_queue
     wildcard_constraints:
         run='[A-Z]{1,6}'
     shell:
@@ -97,13 +103,6 @@ rule HATBAG_HACK_FUNCTION:
             --nCores={params.threads} --config_json_path={ORDER_CONFIG} --callable_bed={input.callable_bed}
         touch {output.decoy}
         """
-
-
-
-
-
-
-
 
 ##
 ##
