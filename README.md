@@ -30,33 +30,16 @@ All packages and user-specific paths are specified in `activate`. **A new user s
 . activate
 ```
 
-### A. Manual curation of input file and downloading reference material
+### A. Specify a Motif Death & HATBAG run
 
-Briefly, currently, identify a set of related species, appropriate for the model, and papers with their raw data, with data deposited in the EBI ENA. 
-
-For example, for artiodactyla (includes ruminants and related species), this might include cows and goats, and more distantly related animals like okapi and giraffe.
-
-For a given deposition project ID like PRJNA313910, we can then go to e.g. https://www.ebi.ac.uk/ena/browser/view/PRJNA313910 and manually download a text file with information like the download links to the fastq (raw data) files.
-
-In `prepare_inputs.R` and `prepare_inputs_functions.R` we extract information about the raw data in a semi-automated fashion, and output `species_mapping_info/{species}.json` for each species.
-
-```
-R -f R/prepare_inputs.R --args artiodactyla
-```
-
-### B Motif Death & HATBAG run
-
-Once you have `species_mapping_info/{species}.json` for all desired species, you can run the pipeline.
-First, write a `config/{...}.json` (see `config/test_run1.json` for reference).
-In this config, you must set `SPECIES_ORDER` (e.g., artiodactyla), `SPECIES_LIST` (e.g. cow, buffalo) and `RUN_ID` (e.g., 20200706), amongst other variables.
-
-By assumption, one reference is used for all mapping within a given `SPECIES_ORDER`.
-This means once a species is mapped, it will not be remapped if used in a different run.
-To re-map species with a different reference, you should create a new config with a different `SPECIES_ORDER`.
-This will redownload fastqs in a different folder, so manage storage space.
-
-VCF, Treemix, and HATBAG are all run specific (as you can have multiple runs within the same order with different species).
-HATBAG has an additional `HATBAG_OUTPUT_DIR` parameter, so you can rerun the same order and run with different HATBAG settings.  
+For a group of species (titled `SPECIES_ORDER` e.g., artiodactyla) you want to analyze, you should write a `config/{...}.json` (see other files in folder for reference):
+* **Reference**: Start with finding a suitable reference for your group of species. You need the reference genome, as well as simpleRepeat and repeat mask tables.
+    * Note: By assumption, one reference is used for all mapping within a given `SPECIES_ORDER`. This means once a species is mapped, it will not be remapped if used in a different run. To re-map species with a different reference, you should create a new config with a different `SPECIES_ORDER`. This will redownload fastqs in a different folder, so watch storage space.
+* `SPECIES_LIST`: Specify your desired species, which shouldn't be too diverged (find a reference phylogenetic tree). For example, for artiodactyla (focusing on ruminants and related species), this might include cows and goats, and more distantly related animals like okapi and giraffe. Also include a more distant species as as outgroup, e.g. white tailed deer (as `TREEMIX_OUTGROUP`).
+    * For each species, data must exist in the EBI ENA, with a project ID e.g. PRJNA313910.  Under this Project ID, choose the 'Run Accessions' (i.e. units) to use for each species.
+    * TODO: add notes about what is good choice (high coverage, short read ...)
+* `RUN_ID`: (e.g., 20200706) VCF, Treemix, and HATBAG are all run specific, as you can have multiple runs within the same order using different species.
+* `HATBAG_OUTPUT_DIR`: HATBAG has an additional ID parameter, so you can redo the same order and run with different HATBAG settings.  
 
 The resulting folder structure is below:
 
@@ -99,11 +82,12 @@ Note this might take from 30 minutes to a few hours of wall clock time to run pe
 ```
 
 **Notes:**
+
 Mapping: This might take a few hours, or a few days to run through, depending on the sample being processed, and cluster availability. It first maps reads, then marks PCR duplicates, then runs indel realignment, then merges the bams together.
 
 Downstream: Once all the samples from an order have been downloaded and mapped, it is time to call variants, and calculate depth of coverage, from which callable regions are derived, where "callable region" means regions where we can reasonably expect to call variants.
 
-Downstream: The above should also run treemix (can be manually run using `./run.sh config/artiodactyla.json treemix cluster`), which creates some plots in the analysis directory `treemix/` which shows the relationship between samples. This is pre-supposed in most cases, i.e. based on prior evidence, we assume a relationship between samples and specify this in the config json, though ideally we would get this from this plot. This is currently manually interpreted / assumed, though it would be good it this could be automated (at least, the within tree relationships - probably OK to assume the outgroup).
+Downstream: Treemix will run automatically (can also be manually run using `./run.sh config/artiodactyla.json treemix cluster`), which creates plots in `treemix/` showing the relationship between samples. If in `HATBAG_PARAMS` you do not specify `lineages`, it is automatically deduced from Treemix output.  However, outgroup is then assumed to be the same as `TREEMIX_OUTGROUP`.
 
 HATBAG: HATBAG itself is a relatively OK piece of code. It can be run from the command line.  The current integration of this into the script is very hacky. It should work - it does work - but it is inelegant, and was put together now in a brute force fashion (previously this ran on a single compute server with 300+ GB of RAM, rather than on a cluster). Old code towards this goal (in `HATBAG.smk`) still exists but isn't quite working.  
 
@@ -112,6 +96,8 @@ Directory paths and filenames specified in `config/filenames.json`.
 
 ## TODOs
 
+* Test that reference chromosome names match what are input in run config json.
+* Write up notes on wildcard constraints for species, chr, units
 * Mapping: Note that the number of cores being used per chromosome is a parameter set somewhere, one option is to make this parameter more visible, another is to break the region into chunks and call the genome in chunks them combine back together. This would run faster and more easily on the cluster but requires some coding.
 * Once mapping complete and BAM OK, add in deletion of original fastq files (now done manually)
 * Clear out old files in `/well/davies/users/dcc832/primates/hatbag_OLD_TO_DELETE`
