@@ -3,20 +3,21 @@
 library(argparse)
 
 parser <- ArgumentParser()
+parser$add_argument("--order")
 parser$add_argument("--species")
 parser$add_argument("--ref_dir")
 parser$add_argument("--ref")
 parser$add_argument("--chr_prefix", type = "character", default = "")
-parser$add_argument("chrlist", type= "integer", nargs='*')
+parser$add_argument("chrlist", type= "character", nargs='*')
 
 args <- parser$parse_args()
+order <- args$order
 species <- args$species
 ref_dir <- args$ref_dir
 ref <- args$ref
 chr_prefix <- args$chr_prefix
 chr_nums <- args$chrlist
 
-chr_nums <- as.numeric(chr_nums)
 chrlist <- paste0(chr_prefix, chr_nums)
 
 ## species <- "chimp"; ref <- "hg38.fa";
@@ -27,7 +28,7 @@ chrlist <- paste0(chr_prefix, chr_nums)
 ref_summary_file <- file.path(ref_dir, paste0(ref, ".summary.txt"))
 
 RData_file_function <- function(species, chr)
-    paste0("coverage/coverage.", species, ".chr", chr, ".RData")
+    paste0("coverage/", order, "/coverage.", species, ".chr", chr, ".RData")
 
 
 rebuild <- FALSE
@@ -38,7 +39,7 @@ for(chr in chr_nums) {
     message(paste0(chr, ", ", date()))
     RData_file <- RData_file_function(species, chr)
     if (rebuild | (file.exists(RData_file) == FALSE)) {
-        input_file <- paste0("coverage/coverage.", species, ".chr", chr, ".txt.gz")
+        input_file <- paste0("coverage/", order, "/coverage.", species, ".chr", chr, ".txt.gz")
         if (file.exists(input_file) == FALSE)
             stop(paste0("Cannot find file:", input_file))
         message("load")
@@ -91,7 +92,7 @@ if (is.na(av_cov)) {
     stop("Average coverage is NA for an unknown reason")
 }
 
-cat(av_cov, file = paste0("coverage/average.", species, ".txt"))
+cat(av_cov, file = paste0("coverage/", order, "/average.", species, ".txt"))
 
 
 
@@ -99,7 +100,7 @@ message("Second pass")
 for(chr in chr_nums) {
     message(chr)
     message("load")
-    load(file = paste0("coverage/coverage.", species, ".chr", chr, ".RData"))
+    load(file = paste0("coverage/", order, "/coverage.", species, ".chr", chr, ".RData"))
     message("determine callable")
     callable <- (av_cov / 3) <= depth & depth <= (av_cov * 2)
     rm(depth); gc(reset = TRUE); gc(reset = TRUE)
@@ -116,7 +117,7 @@ for(chr in chr_nums) {
     options(scipen=10) # stop numbers from output in scientific notation
     write.table(
         callable_bed,
-        file = paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed"),
+        file = paste0("coverage/", order, "/coverage.", species, ".chr", chr, ".callableOnly.bed"),
         row.names = FALSE,
         col.names = FALSE,
         sep = "\t",
@@ -130,10 +131,10 @@ for(chr in chr_nums) {
 }
 
 message("Merge them")
-outfile <- paste0("coverage/coverage.", species, ".callableOnly.bed")
+outfile <- paste0("coverage/", order, "/coverage.", species, ".callableOnly.bed")
 unlink(outfile)
 for(chr in chr_nums) {
-    infile <- paste0("coverage/coverage.", species, ".chr", chr, ".callableOnly.bed")
+    infile <- paste0("coverage/", order, "/coverage.", species, ".chr", chr, ".callableOnly.bed")
     system(paste0("cat ", infile, " >> ", outfile))
 }
 

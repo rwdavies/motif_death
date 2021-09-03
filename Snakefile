@@ -24,12 +24,12 @@ GATK_CHR_PREFIX = config["GATK_CHR_PREFIX"]
 OPERATE_GATK_PER_CHR = config["OPERATE_GATK_PER_CHR"]
 FASTQ_SUFFIX = config["FASTQ_SUFFIX"]
 CHR_LIST = config["CHR_LIST"]
+WILDCARD_CHR_CONSTRAINT = config["WILDCARD_CHR_CONSTRAINT"]
 HATBAG_PARAMS=config["HATBAG_PARAMS"]
 
 TREEMIX_THREADS=config["DEFAULTS"]["TREEMIX_THREADS"]
 CALLABLE_MIN_FRACTION=config["DEFAULTS"]["CALLABLE_MIN_FRACTION"]
 TREEMIX_K=config["DEFAULTS"]["TREEMIX_K"]
-WILDCARD_CHR_CONSTRAINT = config["DEFAULTS"]["WILDCARD_CHR_CONSTRAINT"]
 ## WILDCARD_CHR_CONSTRAINT = '[A-Z0-9-_.]+'
 GENOTYPING_QUEUE=config["DEFAULTS"]["GENOTYPING_QUEUE"]
 GENOTYPING_THREADS=config["DEFAULTS"]["GENOTYPING_THREADS"] ## might get lucky!
@@ -60,7 +60,7 @@ elif GENOTYPER == "UnifiedGenotyper":
 
 IBAMS=""
 for species in SPECIES_LIST:
-    IBAMS = IBAMS + " -I mapping/" + species + "/" + species + "." + BAM_SUFFIX
+    IBAMS = IBAMS + f" -I mapping/{SPECIES_ORDER}/{species}/{species}.{BAM_SUFFIX}"
 
 MERGE_VCF_GATK_INPUT=""
 for piece in CHR_CHUNKS:
@@ -78,7 +78,7 @@ order_df = pd.read_csv(ORDER_CSV).set_index(["species", "units"], drop=False)
 rule all:
     input:
         f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/F_complete",
-        # expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
+        expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 include: "rules/download.smk"
 include: "rules/prep_reference.smk"

@@ -1,7 +1,7 @@
 rule download_all:
     input:
-        expand("mapping/{species}/{units}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
-        expand("mapping/{species}/{units}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
+        expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
+        expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
         f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
         f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
         ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
@@ -14,37 +14,43 @@ rule download_all:
 # TODO: combine these into one job with variable [1, 2] !
 rule download_fastq_1:
     output:
-        expand("mapping/{{species}}/{{units}}_1.fastq.gz")
+        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz"
     params:
         N='download_fastq',
         threads=1,
-        # path=lambda wildcards: config["units"][wildcards.units][wildcards.pen],
         path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "1"]
     wildcard_constraints:
         units='\D{1,8}\d{0,9}',
         pen='\d',
         queue="short.qc"
     shell:
-        'mkdir -p mapping && cd mapping && '
-        'mkdir -p {wildcards.species} && cd {wildcards.species} && '
-        'wget {params.path}'
+        """
+        mkdir -p mapping/{SPECIES_ORDER}
+        cd mapping/{SPECIES_ORDER}
+        mkdir -p {wildcards.species}
+        cd {wildcards.species}
+        wget {params.path}
+        """
 
 rule download_fastq_2:
     output:
-        expand("mapping/{{species}}/{{units}}_2.fastq.gz")
+        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.fastq.gz"
     params:
         N='download_fastq',
         threads=1,
-        # path=lambda wildcards: config["units"][wildcards.units][wildcards.pen],
         path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "2"]
     wildcard_constraints:
         units='\D{1,8}\d{0,9}',
         pen='\d',
         queue="short.qc"
     shell:
-        'mkdir -p mapping && cd mapping && '
-        'mkdir -p {wildcards.species} && cd {wildcards.species} && '
-        'wget {params.path}'
+        """
+        mkdir -p mapping/{SPECIES_ORDER}
+        cd mapping/{SPECIES_ORDER}
+        mkdir -p {wildcards.species}
+        cd {wildcards.species}
+        wget {params.path}
+        """
 
 rule download_ref:
     input:

@@ -8,7 +8,7 @@ parser <- ArgumentParser()
 parser$add_argument("--ref_dir")
 parser$add_argument("--ref")
 parser$add_argument("--chr_prefix", type = "character", default = "")
-parser$add_argument("chrlist", type= "integer", nargs='*')
+parser$add_argument("chrlist", type= "character", nargs='*')
 
 args <- parser$parse_args()
 ref_dir <- args$ref_dir

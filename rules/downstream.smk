@@ -1,10 +1,8 @@
 rule downstream_all:
     input:
-        [
-	f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
-	expand("coverage/coverage.{species}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS, species = SPECIES_LIST),
-	expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
-	]
+        f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
+        f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed",
+        expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 # rule call_and_tree:
 #     input:
@@ -34,11 +32,11 @@ rule treemix:
 rule call_chr:
     input:
         ref = f"{REF_DIR}/{REF_NAME}.fa",
-        bams = expand("mapping/{species}/{species}.{bam_suffix}", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX),
-        bais = expand("mapping/{species}/{species}.{bam_suffix}.bai", species = SPECIES_LIST, bam_suffix = BAM_SUFFIX)
+        bams = expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}", species = SPECIES_LIST),
+        bais = expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}.bai", species = SPECIES_LIST)
     output:
-        vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz"),
-        tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.piece{{{{piece}}}}.vcf.gz.tbi")
+        vcf = f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.piece{{piece}}.vcf.gz",
+        tbi = f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{chr}}.piece{{piece}}.vcf.gz.tbi"
     params:
         N='call_chr',
         threads = GENOTYPING_THREADS,
@@ -115,10 +113,10 @@ rule merge_chr:
 rule calculate_doc:
     input:
         ref = f"{REF_DIR}/{REF_NAME}.fa",
-        bam = expand("mapping/{{species}}/{{species}}.{bam_suffix}", bam_suffix = BAM_SUFFIX),
-        bais = expand("mapping/{{species}}/{{species}}.{bam_suffix}.bai", bam_suffix = BAM_SUFFIX)
+        bam = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}",
+        bais = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}.bai"
     output:
-        outfile = "coverage/coverage.{species}.chr{chr}.txt.gz"
+        outfile = f"coverage/{SPECIES_ORDER}/coverage.{{species}}.chr{{chr}}.txt.gz"
     params:
         N='get_depth_of_coverage',
         threads=1,
@@ -134,9 +132,9 @@ rule calculate_doc:
         '--minMappingQuality 17 --minBaseQuality 0 '
         '-I {input.bam} '
         '--downsample_to_coverage 1000 '
-        '-o coverage/coverage.{wildcards.species}.chr{wildcards.chr}.txt '
+        '-o coverage/{SPECIES_ORDER}/coverage.{wildcards.species}.chr{wildcards.chr}.txt '
         '> {output.outfile}.log && '
-        'gzip -1 coverage/coverage.{wildcards.species}.chr{wildcards.chr}.txt'
+        'gzip -1 coverage/{SPECIES_ORDER}/coverage.{wildcards.species}.chr{wildcards.chr}.txt'
 
 
 rule prepare_reference:
@@ -158,11 +156,11 @@ rule prepare_reference:
 
 rule get_callable_regions:
     input:
-        infile = expand("coverage/coverage.{{species}}.chr{chr}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
+        infile = expand(f"coverage/{SPECIES_ORDER}/coverage.{{{{species}}}}.chr{{chr}}.txt.gz", chr = CHR_LIST_ONLY_AUTOS),
         summary = f"{REF_DIR}/{REF_NAME}.fa.summary.txt"
     output:
-        beds = expand("coverage/coverage.{{species}}.chr{chr}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
-	    merged_bed = "coverage/coverage.{species}.callableOnly.bed"
+        beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{{{species}}}}.chr{{chr}}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
+	    merged_bed = f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed"
     params:
         N='get_callable_regions',
         threads = 2,
@@ -172,7 +170,7 @@ rule get_callable_regions:
     shell:
         """
         echo start get_callable_regions
-        {R_GET_PER_SAMPLE_AVERAGE_COV} --species={wildcards.species} --ref_dir={REF_DIR} --ref={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
+        {R_GET_PER_SAMPLE_AVERAGE_COV} --order={SPECIES_ORDER} --species={wildcards.species} --ref_dir={REF_DIR} --ref={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         echo done get_callable_regions
         """
 
@@ -180,9 +178,9 @@ CALLABLE_MIN_N=CALLABLE_MIN_FRACTION * len(SPECIES_LIST)
 
 rule get_single_callable_regions:
     input:
-        beds = expand("coverage/coverage.{species}.callableOnly.bed", species = SPECIES_LIST)
+        beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed", species = SPECIES_LIST)
     output:
-        bed = f"coverage/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+        bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     params:
         N='get_single_callable_regions',
         threads = 1,

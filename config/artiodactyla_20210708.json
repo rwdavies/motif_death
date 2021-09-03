@@ -12,10 +12,10 @@
     "TREEMIX_OUTGROUP": "whitetaileddeer",
     "simpleRepeat_URL": "TODO",
     "rmask_URL": "TODO",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "DEFAULTS": {
         "TREEMIX_THREADS": 1,
         "TREEMIX_K": 5000,
-        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
         "GENOTYPING_QUEUE": "short.qc",
         "GENOTYPER": "UnifiedGenotyper",
         "GENOTYPING_THREADS": 4,
