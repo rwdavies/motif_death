@@ -17,8 +17,17 @@ SIMULATE_DIR="${SCRIPTPATH}/../"simulate_input/ # in top level of motif_death
 export ANALYSIS_DIR="${SCRIPTPATH}/../"simulate_results/ # in top level of motif_death
 TEST_CONFIG_PATH="${SCRIPTPATH}/../config/test_run1.json"
 eval "$(jq -r '@sh "SPECIES_ORDER=\(.SPECIES_ORDER) RUN_ID=\(.RUN_ID) HATBAG_OUTPUT_DIR=\(.HATBAG_OUTPUT_DIR)"' ${TEST_CONFIG_PATH})"
-eval "$(jq -r '@sh "REF_DIR=\(.REF_DIR) EXTERNAL_DIR=\(.EXTERNAL_DIR) SPECIES_MAPPING_INFO_DIR_NAME=\(.SPECIES_MAP_DIR_NAME)"' ${SCRIPTPATH}/../config/filenames.json)"
+eval "$(jq -r '@sh "REF_DIR=\(.REF_DIR) EXTERNAL_DIR=\(.EXTERNAL_DIR) SPECIES_MAP_DIR=\(.SPECIES_MAP_DIR_NAME)"' ${SCRIPTPATH}/../config/filenames.json)"
 FULL_HATBAG_OUTPUT_DIR="${ANALYSIS_DIR}hatbag/${SPECIES_ORDER}/${RUN_ID}/${HATBAG_OUTPUT_DIR}"
+
+export ORDER_CSV="${SCRIPTPATH}/../${SPECIES_MAP_DIR}/${SPECIES_ORDER}.csv"
+
+if [ -f $ORDER_CSV ]
+then
+    rm $ORDER_CSV
+fi
+
+echo "species,units,fastq_ftp,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > $ORDER_CSV
 
 if [ -d "${SIMULATE_DIR}" ]
 then
@@ -37,15 +46,12 @@ TEST_NAMES=$(find *.fastq.gz | cut -d _ -f 1 | uniq)
 
 # TODO: specify all analysis subfolders up front in config file
 for name in $TEST_NAMES; do
-    # echo $name
     # copy fastqs
     SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/test_${name}"
     mkdir -p $SPECIES_DIR
     rsync -a "${name}"* $SPECIES_DIR
-    # create json
-    jq --null-input --arg species "test_$name" --arg unit "$name" \
-        '{"species": $species, "n_mapping_pieces": 20, "platform": "Illumina", "mapping_queue": "short.qc", "units": {($unit): {"1": "dummy_URL", "2": "dummy_URL", "lb": "dummyout", "lb_insert_size": "100", "flowcell_barcode": "X1", "flowcell_lane": "1"}}}' > \
-        "${SCRIPTPATH}/../${SPECIES_MAP_DIR_NAME}/test_${name}.json"
+
+    echo "\"test_${name}\",\"${name}\",\"\",20,\"short.qc\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
 done
 
 ## Copy reference files
@@ -58,7 +64,7 @@ rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
 
-./run.sh config/test_run1.json all local $other
+./run.sh config/test_run1.json all local is_test $other
 
 # Check test here
 
