@@ -1,7 +1,40 @@
 {
     "SPECIES_ORDER": "avian",
     "RUN_ID": "20210804",
-    "SPECIES_LIST" : ["double_barrelled_finch", "zebra_finch", "long_tailed_finch", "medium_ground_finch", "american_crow", "rifleman", "golden_collared_manakin", "kea"],
+    "SPECIES_LIST": {
+        "double_barrelled_finch": {
+            "ENA_PRJ": "PRJEB10586",
+            "RUN_ACCESSION": ["ERR993524"]
+        },
+        "zebra_finch": {
+            "ENA_PRJ": "PRJEB10586",
+            "RUN_ACCESSION": ["ERR1013172"]
+        },
+        "long_tailed_finch": {
+            "ENA_PRJ": "PRJEB10586",
+            "RUN_ACCESSION":["ERR1013154"]
+        },
+        "medium_ground_finch": {
+            "ENA_PRJ": "PRJNA156703",
+            "RUN_ACCESSION":["SRR448681","SRR448683","SRR448686"]
+        },
+        "american_crow": {
+            "ENA_PRJ": "PRJNA212869",
+            "RUN_ACCESSION":["SRR944633", "SRR944634", "SRR944635", "SRR944637"]
+        },
+        "rifleman": {
+            "ENA_PRJ": "PRJNA212877",
+            "RUN_ACCESSION":["SRR952717", "SRR952718"]
+        },
+        "golden_collared_manakin": {
+            "ENA_PRJ": "PRJNA212872",
+            "RUN_ACCESSION":["SRR946955","SRR946957","SRR946958","SRR946960"]
+        },
+        "kea": {
+            "ENA_PRJ": "PRJNA212900",
+            "RUN_ACCESSION":["SRR959225","SRR959226","SRR959227"]
+        }
+    },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "taeGut2",
     "REF_URL": "http://hgdownload.soe.ucsc.edu/goldenPath/taeGut2/bigZips/taeGut2.fa.gz",
@@ -12,15 +45,7 @@
     "TREEMIX_OUTGROUP": "kea",
     "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/taeGut2/database/simpleRepeat.txt.gz",
     "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/taeGut2/database/rmsk.txt.gz",
-    "DEFAULTS": {
-        "TREEMIX_THREADS": 1,
-        "TREEMIX_K": 5000,
-        "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
-        "GENOTYPING_QUEUE": "short.qc",
-        "GENOTYPER": "UnifiedGenotyper",
-        "GENOTYPING_THREADS": 4,
-        "CALLABLE_MIN_FRACTION": 0.75
-    },
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 1232118738,
@@ -34,10 +59,10 @@
             "AZLDM" : ["AZLD", "medium_ground_finch"],
             "american_crow" : "american_crow",
             "AZLDMA" : ["AZLDM", "american_crow"],
-            "golden_collared_manakin" = "golden_collared_manakin"
+            "golden_collared_manakin": "golden_collared_manakin"
         },
-        ancestral_lineage = {
-            "AZLDMAG" : ["AZLDMA", "golden_collared_manakin"],
+        "ancestral_lineage": {
+            "AZLDMAG" : ["AZLDMA", "golden_collared_manakin"]
 	},
         "outgroups": ["rifleman", "kea"],
         "ndge": 3,
@@ -48,5 +73,13 @@
         "mrle": 6,
         "mncdnle": 100,
         "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
     }
 }
