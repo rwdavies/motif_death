@@ -1,68 +1,3 @@
-from pathlib import Path
-import json
-from collections import OrderedDict
-
-def convert_tree_text_to_dict(t):
-    "convert treemix treeout text (excluding outgroup) into HATBAG lineages"
-    # TODO: add unit tests
-
-    which_comma = 0
-    for i in range(len(t)):
-        if t[i] == "(": which_comma += 1
-        elif t[i] == "," and which_comma <= 1: break
-        elif t[i] == ",": which_comma -= 1
-    comma_pos = i
-    L, R = t[1:comma_pos], t[comma_pos+1:]
-
-    if L[0] != "(" and R[0] != "(":
-        L, R = L[:L.find(":")], R[:R.find(":")] # remove score
-        out = OrderedDict()
-        out[L] = L
-        out[R] = R
-        out[f"Anc_{L[:2].capitalize()}{R[:2].capitalize()}"] = [L,R]
-
-        return out
-
-    elif L[0] != "(":
-        L = L[:L.find(":")] # remove score
-        R_tree = convert_tree_text_to_dict(R)
-        next_anc = next(reversed(R_tree)) # get key at top of stack
-        R_tree[L] = L
-        R_tree[f"Anc_{L[:2].capitalize()}{next_anc[4:]}"] = [L, next_anc]
-        
-        return R_tree
-    
-    elif R[0] != "(":
-        R = R[:R.find(":")] # remove score
-        L_tree = convert_tree_text_to_dict(L)
-        next_anc = next(reversed(L_tree)) # get key at top of stack
-        L_tree[R] = R
-        L_tree[f"Anc_{R[:2].capitalize()}{next_anc[4:]}"] = [R, next_anc]
-        
-        return L_tree
-    
-    else:
-        L_tree = convert_tree_text_to_dict(L)
-        R_tree = convert_tree_text_to_dict(R)
-        L_next_anc = next(reversed(L_tree))
-        R_next_anc = next(reversed(R_tree))
-        R_tree.update(L_tree)
-        R_tree[f"Anc_{L_next_anc[4:]}{R_next_anc[4:]}"] = [L_next_anc, R_next_anc]
-        
-        return R_tree
-
-def get_hatbag_lineages(t):
-    "convert treemix treeout text into HATBAG param dict"
-    out = {}
-    # Note: assumes outgroup is first species in order!
-    out["outgroups"] = [t[1:t.find(":")]]
-    t = t[t.find("(", 1):]
-    out["lineages"] = convert_tree_text_to_dict(t)
-    k, v = out["lineages"].popitem()
-    out["ancestral_lineage"] = {k:v}
-    
-    return out
-
 ##
 ## current hack
 ##
@@ -148,7 +83,6 @@ def get_hatbag_input(wildcards):
 rule HATBAG_HACK_FUNCTION:
     input:
         get_hatbag_input,
-        hatbag_params = f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/hatbag_params.json",
 	    callable_bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
     output:
         decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/{{{{run}}}}_complete")
@@ -166,54 +100,9 @@ rule HATBAG_HACK_FUNCTION:
         {HATBAG_DIR}HATBAG.R --species={SPECIES_ORDER} --run={wildcards.run} --outputDir=${{outputDir}} \
             --simpleRepeat_file={EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz --rmask_file={EXTERNAL_DIR}/{REF_NAME}.rmsk.gz \
             --reference={REF_DIR}/{REF_NAME}.fa.gz --outputDate={HATBAG_OUTPUT_DIR} --vcf_file=vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz \
-            --nCores={params.threads} --config_json_path={input.hatbag_params} --callable_bed={input.callable_bed}
+            --nCores={params.threads} --config_json_path={ORDER_CONFIG} --callable_bed={input.callable_bed}
         touch {output.decoy}
         """
-
-rule unzip_tree:
-    input:
-        zipped = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout.gz"
-    output:
-        unzipped = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout"
-    params:
-        N='unzip_treemix_tree',
-        queue="short.qc@@short.hge",
-        threads=1
-    shell:
-        """
-        gunzip -c {input.zipped} > {output.unzipped}
-        """
-    
-rule treemix_to_hatbag_lineages:
-    input:
-        f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout"
-    output:
-        f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/hatbag_params.json"
-    params:
-        N='treemix_to_hatbag',
-        queue="short.qc@@short.hge",
-        threads=1
-    run:
-        with open(input[0]) as f:
-            tree_text = f.readline() # reads first line only
-        
-        orig_params = config["HATBAG_PARAMS"]
-        new_params = get_hatbag_lineages(tree_text)
-        print("Treemix deduced lineages: ", new_params)
-
-        # If specified in config json, overwrite treemix deduced lineages
-        for n in ["lineages", "ancestral_lineage", "outgroups"]:
-            if n in orig_params:
-                print(f"Using user specified {n}: {orig_params[n]}")
-        new_params.update(orig_params)
-
-        out_dict = config
-        out_dict["HATBAG_PARAMS"] = new_params
-
-        Path(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}").mkdir(parents=True, exist_ok=True)
-
-        with open(output[0], 'w') as f:
-            json.dump(out_dict, f)
 
 ##
 ##

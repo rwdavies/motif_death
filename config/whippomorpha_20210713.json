@@ -1,28 +1,7 @@
 {
     "SPECIES_ORDER": "whippomorpha",
     "RUN_ID": "20210713",
-    "SPECIES_LIST": {
-        "minkewhale": {
-            "ENA_PRJ": "PRJNA72723",
-            "RUN_ACCESSION": ["SRR893003"]
-        },
-        "belugawhale": {
-            "ENA_PRJ": "PRJNA360851",
-            "RUN_ACCESSION": ["SRR5197961"]
-        },
-        "killerwhale": {
-            "ENA_PRJ": "PRJNA167475",
-            "RUN_ACCESSION":["SRR574975", "SRR574968"]
-        },
-        "amazonriverdolphin": {
-            "ENA_PRJ": "PRJNA399465",
-            "RUN_ACCESSION":["SRR11430609"]
-        },
-        "pygmyspermwhale": {
-            "ENA_PRJ": "PRJNA399466",
-            "RUN_ACCESSION":["SRR11430611"]
-        }
-    },
+    "SPECIES_LIST": ["minkewhale", "belugawhale", "killerwhale", "pygmyspermwhale", "amazonriverdolphin"],
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "balAcu1",
     "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/bigZips/balAcu1.fa.gz",
@@ -34,6 +13,14 @@
     "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/simpleRepeat.txt.gz",
     "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/rmsk.txt.gz",
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    },
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 2431671281,
@@ -57,13 +44,5 @@
         "mrle": 6,
         "mncdnle": 100,
         "use_one_sided_pvalue": false
-    },
-    "DEFAULTS": {
-        "TREEMIX_THREADS": 1,
-        "TREEMIX_K": 5000,
-        "GENOTYPING_QUEUE": "short.qc",
-        "GENOTYPER": "UnifiedGenotyper",
-        "GENOTYPING_THREADS": 4,
-        "CALLABLE_MIN_FRACTION": 0.75
     }
 }

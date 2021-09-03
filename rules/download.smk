@@ -1,7 +1,3 @@
-def get_ftp_paths(species, units):
-    urls = order_df.loc[(species, units), "fastq_ftp"].split(';')
-    return [f"ftp://{url}" for url in urls]
-
 rule download_all:
     input:
         expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz", zip, species = order_df["species"], units = order_df["units"]),
@@ -15,14 +11,14 @@ rule download_all:
 #     input:
 #         expand("mapping/{species}/{units}_{pen}.standardized_phred.fastq.gz", species = SPECIES, pen = [1, 2], units = UNITS)
 
-rule download_fastq:
+# TODO: combine these into one job with variable [1, 2] !
+rule download_fastq_1:
     output:
-        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz",
-        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.fastq.gz"
+        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.fastq.gz"
     params:
         N='download_fastq',
         threads=1,
-        paths = lambda wildcards: get_ftp_paths(wildcards.species, wildcards.units)
+        path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "1"]
     wildcard_constraints:
         units='\D{1,8}\d{0,9}',
         pen='\d',
@@ -33,7 +29,27 @@ rule download_fastq:
         cd mapping/{SPECIES_ORDER}
         mkdir -p {wildcards.species}
         cd {wildcards.species}
-        wget {params.paths}
+        wget {params.path}
+        """
+
+rule download_fastq_2:
+    output:
+        f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.fastq.gz"
+    params:
+        N='download_fastq',
+        threads=1,
+        path = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "2"]
+    wildcard_constraints:
+        units='\D{1,8}\d{0,9}',
+        pen='\d',
+        queue="short.qc"
+    shell:
+        """
+        mkdir -p mapping/{SPECIES_ORDER}
+        cd mapping/{SPECIES_ORDER}
+        mkdir -p {wildcards.species}
+        cd {wildcards.species}
+        wget {params.path}
         """
 
 rule download_ref:
@@ -42,11 +58,8 @@ rule download_ref:
         ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
     params: N='make_ref', threads=1, queue = "short.qc"
     shell:
-        """
-        mkdir -p {REF_DIR}
-        cd {REF_DIR}
-        wget -O {REF_NAME}.fa.gz {REF_URL}
-        """
+        'mkdir -p {REF_DIR} && cd {REF_DIR} && '
+        'wget {REF_URL}'
 
 rule download_rmask:
     # Note: Adds header if not present
