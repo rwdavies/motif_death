@@ -1,0 +1,24 @@
+REF_DIR = "ref/"
+REFNAME = "ref"
+REF_URL="https://storage.googleapis.com/motif_death/test_data/ref.fa.gz"
+CHR_LIST_ONLY_AUTOS = [1,2]
+CHR_LIST = [1,2]
+GATK_CHR_PREFIX = ""
+TREEMIX_THREADS=4
+OPERATE_GATK_PER_CHR="TRUE"
+
+## if only whitetaileddeer done
+TREEMIX_OUTGROUP = "test_outgroup"
+SPECIES_LIST=['test_pop1', 'test_pop2', 'test_outgroup']
+VCF_PREFIX="test.cbgogw"
+TREEMIX_PREFIX = VCF_PREFIX
+TREEMIX_K = 10
+
+
+## updated 2021
+HATBAG_OUTPUT_DIR="test" # TODO: HATBAG also creates folder with order name, regardless of output dir specified here
+HATBAG_OUTPUT_DATE="dummy_date"
+
+HATBAG_SIMPLE_REPEAT="/well/davies/users/zri347/motif_death_analysis/ref/simpleRepeat.gz"
+HATBAG_CALLABLE_BED='NULL'
+

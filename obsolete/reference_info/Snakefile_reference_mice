@@ -1,0 +1,40 @@
+REFNAME = "NCBIM37_um"
+REF_URL="XXX"
+CHR_LIST = list(range(1, 20)) ## only autosomes
+CHR_LIST_ONLY_AUTOS = list(range(1, 20))
+SPECIES_LIST = ['caroli', 'FAM', 'SPRET_EiJ', 'WSB_EiJ', 'PWK_PhJ', 'CAST_EiJ']
+VCF_PREFIX = "mice.cfswpc"
+TREEMIX_PREFIX = VCF_PREFIX
+GATK_CHR_PREFIX = ""
+CHR_CHUNKS = range(1, 20)
+TREEMIX_OUTGROUP = "Caroli"
+TREEMIX_THREADS=4
+
+HATBAG_OUTPUT_DIR="mice"
+HATBAG_OUTPUT_DATE="2018_02_25"
+HATBAG_LINEAGES=['list(' +
+'"WSBEiJ"=c("WSBEiJ"),' + 
+'"PWKPhJ"=c("PWKPhJ"),'
+'"CASTEiJ"=c("CASTEiJ"),'
+'"WSBEiJ.PWKPhJ"=c("WSBEiJ","PWKPhJ"),'
+'"WSBEiJ.CASTEiJ"=c("WSBEiJ","CASTEiJ"),'
+'"PWKPhJ.CASTEiJ"=c("PWKPhJ","CASTEiJ"),'
+'"AM"=c("WSBEiJ","PWKPhJ","CASTEiJ","WSBEiJ.PWKPhJ","WSBEiJ.CASTEiJ","PWKPhJ.CASTEiJ"),'
+'"Spretus"="Spretus",'
+'"AMS"=c("AM","Spretus"),'
+'"FAM"="FAM"'
+')']
+HATBAG_ANCESTRAL_LINEAGE=['list('
+'"AMSF"=c("FAM","AMS")'
+')']
+HATBAG_OUTGROUPS='c("Caroli")'
+HATBAG_LINEAGES_TO_BUILD=['list('
+'"WSBEiJ.PWKPhJ"=c("WSBEiJ","PWKPhJ"),'
+'"WSBEiJ.CASTEiJ"=c("WSBEiJ","CASTEiJ"),'
+'"PWKPhJ.CASTEiJ"=c("PWKPhJ","CASTEiJ")'
+')']
+HATBAG_CHRS="c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19)"
+HATBAG_GENOME_SIZE=2654895218
+HATBAG_RMASK="/well/myers/rwdavies/primates/external/mm9.rmask.nochr.gz"
+HATBAG_SIMPLE_REPEAT="/well/myers/rwdavies/primates/external/mm9.simpleRepeat.no_chr.gz"
+HATBAG_CALLABLE_BED="/well/myers/rwdavies/primates/external/wdis.callableOnly"
