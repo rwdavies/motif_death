@@ -1,5 +1,0 @@
-REFNAME = "hg38"
-REF_URL="http://hgdownload.cse.ucsc.edu/goldenPath/hg38/bigZips/hg38.fa.gz"
-CHR_LIST = range(1, 23) ## only autosomes
-SPECIES_LIST = ['baboon', 'macaque', 'snubnosedmonkey', 'vervet', 'marmoset']
-VCF_PREFIX = "owm.bmsvm"
