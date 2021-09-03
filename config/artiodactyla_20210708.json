@@ -1,8 +1,33 @@
 {
     "SPECIES_ORDER": "artiodactyla",
     "RUN_ID": "20210708",
-    "SPECIES_LIST": ["buffalo", "cow", "giraffe", "goat", "okapi", "whitetaileddeer"],
-    "HATBAG_OUTPUT_DIR": "run1",
+    "SPECIES_LIST": {
+        "buffalo": {
+            "ENA_PRJ": "PRJNA341313",
+            "RUN_ACCESSION": ["SRR4104498","SRR6154014","SRR6154015"]
+        },
+        "cow": {
+            "ENA_PRJ": "PRJNA238491",
+            "RUN_ACCESSION": ["SRR1205973"]
+        },
+        "giraffe": {
+            "ENA_PRJ": "PRJNA313910",
+            "RUN_ACCESSION":["SRR3218457","SRR3218458"]
+        },
+        "goat": {
+            "ENA_PRJ": "SRP047212",
+            "RUN_ACCESSION":["SRR1576679","SRR1576683"]
+        },
+        "okapi": {
+            "ENA_PRJ": "PRJNA313910",
+            "RUN_ACCESSION":["SRR3217625", "SRR3217884"]
+        },
+        "whitetaileddeer": {
+            "ENA_PRJ": "PRJNA317745",
+            "RUN_ACCESSION":["SRR4069805", "SRR4069807", "SRR4069809"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run2_call_bed",
     "REF_NAME": "bosTau8",
     "REF_URL": "http://hgdownload.cse.ucsc.edu/goldenPath/bosTau8/bigZips/bosTau8.fa.gz",
     "CHR_LIST_ONLY_AUTOS": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29],
@@ -13,31 +38,9 @@
     "simpleRepeat_URL": "TODO",
     "rmask_URL": "TODO",
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
-    "DEFAULTS": {
-        "TREEMIX_THREADS": 1,
-        "TREEMIX_K": 5000,
-        "GENOTYPING_QUEUE": "short.qc",
-        "GENOTYPER": "UnifiedGenotyper",
-        "GENOTYPING_THREADS": 4,
-        "CALLABLE_MIN_FRACTION": 0.75
-    },
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 2670044500,
-        "lineages": {
-            "cow": "cow",
-            "buffalo": "buffalo",
-            "ACB": ["cow", "buffalo"],
-            "goat": "goat",
-            "ACBG": ["ACB", "goat"],
-            "giraffe": "giraffe",
-            "okapi": "okapi",
-            "AOGi": ["giraffe", "okapi"]
-        },
-        "ancestral_lineage": {
-            "AOGiACBG": ["AOGi", "ACBG"]
-        },
-        "outgroups": ["whitetaileddeer"],
         "ndge": 3,
         "gcW2": 5000,
         "num_non_missing_outgroups_required": null,
@@ -46,5 +49,13 @@
         "mrle": 6,
         "mncdnle": 100,
         "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
     }
 }

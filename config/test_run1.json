@@ -28,14 +28,6 @@
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "HATBAG_PARAMS": {
         "genomeSize": 4e5,
-        "lineages": {
-            "test_pop1": "test_pop1",
-            "test_pop2": "test_pop2"
-        },
-        "ancestral_lineage": {
-            "P1P2Anc": ["test_pop1", "test_pop2"]
-        },
-        "outgroups": ["test_outgroup"],
         "vcf_load_split_num_files": 1,
         "Klist": 6,
         "cgte": 0,

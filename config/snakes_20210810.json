@@ -1,0 +1,61 @@
+{
+    "SPECIES_ORDER": "snakes",
+    "RUN_ID": "20210810",
+    "SPECIES_LIST": {
+        "ijima_sea_snake": {
+            "ENA_PRJ": "PRJDB7221",
+            "RUN_ACCESSION": ["DRR144861"]
+        },
+        "blue_ringed_sea_krait": {
+            "ENA_PRJ": "PRJDB7226",
+            "RUN_ACCESSION": ["DRR144984"]
+        },
+        "slender_necked_sea_snake": {
+            "ENA_PRJ": "PRJDB7271",
+            "RUN_ACCESSION":["DRR147394"]
+        },
+        "yellow_lipped_sea_krait": {
+            "ENA_PRJ": "PRJDB7284",
+            "RUN_ACCESSION":["DRR147552"]
+        },
+        "common_viper": {
+            "ENA_PRJ": "PRJNA170536",
+            "RUN_ACCESSION":["SRR1577089", "SRR1577090", "SRR1577091"]
+        },
+        "garter_snake": {
+            "ENA_PRJ": "PRJNA189551",
+            "RUN_ACCESSION":["SRR786677", "SRR786678", "SRR786680"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "ThaEle1",
+    "REF_URL": "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/769/535/GCF_009769535.1_rThaEle1.pri/GCF_009769535.1_rThaEle1.pri_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": [41.1, 42.1, 43.1, 44.1, 45.1, 46.1, 47.1, 48.1, 49.1, 50.1, 51.1, 52.1, 53.1, 54.1, 55.1, 56.1, 57.1],
+    "CHR_LIST": [41.1, 42.1, 43.1, 44.1, 45.1, 46.1, 47.1, 48.1, 49.1, 50.1, 51.1, 52.1, 53.1, 54.1, 55.1, 56.1, 57.1, 58.1],
+    "GATK_CHR_PREFIX": "NC_0455",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "common_viper",
+    "simpleRepeat_URL": "manually downloaded from genome-euro.ucsc.edu/cgi-bin/hgTables and rsynced",
+    "rmask_URL": "manually downloaded from genome-euro.ucsc.edu/cgi-bin/hgTables and 'chrom', 'chromStart', 'chromEnd', 'name' column names changed to 'genoName', 'genoStart','genoEnd', 'repName'",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1672190305,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
