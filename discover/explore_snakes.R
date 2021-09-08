@@ -1,26 +1,3 @@
-## data <- read.table("~/Downloads/results_sequence_tsv.txt", header = TRUE, sep = "\t")
-
-## ## is this - everything?
-
-## require(XML)
-## data <- xmlParse("~/Downloads/ena_read_run_20210804-2032.xml")
-## xml_data <- xmlToList(data)
-## length(xml_data)
-
-
-## ## convert to a data frame?
-## ## then, um, save?
-
-
-
-## devtools::install_github("https://github.com/cstubben/ENAbrowseR")
-## library("ENAbrowseR")
-## yp <- ena_search("tax_tree(632)", result= "assembly", drop = FALSE) 
-
-
-
-
-
 ##
 ## programmatic options
 ##
@@ -30,10 +7,6 @@ library("data.table")
 library("rotl")
 fields <- "&fields=study_accession,secondary_study_accession,sample_accession,secondary_sample_accession,experiment_accession,run_accession,submission_accession,tax_id,scientific_name,instrument_platform,instrument_model,library_name,nominal_length,library_layout,library_strategy,library_source,library_selection,read_count,base_count,center_name,first_public,last_updated,experiment_title,study_title,study_alias,experiment_alias,run_alias,fastq_bytes,fastq_md5,fastq_ftp,fastq_aspera,fastq_galaxy,submitted_bytes,submitted_md5,submitted_ftp,submitted_aspera,submitted_galaxy,submitted_format,sra_bytes,sra_md5,sra_ftp,sra_aspera,sra_galaxy,cram_index_ftp,cram_index_aspera,cram_index_galaxy,sample_alias,broker_name,sample_title,nominal_sdev,first_created"
 
-
-## from a subfamily, get genus'
-## tnrs_match_names("Thamnophis")
-## a <- tol_node_info(353718)
 
 get_match_against_subfamilies <- function(subfamilies) {
     genuses <- unique(unlist(lapply(subfamilies, function(subfamily) {
@@ -55,7 +28,7 @@ get_match_against_subfamilies <- function(subfamilies) {
         x <- system(paste0("curl -s ", url, " > ", file), intern = TRUE)
         x <- readLines(file, n = 1)
         if(x == "No results.") {
-            unlink(file)        
+            unlink(file)
             return(NULL)
         }
         available <- fromJSON(file)
@@ -66,7 +39,7 @@ get_match_against_subfamilies <- function(subfamilies) {
         ##
         iRow <- 1
         url <- paste0("https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=tax_tree(", available[iRow, "taxId"], ")", fields)
-        file <- tempfile()    
+        file <- tempfile()
         x <- system(paste0("curl -s ", shQuote(url), " > ", file), intern = TRUE)
         if (file.info(file)["size"] == 0) {
             return(NULL)
@@ -81,11 +54,16 @@ get_match_against_subfamilies <- function(subfamilies) {
         results
     })
     results <- data.frame(rbindlist(lapply(super_results[!sapply(super_results, is.null)], function(x) x)))
-    print(table(results[, "scientific_name"]))    
+    print(table(results[, "scientific_name"]))
     results
 }
 
 
+##
+## snakes
+##
+
+## sub-families manually copied in
 subfamilies <- c("Dipsadidae", "Sibynophiinae", "Natricinae", "Colubrinae", "Colubridae", "Ahaetuliinae", "Calamariinae", "Grayiinae", "Dipsadinae", "Pseudoxenodontinae")
 results <- get_match_against_subfamilies(subfamilies)
 results <- unique(results)
@@ -97,9 +75,9 @@ f <- function(study, sample = NA) {
     } else {
         m <- results[results[, "study_accession"] == study & results[, "scientific_name"] == sample, ]
     }
-m <- m[order(-m[, "read_count"]), ]
-m <- cbind(m, run_total = cumsum(m[, "base_count"]) / 6e10)
-m[, c(cols, "run_total")]
+    m <- m[order(-m[, "read_count"]), ]
+    m <- cbind(m, run_total = cumsum(m[, "base_count"]) / 6e10)
+    m[, c(cols, "run_total")]
 }
 
 
@@ -185,14 +163,14 @@ system("curl 'https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=
         cbind(
             iGenus = iGenus,
             genus = genus,
-            iRow = iRow, 
+            iRow = iRow,
             taxId = available[iRow, 1],
             scientificName = available[iRow, 2],
-            displayName = available[iRow, 3],        
+            displayName = available[iRow, 3],
             results_list[[iRow]][, c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_sdev", "first_created", "read_count", "study_accession")]
         )
     })))
-       
+
 
 
 pdf("~/Downloads/snaketree.pdf", height = 300, width = 8)
@@ -232,3 +210,38 @@ for(i in 1:length(snakes)) {
         d[i, j] <- round(f(a, b), 3)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+## data <- read.table("~/Downloads/results_sequence_tsv.txt", header = TRUE, sep = "\t")
+
+## ## is this - everything?
+
+## require(XML)
+## data <- xmlParse("~/Downloads/ena_read_run_20210804-2032.xml")
+## xml_data <- xmlToList(data)
+## length(xml_data)
+
+
+## ## convert to a data frame?
+## ## then, um, save?
+
+
+
+## devtools::install_github("https://github.com/cstubben/ENAbrowseR")
+## library("ENAbrowseR")
+## yp <- ena_search("tax_tree(632)", result= "assembly", drop = FALSE)
+
+
+
+
