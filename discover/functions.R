@@ -103,8 +103,15 @@ investigate <- function(keyword) {
     ## get data
     ##
     subfamilies <- sapply(strsplit(b$edge_label, "_"), function(x) x[[1]])
-    subfamilies <- subfamilies[-grep("ott", subfamilies)]
-    subfamilies <- subfamilies[-grep("(", subfamilies, fixed = TRUE)]
+    f <- function(wer, subfamilies) {
+        x <- grep(wer, subfamilies, fixed = TRUE)
+        if (length(x) > 0) {
+            subfamilies <- subfamilies[-x]
+        }
+        subfamilies
+    }
+    subfamilies <- f("ott", subfamilies)
+    subfamilies <- f("(", subfamilies)
     subfamilies <- unique(subfamilies)
     results <- get_match_against_subfamilies(genuses = subfamilies)
     ##
@@ -118,7 +125,7 @@ investigate <- function(keyword) {
         list(
             results = results,
             result_phylo = result_phylo
-        )
+n        )
     )
 }
 
@@ -143,7 +150,8 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
     ## do references here?
     ##
     to_compare <- sapply(strsplit(tip.label, "_"), function(x) {
-        paste0(x[1:2], collapse = "_")
+        ## remove the one that starts with ott
+        paste0(x[!(substr(x, 1, 3) == "ott")], collapse = "_")
     })
     species_have_refs <- which(!is.na(match(to_compare, assemblies[, "scientific.name"])))
     for(i_species in species_have_refs) {
@@ -196,14 +204,20 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
 
 
 look_at_one_species_or_study <- function(results, study = NA, scientific_name = NA) {
-    cols <- c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_length", "first_created", "read_count", "study_accession", "run_accession", "library_strategy", "run_accession", "base_count", "experiment_title")
+    cols <- c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_length", "first_created", "read_count", "study_accession", "run_accession", "library_strategy", "run_accession", "base_count", "experiment_title", "sample_alias")
     w1 <- rep(TRUE, nrow(results))
     w2 <- rep(TRUE, nrow(results))
     if (!is.na(study)) {
         w1 <- results[, "study_accession"] == study
     }
     if (!is.na(scientific_name)) {
-        w2 <- results[, "scientific_name"] == scientific_name
+        w2[] <- FALSE
+        x <- grep(scientific_name, results[, "scientific_name"])
+        if (length(x) > 0) {
+            w2[x] <- TRUE
+        } else {
+            stop("Could not find that name")
+        }
     }
     m <- results[w1 & w2, ]
     m <- m[order(-m[, "base_count"]), ]
