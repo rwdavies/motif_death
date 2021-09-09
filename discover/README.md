@@ -22,6 +22,9 @@ Samples to run / have been run
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
 |ready to go (need manual download)|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
 |ready to go (need manual download)| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
+|unsure|eupleridae|Mammalia,Carnivora, Feliformia| meerkat |config made by Jhamat?|
+|unsure|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
+|unsure|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
 
 
 Turtles
