@@ -149,7 +149,7 @@ rule HATBAG_HACK_FUNCTION:
     input:
         get_hatbag_input,
         hatbag_params = f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/hatbag_params.json",
-	    callable_bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+	    callable_bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed"
     output:
         decoy = expand(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/{{{{run}}}}_complete")
     params:
@@ -171,6 +171,7 @@ rule HATBAG_HACK_FUNCTION:
         """
 
 rule unzip_tree:
+    # TODO: combine with below job by calling gunzip from python
     input:
         zipped = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout.gz"
     output:
