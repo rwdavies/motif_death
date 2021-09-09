@@ -4,14 +4,40 @@ assemblies <- get_ucsc_assemblies()
 
 out <- investigate("Lagomorpha")
 ##
-
 results <- out$results
 
 
+
+
+
+##
+## rabbits and friends
+##
+out <- investigate("Leporidae")
+results <- out$results
+
+## brush rabbit, Sylvilagus bachmani, PRJNA512907,  SRR12437581 <- this is the outgroup, probably
+## european rabbit, Oryctolagus cuniculus, PRJEB28783, ERR2811813
+## Granada hare, Lepus granatensis, PRJNA399194, SRR5949623
+## Broom hare, Lepus castroviejoi, PRJNA562432, SRR10023741
+## snowshoe hare, Lepus americanus, PRJNA420081, SRR6485265
+## mountain hare, Lepus timidus, PRJNA399194, SRR5949626
+## european hare, Lepus europaeus, PRJNA561428, SRR10011655, SRR10012548
+## Black-tailed jackrabbit, Lepus californicus, PRJNA420081, SRR11020276
+
+
+
+
+
+##
 ## pika
+##
+
 ## see here https://doi.org/10.1093/molbev/msaa026
 ## Out of Tibet: Genomic Perspectives on the Evolutionary History of Extant Pikas
 ## Fig 2 for instance
+out <- investigate("Lagomorpha")
+results <- out$results
 
 
 ## so all the Ochotona are from two studies:

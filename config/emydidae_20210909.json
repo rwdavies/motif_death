@@ -1,0 +1,49 @@
+{
+    "SPECIES_ORDER": "emydidae",
+    "RUN_ID": "20210909",
+    "SPECIES_LIST": {
+        "paintedturtle": {
+            "ENA_PRJ": "PRJNA589899",
+            "RUN_ACCESSION": ["SRR11059563"]
+        },
+        "diamondbackterrapin": {
+            "ENA_PRJ": "PRJNA339452",
+            "RUN_ACCESSION": ["SRR4048682", "SRR4048684", "SRR4048681", "SRR4048683"]
+        },
+        "redearedslider": {
+            "ENA_PRJ": "PRJNA552319",
+            "RUN_ACCESSION": ["SRR13043486"]
+        },
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "CAS_Tse_1.0",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/013/100/865/GCF_013100865.1_CAS_Tse_1.0/GCF_013100865.1_CAS_Tse_1.0_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": [298.1 299.1 300.1 301.1 302.1 303.1 304.1 305.1 306.1 307.1 308.1 309.1 310.1 311.1 312.1 313.1 314.1 315.1 316.1 317.1 318.1 319.1 320.1 321.1 322.1],
+    "CHR_LIST": [298.1 299.1 300.1 301.1 302.1 303.1 304.1 305.1 306.1 307.1 308.1 309.1 310.1 311.1 312.1 313.1 314.1 315.1 316.1 317.1 318.1 319.1 320.1 321.1 322.1],
+    "GATK_CHR_PREFIX": "NC_048",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "paintedturtle",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2126199303,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}

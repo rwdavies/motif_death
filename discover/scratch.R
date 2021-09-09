@@ -1,6 +1,55 @@
+source("~/proj/motif_death/discover/functions.R")
+
+assemblies <- get_ucsc_assemblies()
+
+out <- investigate("Afrotheria")
+##
+results <- out$results
+
+out <- investigate("Pholidota")
+
+## manis looks promising?
+
+## I think so? use pentadactyla as the outgroup, build the tree with the other two
+
+chrom <- read.table("https://hgdownload.soe.ucsc.edu/goldenPath/manPen1//bigZips/manPen1.chrom.sizes")
+## UGH, I dunno, too too many chromosomes to run, doesn't seem reasonable for now
+
+out <- investigate("Testudines") ## turtles
+
+
+out <- investigate("Emydidae") ## more specific turtles
 
 
 
+## AM HERE
+## FINISH UP TURTLES
+
+## turtles
+m <- look_at_one_species_or_study(results, scientific_name="Chrysemys picta")
+
+Painted turtle, Chrysemys picta (outgroup) PRJNA589899, SRR11059563
+Diamondback terrapin, Malaclemys terrapin terrapin PRJNA339452, SRR4048682, SRR4048684, SRR4048681, SRR4048683
+red eared slider, Trachemys scripta elegans, PRJNA552319, SRR13043486
+
+## so just three species?
+## if mutations don't go so far back, could probably push it further
+
+## not really?
+yellow bellied slider, Trachemys scripta scripta
+
+
+
+## reference
+CAS_Tse_1.0
+## can manually download simpleRepeat and repeatMasker from the usual place
+
+
+
+## not sure about this one? Actinemys marmorata
+
+
+1
 
 
 

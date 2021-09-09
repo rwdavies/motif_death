@@ -46,7 +46,7 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL) {
         if (file.info(file)["size"] == 0) {
             return(NULL)
         }
-        results <- read.table(file, sep = "\t", header = TRUE, comment.char="")
+        results <- read.table(file, sep = "\t", header = TRUE, comment.char="", quote = "")
         unlink(file)
         remove1 <- results[, "library_source"] %in% c("TRANSCRIPTOMIC", "METAGENOMIC")
         remove2 <- results[, "library_selection"] %in% c("Reduced Representation", "Restriction Digest", "Hybrid Selection", "ChIP", "DNase")
@@ -125,7 +125,7 @@ investigate <- function(keyword) {
         list(
             results = results,
             result_phylo = result_phylo
-n        )
+        )
     )
 }
 
@@ -149,19 +149,22 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
     ##
     ## do references here?
     ##
-    to_compare <- sapply(strsplit(tip.label, "_"), function(x) {
-        ## remove the one that starts with ott
-        paste0(x[!(substr(x, 1, 3) == "ott")], collapse = "_")
-    })
-    species_have_refs <- which(!is.na(match(to_compare, assemblies[, "scientific.name"])))
-    for(i_species in species_have_refs) {
-        keep_tip[i_species] <- TRUE
-        x <- assemblies[match(to_compare[i_species], assemblies[, "scientific.name"]), ]
-        ## want the class
-        tip.label[i_species] <- paste0(
-            tip.label[i_species], " (REF, class=",x[, "class"], ")"
-        )
-        tip.color[i_species] <- "red"
+    for(i_what in 1:2) {
+        ## so with the two versions, can do with, without subspecies
+        to_compare <- sapply(strsplit(tip.label, "_"), function(x) {
+            x <- x[!(substr(x, 1, 3) == "ott")]
+            paste0(x[1:(i_what + 1)], collapse = "_")
+        })
+        species_have_refs <- which(!is.na(match(to_compare, assemblies[, "scientific.name"])))
+        for(i_species in species_have_refs) {
+            keep_tip[i_species] <- TRUE
+            x <- assemblies[match(to_compare[i_species], assemblies[, "scientific.name"]), ]
+            ## want the class
+            tip.label[i_species] <- paste0(
+                tip.label[i_species], " (REF, class=",x[, "class"], ")"
+            )
+            tip.color[i_species] <- "red"
+        }
     }
     ##
     ## do found species
