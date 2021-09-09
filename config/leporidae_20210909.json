@@ -1,0 +1,70 @@
+{
+    "SPECIES_ORDER": "leporidae",
+    "RUN_ID": "20210909",
+    "SPECIES_LIST": {
+        "brushrabbit": {
+            "ENA_PRJ": "PRJNA512907",
+            "RUN_ACCESSION": ["SRR12437581"]
+        },
+        "europeanrabbit": {
+            "ENA_PRJ": "PRJEB28783",
+            "RUN_ACCESSION": ["ERR2811813"]
+        },
+        "granadahare": {
+            "ENA_PRJ": "PRJNA399194",
+            "RUN_ACCESSION": ["SRR5949623"]
+        },
+        "broomhare": {
+            "ENA_PRJ": "PRJNA562432",
+            "RUN_ACCESSION": ["SRR10023741"]
+        },
+        "snowshoehare": {
+            "ENA_PRJ": "PRJNA420081",
+            "RUN_ACCESSION": ["SRR6485265"]
+        },
+        "mountainhare": {
+            "ENA_PRJ": "PRJNA399194",
+            "RUN_ACCESSION": ["SRR5949626"]
+        },
+        "european hare": {
+            "ENA_PRJ": "PRJNA561428",
+            "RUN_ACCESSION": ["SRR10011655", "SRR10012548"]
+        },
+        "blacktailedjackrabbit": {
+            "ENA_PRJ": "PRJNA420081",
+            "RUN_ACCESSION": ["SRR11020276"]
+        }
+	
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "oryCun2",
+    "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/oryCun2/bigZips/oryCun2.fa.gz",
+    "CHR_LIST_ONLY_AUTOS": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
+    "CHR_LIST": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, X],
+    "GATK_CHR_PREFIX": "chr",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "brushrabbit",
+    "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/oryCun2/database/simpleRepeat.txt.gz",
+    "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/oryCun2/database/rmsk.txt.gz",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2737445565,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
