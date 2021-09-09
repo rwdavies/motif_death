@@ -1,9 +1,10 @@
 About
-#####
+=====
+
 Files in this folder are related to discovery new sets of species that could be suitable for motif_death/HATBAG
 
 How to run
-##########
+==========
 
 Use code like the following to make a plot, and to investigate individual species
 ```
@@ -15,7 +16,7 @@ look_at_one_species_or_study(results, scientific_name="Chrysemys picta")
 ```
 
 Samples to run / have been run
-##############################
+==============================
 
 |Status|run name|Class, order, family|Common name|Notes|
 |---|---|---|---|---|
@@ -28,11 +29,14 @@ Samples to run / have been run
 
 
 Turtles
-#######
+=======
 
 Used
+
 Painted turtle, Chrysemys picta (outgroup) PRJNA589899, SRR11059563
+
 Diamondback terrapin, Malaclemys terrapin terrapin PRJNA339452, SRR4048682, SRR4048684, SRR4048681, SRR4048683
+
 red eared slider, Trachemys scripta elegans, PRJNA552319, SRR13043486
 
 Not used (could use if not too distantly related?)
@@ -40,7 +44,7 @@ Terrapene carolina triunguis, Emys orbicularis, Actinemys marmorata
 
 
 Pangolins
-#######
+=========
 
 So these below work, but the reference genome looks too discontinuous for this approach to work at this time
 
@@ -56,7 +60,7 @@ https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png
 
 
 Future / notes
-##############
+==============
 
 
 https://commons.wikimedia.org/wiki/File:An_evolutionary_tree_of_mammals.jpeg
