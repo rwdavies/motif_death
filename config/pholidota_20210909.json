@@ -2,33 +2,33 @@
     "SPECIES_ORDER": "pholidota",
     "RUN_ID": "20210909",
     "SPECIES_LIST": {
-        "brushrabbit": {
-            "ENA_PRJ": "PRJNA512907",
-            "RUN_ACCESSION": ["SRR12437581"]
+        "chinesepangolin": {
+            "ENA_PRJ": "PRJNA529540",
+            "RUN_ACCESSION": ["SRR9018595"]
         },
-        "europeanrabbit": {
-            "ENA_PRJ": "PRJEB28783",
-            "RUN_ACCESSION": ["ERR2811813"]
+        "indianpangolin": {
+            "ENA_PRJ": "PRJNA490788",
+            "RUN_ACCESSION": ["SRR7874732"]
         },
-        "granadahare": {
-            "ENA_PRJ": "PRJNA399194",
-            "RUN_ACCESSION": ["SRR5949623"]
+        "sundapangolin": {
+            "ENA_PRJ": "PRJNA529540",
+            "RUN_ACCESSION": ["SRR9018632"]
         },
     },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "oryCun2",
     "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/manPen1/bigZips/manPen1.fa.gz",
-    "CHR_LIST_ONLY_AUTOS": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    "CHR_LIST": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, X],
+    "CHR_LIST_ONLY_AUTOS": [3],
+    "CHR_LIST": [3],
     "GATK_CHR_PREFIX": "chr",
     "OPERATE_GATK_PER_CHR": "TRUE",
-    "TREEMIX_OUTGROUP": "brushrabbit",
+    "TREEMIX_OUTGROUP": "chinesepangolin",
     "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/manPen1/database/simpleRepeat.txt.gz",
     "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/manPen1/database/rmsk.txt.gz",
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
-        "genomeSize": 2737445565,
+        "genomeSize": 2204732179,
         "ndge": 3,
         "gcW2": 5000,
         "num_non_missing_outgroups_required": null,
