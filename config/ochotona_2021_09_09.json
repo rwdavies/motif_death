@@ -1,0 +1,61 @@
+{
+    "SPECIES_ORDER": "ochotona",
+    "RUN_ID": "20210909",
+    "SPECIES_LIST": {
+        "pika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION": ["SRR14101820", "SRR14101857"]
+        },
+        "americanpika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION": ["SRR413468", "SRR413470"]
+        },
+        "chineseredpika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION":["SRR14101824", "SRR14101825"]
+        },
+        "largeearedpika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION":["SRR14101814"]
+        },
+        "mongolianpika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION":["SRR14101830", "SRR14101832"]
+        },
+        "steppepika": {
+            "ENA_PRJ": "PRJNA716776",
+            "RUN_ACCESSION":["SRR14101831"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "OchPri4.0",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/633/375/GCF_014633375.1_OchPri4.0/GCF_014633375.1_OchPri4.0_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": [36.1,37.1,38.1,39.1,40.1,41.1,42.1,43.1,44.1,45.1,46.1,47.1,48.1,49.1,50.1,51.1,52.1,53.1,54.1,55.1,56.1,57.1,58.1,59.1,60.1,61.1,62.1,63.1,64.1,65.1,66.1,67.1, 68.1],
+    "CHR_LIST": [36.1,37.1,38.1,39.1,40.1,41.1,42.1,43.1,44.1,45.1,46.1,47.1,48.1,49.1,50.1,51.1,52.1,53.1,54.1,55.1,56.1,57.1,58.1,59.1,60.1,61.1,62.1,63.1,64.1,65.1,66.1,67.1, 68.1],    
+    "GATK_CHR_PREFIX": "NC_0505",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "pika",
+    "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/simpleRepeat.txt.gz",
+    "rmask_URL": "needs to be done manually, is on the website",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2231492728,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
