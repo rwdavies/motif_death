@@ -2,10 +2,57 @@ source("~/proj/motif_death/discover/functions.R")
 
 assemblies <- get_ucsc_assemblies()
 
-out <- investigate("Pholidota")
-##
+out <- investigate("Iguania")
 results <- out$results
 
+
+## anolis looks fine, BUT, do we have enough?
+m <- look_at_one_species_or_study(results, scientific_name="Anolis")
+m <- m[m[, "base_count"] > 3e9, ]
+
+## so these ones are well captured. can possibly do some more?
+
+
+
+## not sure this will work...
+## so these 4, potential ref fence lizard
+## SceUnd_v1.1, looks OKx
+Sceloporus grammicus ## NO
+Sceloporus occidentalis ## Maybe
+Sceloporus tristichus ## yes
+Sceloporus undulatus ## yes
+##
+
+
+## here for frogs
+https://www.sciencedirect.com/science/article/abs/pii/S105579031300300X
+
+
+## Really not enough data
+## reference genome aRanTem1.1, VGP primary
+Rana dabieshanensis
+Rana dalmatina
+Rana muscosa
+Rana temporaria
+
+look_at_one_species_or_study(results, scientific_name="Rana temporaria")
+
+##
+
+## xenopus, doesn't look great. too diverged
+## bufo bufo common toad
+
+
+## frogs,
+
+
+## possible amphibians?
+## check out reference genomes?
+1379 GCF_901001135.1 aRhiBiv1.1  Rhinatrema_bivittatum    two-lined caecilian
+1382 GCF_901765095.1 aMicUni1.1 Microcaecilia_unicolor tiny Cayenne caecilian
+1393 GCF_902459505.1 aGeoSer1.1  Geotrypetes_seraphini        Gabon caecilian
+1416 GCF_905171765.1 aBufBuf1.1              Bufo_bufo            common toad
+1417 GCF_905171775.1 aRanTem1.1        Rana_temporaria   European common frog
 
 
 

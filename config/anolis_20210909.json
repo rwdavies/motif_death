@@ -1,0 +1,53 @@
+{
+    "SPECIES_ORDER": "anolis",
+    "RUN_ID": "20210909",
+    "SPECIES_LIST": {
+        "bridledanole": {
+            "ENA_PRJ": "PRJNA400786",
+            "RUN_ACCESSION": ["SRR8100042", "SRR8100035"]
+        },
+        "greenanole": {
+            "ENA_PRJ": "PRJNA381064",
+            "RUN_ACCESSION": ["SRR5813770"]
+        },
+        "grassanole": {
+            "ENA_PRJ": "PRJNA400787",
+            "RUN_ACCESSION": ["SRR8148313", "SRR8148312"]
+        },
+        "apletophallus": {
+            "ENA_PRJ": "PRJNA400788",
+            "RUN_ACCESSION": ["SRR8111633", "SRR8111630", "SRR8111632"],
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "AnoCar2.0",
+    "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/bigZips/anoCar2.fa.gz",
+    "CHR_LIST_ONLY_AUTOS": [1,2,3,4,5,6],
+    "CHR_LIST": [1,2,3,4,5,6],
+    "GATK_CHR_PREFIX": "chr",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "bridledanole",
+    "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/database/simpleRepeat.txt.gz",
+    "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/database/rmsk.txt.gz",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1799143587,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}

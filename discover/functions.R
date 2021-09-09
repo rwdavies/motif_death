@@ -79,6 +79,7 @@ get_ucsc_assemblies <- function() {
     system("cd ~/Downloads && curl -s https://hgdownload.soe.ucsc.edu/hubs/UCSC_GI.assemblyHubList.txt > UCSC_GI.assemblyHubList.txt")
     assemblies <- read.table("~/Downloads/UCSC_GI.assemblyHubList.txt", skip = 11, sep = "\t", comment.char="@", header = TRUE, quote = "")
     assemblies[, "scientific.name"] <- gsub(" ", "_", assemblies[, "scientific.name"])
+    assemblies$class2 <- NA
     ##
     ## annotate them some more
     ##
@@ -87,9 +88,13 @@ get_ucsc_assemblies <- function() {
         ## copy and paste into txt file, fix header by removing line breaks
         primates <- read.table(paste0("~/Downloads/UCSC", what, ".txt"), sep = "\t", quote = "", header = TRUE)
         primates$accession2 <- sapply(strsplit(primates[, "NCBI.assembly"], "_"), function(x) paste0(x[1], "_", x[2]))
-        assemblies[match(primates$accession2, assemblies[, "X..accession"]), "class"] <- what
+        m <- match(primates$accession2, assemblies[, "X..accession"])
+        assemblies[m, "class"] <- what
+        if (what == "vgp") {
+            assemblies[m[!is.na(m)], "class2"] <- primates[!is.na(m), "class.VGP.link"]
+        }
     }
-   return(assemblies)
+   table(return(assemblies)
 }
 
 
@@ -113,6 +118,7 @@ investigate <- function(keyword) {
     subfamilies <- f("ott", subfamilies)
     subfamilies <- f("(", subfamilies)
     subfamilies <- unique(subfamilies)
+    message(paste0("There are ", length(subfamilies), " subfamilies to investigate"))
     results <- get_match_against_subfamilies(genuses = subfamilies)
     ##
     ## get some info for the plots
