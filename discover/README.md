@@ -18,6 +18,7 @@ Samples to run / have been run
 ##############################
 
 |Status|run name|Class, order, family|Common name|Notes|
+|---|---|---|---|---|
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
 |ready to go (need manual download)|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
 |ready to go (need manual download)| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
