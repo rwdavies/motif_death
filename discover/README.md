@@ -15,6 +15,8 @@ results <- out$results
 look_at_one_species_or_study(results, scientific_name="Chrysemys picta")
 ```
 
+Note, to download tables, to get more options in the UCSC table browser, start in the assembly you want from the Genomes -> Other setting, then it will take you over to that species.
+
 Samples to run / have been run
 ==============================
 

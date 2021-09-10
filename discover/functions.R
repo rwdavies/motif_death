@@ -94,7 +94,7 @@ get_ucsc_assemblies <- function() {
             assemblies[m[!is.na(m)], "class2"] <- primates[!is.na(m), "class.VGP.link"]
         }
     }
-   table(return(assemblies)
+    return(assemblies)
 }
 
 

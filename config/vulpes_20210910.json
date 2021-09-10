@@ -1,0 +1,61 @@
+{
+    "SPECIES_ORDER": "vulpes",
+    "RUN_ID": "20210910",
+    "SPECIES_LIST": {
+        "islandfox": {
+            "ENA_PRJ": "PRJNA478450",
+            "RUN_ACCESSION": ["SRR7458264"]
+        },
+        "grayfox": {
+            "ENA_PRJ": "PRJNA478450",
+            "RUN_ACCESSION": ["SRR7458270"]
+        },
+        "batearedfox": {
+            "ENA_PRJ": "PRJNA681015",
+            "RUN_ACCESSION": ["SRR13177425"]
+        },
+        "arcticfox": {
+            "ENA_PRJ": "PRJEB43377",
+            "RUN_ACCESSION": ["ERR5417970"]
+        },
+        "fennecfox": {
+            "ENA_PRJ": "PRJNA648123",
+            "RUN_ACCESSION": ["SRR14750511"]
+        },
+        "redfox": {
+            "ENA_PRJ": "PRJNA681015",
+            "RUN_ACCESSION": ["SRR13177416"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "ASM1834538v1",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/345/385/GCF_018345385.1_ASM1834538v1/GCF_018345385.1_ASM1834538v1_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": ["24.1", "25.1", "26.1", "27.1", "28.1", "29.1", "30.1", "31.1", "32.1", "33.1", "34.1", "35.1", "36.1", "37.1", "38.1", "39.1", "40.1", "41.1", "42.1", "43.1", "44.1", "45.1", "46.1", "47.1"],
+    "CHR_LIST": ["24.1", "25.1", "26.1", "27.1", "28.1", "29.1", "30.1", "31.1", "32.1", "33.1", "34.1", "35.1", "36.1", "37.1", "38.1", "39.1", "40.1", "41.1", "42.1", "43.1", "44.1", "45.1", "46.1", "47.1", "48.1"],
+    "GATK_CHR_PREFIX": "NC_0548",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "islandfox",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2345550353,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
