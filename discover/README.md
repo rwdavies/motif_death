@@ -36,8 +36,8 @@ Todo, revisit birds, fish, possibly go further!
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
 |ready to go (need manual download)|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
 |running by Jhamat|eupleridae|Mammalia,Carnivora, Feliformia| meerkat |config made by Jhamat, needs to be uploaded. Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup|
-|ready to go (need manual download)|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
-|ready to go (need manual download)|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
+|ready to go|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
+|running by Robbie|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
 
 
 
