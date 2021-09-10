@@ -15,7 +15,14 @@ results <- out$results
 look_at_one_species_or_study(results, scientific_name="Chrysemys picta")
 ```
 
+Getting simpleRepeat / repeatMasker
+===================================
+
 Note, to download tables, to get more options in the UCSC table browser, start in the assembly you want from the Genomes -> Other setting, then it will take you over to that species.
+
+Also, if you have to download multiple, see file merge_different_repeatMasker_files.sh as a way to do it.
+
+
 
 Samples to run / have been run
 ==============================
@@ -88,6 +95,18 @@ sunda pangolin, Manis javanica, PRJNA529540, SRR9018632
 
 There is a good sample Phataginus tricuspis but this looks too far diverged
 https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png
+
+
+
+
+
+Dogs / foxes
+============
+
+See canidae.R
+Also need to build simpleRepeat, rmask 
+
+
 
 
 

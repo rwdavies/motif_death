@@ -27,11 +27,14 @@ if [ ${user} == "dcc832" ]
 then
     export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/:${PATH} # Note - easier than changing R library paths for now
     # export USER_CONFIG="/users/davies/dcc832/proj/motif_death/config/dcc832.json"
-    export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
+    export ANALYSIS_DIR="/well/davies/shared/motif_death_analysis/"
     export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"
     export R_DIR="/users/davies/dcc832/proj/motif_death/R/"
     export HATBAG_DIR="/users/davies/dcc832/proj/HATBAG/"
-    export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"
+    export SNAKEMAKE="/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
+    #export SNAKEMAKE="/well/davies/users/dcc832/bin/miniconda3/envs/snakemake/bin/snakemake"
+    # export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
+    #export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"
 elif [ ${user} == "zri347" ]
 then
     module load R/3.6.2-foss-2019b
