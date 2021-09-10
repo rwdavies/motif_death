@@ -1,0 +1,61 @@
+{
+    "SPECIES_ORDER": "canis",
+    "RUN_ID": "20210910",
+    "SPECIES_LIST": {
+        "manedwolf": {
+            "ENA_PRJ": "PRJNA512907",
+            "RUN_ACCESSION": ["SRR13167987"]
+        },
+        "andeanfox": {
+            "ENA_PRJ": "PRJNA232497",
+            "RUN_ACCESSION": ["SRR1066702", "SRR7107709", "SRR1066703"]
+        },
+        "blackbackedjackal": {
+            "ENA_PRJ": "PRJEB31639",
+            "RUN_ACCESSION": ["ERR3210523"]
+        },
+        "africanwilddog": {
+            "ENA_PRJ": "PRJNA488046",
+            "RUN_ACCESSION": ["SRR7874817"]
+        },
+        "dhole": {
+            "ENA_PRJ": "PRJNA448733",
+            "RUN_ACCESSION": ["SRR7107853"]
+        },
+        "dog": {
+            "ENA_PRJ": "PRJEB31639",
+            "RUN_ACCESSION": ["ERR3245533", "ERR3245532"]
+        },
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "Dog10K_Boxer_Tasha",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/002/285/GCF_000002285.5_Dog10K_Boxer_Tasha/GCF_000002285.5_Dog10K_Boxer_Tasha_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": ["583.4", "584.4", "585.4", "586.4", "587.4", "588.4", "589.4", "590.4", "591.4", "592.4", "593.4", "594.4", "595.4", "596.4", "597.4", "598.4", "599.4", "600.4", "601.4", "602.4", "603.4", "604.4", "605.4", "606.4", "607.4", "608.4", "609.4", "610.4", "611.4", "612.4", "613.4", "614.4", "615.4", "616.4", "617.4", "618.4", "619.4", "620.4"],
+    "CHR_LIST": ["583.4", "584.4", "585.4", "586.4", "587.4", "588.4", "589.4", "590.4", "591.4", "592.4", "593.4", "594.4", "595.4", "596.4", "597.4", "598.4", "599.4", "600.4", "601.4", "602.4", "603.4", "604.4", "605.4", "606.4", "607.4", "608.4", "609.4", "610.4", "611.4", "612.4", "613.4", "614.4", "615.4", "616.4", "617.4", "618.4", "619.4", "620.4", "621.4"],
+    "GATK_CHR_PREFIX": "NC_006",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "manedwolf",
+    "simpleRepeat_URL": "done manually",
+    "rmask_URL": "done manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2345550353,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}

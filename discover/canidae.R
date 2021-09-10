@@ -35,7 +35,7 @@ Vulpes vulpes - Red fox, PRJNA681015, SRR13177416
 
 
 ## dogs and friends (Caninae)
-## use normal dog reference CanFam3.1
+## use normal dog reference CanFam3.1 (actually, newer one)
 ## use Chrysocyon brachyurus and Lycalopex culpaeus as outgroup to start
 Chrysocyon brachyurus - Maned wolf, PRJNA512907, SRR13167987
 Lycalopex culpaeus - Culpeo or Andean Fox, PRJNA232497, SRR1066702, SRR7107709, SRR1066703 (probably different animals? but I think OK?)
