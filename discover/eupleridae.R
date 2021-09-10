@@ -22,6 +22,16 @@ results <- feliformia$results
 ##
 ##
 
+## down hyaenidae (all 4 of the bioRxiv figure above!)
+
+## aardwolf
+look_at_one_species_or_study(results, scientific_name = "Proteles cristata")
+## use: SRR13528972
+
+## spotted hyaena
+look_at_one_species_or_study(results, scientific_name = "Crocuta crocuta")
+## use: SRR9914662
+
 ## striped hyaena
 look_at_one_species_or_study(results, scientific_name = "Hyaena hyaena")
 ## use: SRR5904112 (can also use SRR5904111)
@@ -30,17 +40,22 @@ look_at_one_species_or_study(results, scientific_name = "Hyaena hyaena")
 look_at_one_species_or_study(results, scientific_name = "Parahyaena brunnea")
 ## use: SRR5886633
 
-## aardwolf
-look_at_one_species_or_study(results, scientific_name = "Proteles cristata")
-## use: SRR13528972
 
-## spotted hyaena
-look_at_one_species_or_study(results, scientific_name = "Crocuta crocuta")[1:5, ]
-## use: SRR9914662
+
+##
+## good alternate potential outgroup
+##
+
 
 ## fossa
 look_at_one_species_or_study(results, scientific_name = "Cryptoprocta ferox")
 ## use: SRR11097184 (can also use SRR11428701)
+
+
+##
+##
+##
+
 
 ## banded mongoose
 look_at_one_species_or_study(results, scientific_name = "Mungos mungo")
