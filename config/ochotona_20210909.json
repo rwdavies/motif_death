@@ -37,7 +37,7 @@
     "TREEMIX_OUTGROUP": "pika",
     "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/balAcu1/database/simpleRepeat.txt.gz",
     "rmask_URL": "needs to be done manually, is on the website",
-    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 2231492728,

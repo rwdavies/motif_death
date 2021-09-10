@@ -37,7 +37,7 @@
     "TREEMIX_OUTGROUP": "manedwolf",
     "simpleRepeat_URL": "done manually",
     "rmask_URL": "done manually",
-    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]++\\.4",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 2345550353,
