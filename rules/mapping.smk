@@ -6,13 +6,13 @@
 def get_bam_pieces(wildcards):
     unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
     pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
-    filenames = expand(rules.extract_and_map_fastq_pieces.output.bam, **wildcards, piece=pieces)
+    filenames = expand(rules.map_fastq_pieces.output.bam, **wildcards, piece=pieces)
     return filenames
 
 def get_bai_pieces(wildcards):
     unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
     pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
-    filenames = expand(rules.extract_and_map_fastq_pieces.output.bai, **wildcards, piece=pieces)
+    filenames = expand(rules.map_fastq_pieces.output.bai, **wildcards, piece=pieces)
     return filenames
 
 # TODO: replace with one function
@@ -30,6 +30,8 @@ def get_bai_units(wildcards):
 rule map_all:
     input:
         expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.realigned.rmdup.bam", species = order_df["species"])
+
+
 
 
 checkpoint chunk_fastq:
@@ -57,7 +59,7 @@ checkpoint chunk_fastq:
 
 
 ## make head this for faster version "| head -n 400"
-rule extract_and_map_fastq_pieces:
+rule map_fastq_pieces:
     input:
         pen1_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
         pen2_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
@@ -97,10 +99,13 @@ rule extract_and_map_fastq_pieces:
         '-t{params.threads} -g {REF_DIR}/{REF_NAME} -h {REF_DIR}/{REF_NAME} --overwrite --bamkeepgoodreads '
         '-M {output.bam}.temp1.bam | '
         'samtools view -Sb - > {output.bam}.temp2.bam && '
+	'rm {output.bam}.temp1.bam && '
         'echo STAMPY DONE && '
         'samtools sort -T mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/ -o {output.bam} {output.bam}.temp2.bam && '
-        'samtools index {output.bam} '
-
+        'samtools index {output.bam} && '
+        'rm {output.bam}.temp2.bam && '
+        'rm {input.pen1_chunk} && '
+        'rm {input.pen2_chunk} '
 
 ## after STAMPY command maybe --sensitive
 ## make head this for faster version "| head -n 400"
@@ -123,7 +128,7 @@ rule merge_mapped_pieces:
         samtools index {output.bam}
         """
 
- 
+
 rule merge_units:
     input:
         bams = get_bam_units,
