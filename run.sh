@@ -51,11 +51,11 @@ echo "Motif Death output in ${ANALYSIS_DIR}"
 if [ "$is_test" = false ]
 then
     export ORDER_CSV="${SCRIPTPATH}/${SPECIES_MAP_DIR_NAME}/${SPECIES_ORDER}.csv"
-    if [ -f $ORDER_CSV ]
+    ## only update order CSV if newer than order config
+    if [ "${ORDER_CONFIG}" -nt "${ORDER_CSV}" ]
     then
-        rm $ORDER_CSV
+	R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
     fi
-    R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
 fi
 
 LOG_DIR=${ANALYSIS_DIR}logs/
