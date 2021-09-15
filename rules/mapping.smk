@@ -126,6 +126,7 @@ rule merge_mapped_pieces:
         """
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
+        rm {input.bams}
         """
 
 
@@ -242,6 +243,7 @@ rule merge_realigned_bams:
         """
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
+        rm mapping/{SPECIES_ORDER}/{wildcards.species}/*{FASTQ_SUFFIX}
         """
 
 
