@@ -25,7 +25,7 @@ def get_bam_units(wildcards):
 def get_bam_number_of_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
     filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
-    return length(filenames)
+    return len(filenames)
 
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])

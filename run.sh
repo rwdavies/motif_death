@@ -54,6 +54,7 @@ then
     ## only update order CSV if newer than order config
     if [ "${ORDER_CONFIG}" -nt "${ORDER_CSV}" ]
     then
+	echo remake order CSV
 	R -f R/create_order_csv.R --args $ORDER_CONFIG $ORDER_CSV
     fi
 fi

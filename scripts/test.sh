@@ -27,8 +27,6 @@ then
     rm $ORDER_CSV
 fi
 
-echo "species,units,fastq_ftp,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > $ORDER_CSV
-
 if [ -d "${SIMULATE_DIR}" ]
 then
     rm -r "${SIMULATE_DIR}"
@@ -38,30 +36,40 @@ then
     rm -r "${ANALYSIS_DIR}"
 fi
 
+$HATBAG_DIR/HATBAG_simulate_input.R --chr_lengths='c(2e5,2e5)' --seed=145 --verbose=TRUE --outputDir="$SIMULATE_DIR" --model=1 --enriched_in_tails=FALSE --simulate_reads=TRUE
+
 # to ensure sufficient test coverage, split outgroup into two fastq units
 # as the code does something different if there are one or two
 n_entries=`gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | wc -l`
-half=`$((echo ${n_entries} / 2))`
+half=$((${n_entries}/2))
 gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | head -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupA_1.fastq.gz"
 gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | tail -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupB_1.fastq.gz"
 gunzip -c "${SIMULATE_DIR}outgroup_2.fastq.gz" | head -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupA_2.fastq.gz"
 gunzip -c "${SIMULATE_DIR}outgroup_2.fastq.gz" | tail -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupB_2.fastq.gz"
-
-
-$HATBAG_DIR/HATBAG_simulate_input.R --chr_lengths='c(2e5,2e5)' --seed=145 --verbose=TRUE --outputDir="$SIMULATE_DIR" --model=1 --enriched_in_tails=FALSE --simulate_reads=TRUE
+rm "${SIMULATE_DIR}outgroup_1.fastq.gz"
+rm "${SIMULATE_DIR}outgroup_2.fastq.gz"
 
 cd "$SIMULATE_DIR"
 
-TEST_NAMES=$(find *.fastq.gz | cut -d _ -f 1 | uniq)
 
+TEST_UNIT_NAMES=$(find *.fastq.gz | cut -d _ -f 1 | uniq)
+
+echo "species,units,fastq_ftp,n_mapping_pieces,mapping_queue,lb,lb_insert_size,flowcell_barcode,flowcell_lane" > $ORDER_CSV
 # TODO: specify all analysis subfolders up front in config file
-for name in $TEST_NAMES; do
+for unit_name in $TEST_UNIT_NAMES; do
+    species="test_${unit_name}"
+    if [ "${unit_name}" == "outgroupA" ]
+    then
+	species="test_outgroup"
+    elif [ "${unit_name}" == "outgroupB" ]
+    then
+	species="test_outgroup"
+    fi
+    echo "\"${species}\",\"${unit_name}\",\"\",20,\"short.qc\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
     # copy fastqs
-    SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/test_${name}"
+    SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/${species}"
     mkdir -p $SPECIES_DIR
-    rsync -a "${name}"* $SPECIES_DIR
-
-    echo "\"test_${name}\",\"${name}\",\"\",20,\"short.qc\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
+    rsync -a "${unit_name}"* $SPECIES_DIR
 done
 
 ## Copy reference files
