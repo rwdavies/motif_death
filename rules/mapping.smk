@@ -21,6 +21,12 @@ def get_bam_units(wildcards):
     filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
     return filenames
 
+# Copied from above, but just the length
+def get_bam_number_of_units(wildcards):
+    units = list(order_df.loc[wildcards.species, "units"])
+    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
+    return length(filenames)
+
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
     filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam.bai" for u in units]
@@ -140,13 +146,22 @@ rule merge_units:
     params:
         N='merge_units',
         threads=1,
-        queue = "short.qc@@short.hge"
+        queue = "short.qc@@short.hge",
+        nunits = get_bam_number_of_units
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
-        samtools merge {output.bam} {input.bams}
-        samtools index {output.bam}
+        if [ {params.nunits} == 1 ]
+        then
+            echo Only one unit - so just moving the files
+            mv {input.bams} {output.bam}
+            mv {input.bais} {output.bai}
+        else
+            echo Many units - so perform merge as usual
+            samtools merge {output.bam} {input.bams}
+            samtools index {output.bam}
+        fi
         # TODO: below is hack as snakemake temp(directory(...)) not working
         rm -rf mapping/{SPECIES_ORDER}/{wildcards.species}/temp
         """

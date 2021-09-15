@@ -12,7 +12,7 @@
         },
         "test_outgroup": {
             "ENA_LINK": "",
-            "RUN_ACCESSION": ["outgroup"]
+            "RUN_ACCESSION": ["outgroupA", "outgroupB"]
         }
     },
     "HATBAG_OUTPUT_DIR": "20210710",

@@ -38,6 +38,16 @@ then
     rm -r "${ANALYSIS_DIR}"
 fi
 
+# to ensure sufficient test coverage, split outgroup into two fastq units
+# as the code does something different if there are one or two
+n_entries=`gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | wc -l`
+half=`$((echo ${n_entries} / 2))`
+gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | head -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupA_1.fastq.gz"
+gunzip -c "${SIMULATE_DIR}outgroup_1.fastq.gz" | tail -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupB_1.fastq.gz"
+gunzip -c "${SIMULATE_DIR}outgroup_2.fastq.gz" | head -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupA_2.fastq.gz"
+gunzip -c "${SIMULATE_DIR}outgroup_2.fastq.gz" | tail -n ${half} | gzip -1 > "${SIMULATE_DIR}outgroupB_2.fastq.gz"
+
+
 $HATBAG_DIR/HATBAG_simulate_input.R --chr_lengths='c(2e5,2e5)' --seed=145 --verbose=TRUE --outputDir="$SIMULATE_DIR" --model=1 --enriched_in_tails=FALSE --simulate_reads=TRUE
 
 cd "$SIMULATE_DIR"
