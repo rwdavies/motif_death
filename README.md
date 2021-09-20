@@ -38,7 +38,7 @@ For a group of species (titled `SPECIES_ORDER` e.g., artiodactyla) you want to a
 * `SPECIES_LIST`: Specify your desired species, which shouldn't be too diverged (find a reference phylogenetic tree). For example, for artiodactyla (focusing on ruminants and related species), this might include cows and goats, and more distantly related animals like okapi and giraffe. Also include a more distant species as as outgroup, e.g. white tailed deer (as `TREEMIX_OUTGROUP`).
     * For each species, data must exist in the EBI ENA, with a project ID e.g. PRJNA313910.  Under this Project ID, choose the 'Run Accessions' (i.e. units) to use for each species.
     * TODO: add notes about what is good choice (high coverage, short read ...)
-* `RUN_ID`: (e.g., 20200706) VCF, Treemix, and HATBAG are all run specific, as you can have multiple runs within the same order using different species.
+* `RUN_ID`: (e.g., 20200706) Coverage, VCF, Treemix, and HATBAG are all run specific, as you can have multiple runs within the same order using different species.
 * `HATBAG_OUTPUT_DIR`: HATBAG has an additional ID parameter, so you can redo the same order and run with different HATBAG settings.  
 
 The resulting folder structure is below:
@@ -52,6 +52,7 @@ The resulting folder structure is below:
 │       └── {species} # fastq downloaded here and mapped
 ├── coverage
 │   └── {SPECIES_ORDER}
+│       └── {RUN_ID}
 ├── treemix
 │   └── {SPECIES_ORDER}
 │       └── {RUN_ID}
@@ -97,6 +98,8 @@ Directory paths and filenames specified in `config/filenames.json`.
 ## TODOs
 
 * Test that reference chromosome names match what are input in run config json.
+* Split chunk_fastq into two jobs to run simultaneous
+* delete fastqs
 * Write up notes on wildcard constraints for species, chr, units
 * Mapping: Note that the number of cores being used per chromosome is a parameter set somewhere, one option is to make this parameter more visible, another is to break the region into chunks and call the genome in chunks them combine back together. This would run faster and more easily on the cluster but requires some coding.
 * Once mapping complete and BAM OK, add in deletion of original fastq files (now done manually)

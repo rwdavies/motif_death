@@ -1,7 +1,7 @@
 rule downstream_all:
     input:
         f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
-        f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed",
+        f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed",
         expand(f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.{{migrants}}.out.treeout.gz", migrants = TREEMIX_MIGRANT_RANGE)
 
 # rule call_and_tree:
@@ -180,7 +180,7 @@ rule get_single_callable_regions:
     input:
         beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed", species = SPECIES_LIST)
     output:
-        bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.all.callableOnly.bed"
+        bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed"
     params:
         N='get_single_callable_regions',
         threads = 1,
