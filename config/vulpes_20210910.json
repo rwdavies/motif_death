@@ -41,6 +41,18 @@
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 2345550353,
+        "lineages": {
+            "redfox": "redfox",
+            "arcticfox": "arcticfox",
+            "AncRedArc": ["redfox", "arcticfox"],
+            "fennecfox": "fennecfox",
+            "AncRedArcFen": ["AncRedArc", "fennecfox"],
+            "batearedfox": "batearedfox"
+        },
+        "ancestral_lineage": {
+            "AncRedArcFenBat": ["AncRedArcFen", "batearedfox"]
+        },
+        "outgroups": ["islandfox", "grayfox"],
         "ndge": 3,
         "gcW2": 5000,
         "num_non_missing_outgroups_required": null,

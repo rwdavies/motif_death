@@ -25,7 +25,7 @@
         "dog": {
             "ENA_PRJ": "PRJEB31639",
             "RUN_ACCESSION": ["ERR3245533", "ERR3245532"]
-        },
+        }
     },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "Dog10K_Boxer_Tasha",

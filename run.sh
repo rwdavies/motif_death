@@ -67,6 +67,7 @@ SNAKEFILE="${SCRIPTPATH}/Snakefile"
 
 cd ${ANALYSIS_DIR}
 
+
 if [ $where == "cluster" ]
 then
     ##--verbose 

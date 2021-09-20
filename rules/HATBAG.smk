@@ -166,7 +166,7 @@ rule HATBAG_HACK_FUNCTION:
         {HATBAG_DIR}HATBAG.R --species={SPECIES_ORDER} --run={wildcards.run} --outputDir=${{outputDir}} \
             --simpleRepeat_file={EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz --rmask_file={EXTERNAL_DIR}/{REF_NAME}.rmsk.gz \
             --reference={REF_DIR}/{REF_NAME}.fa.gz --outputDate={HATBAG_OUTPUT_DIR} --vcf_file=vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz \
-            --nCores={params.threads} --config_json_path={input.hatbag_params} --callable_bed={input.callable_bed}
+            --nCores={params.threads} --config_json_path={input.hatbag_params} --callable_bed={input.callable_bed} &&
         touch {output.decoy}
         """
 
