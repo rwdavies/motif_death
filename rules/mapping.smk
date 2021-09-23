@@ -5,13 +5,13 @@
 # TODO: replace with one function
 def get_bam_pieces(wildcards):
     unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
-    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
+    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder").piece
     filenames = expand(rules.map_fastq_pieces.output.bam, **wildcards, piece=pieces)
     return filenames
 
 def get_bai_pieces(wildcards):
     unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
-    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz").piece
+    pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder").piece
     filenames = expand(rules.map_fastq_pieces.output.bai, **wildcards, piece=pieces)
     return filenames
 
@@ -61,6 +61,8 @@ checkpoint chunk_fastq:
         lines_per_chunk=$(($lines_per_chunk - $(($lines_per_chunk % 4))))
         zcat {input.pen1} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/1.{FASTQ_SUFFIX}.temp.
         zcat {input.pen2} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/2.{FASTQ_SUFFIX}.temp.
+        cd {output.unit_dir}
+        $(ls *gz | awk '{{print "touch "$0".placeholder"}}')
         """
 
 
@@ -123,16 +125,18 @@ rule merge_mapped_pieces:
         bam = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.unit{{units}}.bam"),
         bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.unit{{units}}.bam.bai")
     params:
-        N='merge_pieces',
+        N='merge_mapped_pieces',
         threads=1,
         queue = "short.qc@@short.hge"
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
+        set -e
         samtools merge {output.bam} {input.bams}
         samtools index {output.bam}
-        rm {input.bams}
+        rm -rf {input.bams}
+        rm -rf {input.bais}
         """
 
 
@@ -152,6 +156,7 @@ rule merge_units:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
+        set -e
         if [ {params.nunits} == 1 ]
         then
             echo Only one unit - so just moving the files
@@ -163,7 +168,7 @@ rule merge_units:
             samtools index {output.bam}
         fi
         # TODO: below is hack as snakemake temp(directory(...)) not working
-        rm -rf mapping/{SPECIES_ORDER}/{wildcards.species}/temp
+	rm -rf mapping/{SPECIES_ORDER}/{wildcards.species}/temp
         """
 
 

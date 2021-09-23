@@ -82,6 +82,7 @@ rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
 
+./run.sh config/test_run1.json mapping/test/test_pop1/test_pop1.unitpop1.bam local is_test
 ./run.sh config/test_run1.json all local is_test $other
 
 # Check test here
