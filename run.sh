@@ -19,7 +19,7 @@ then
     jobs=1000
 elif [ "$where" == "local" ]
 then
-     jobs=8
+     jobs=4
 fi
 
 # if $other first element is_test, run in test mode

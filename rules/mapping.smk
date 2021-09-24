@@ -37,7 +37,11 @@ rule map_all:
     input:
         expand(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.realigned.rmdup.bam", species = order_df["species"])
 
+rule test_run:
+    input:
+        "ref/ref.fa"
 
+#"mapping/test/test_pop1/test_pop1.unitpop1.bam"
 
 
 checkpoint chunk_fastq:
@@ -69,8 +73,8 @@ checkpoint chunk_fastq:
 ## make head this for faster version "| head -n 400"
 rule map_fastq_pieces:
     input:
-        pen1_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
-        pen2_chunk = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz",
+        pen1_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder",
+        pen2_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
         ref_sa = f"{REF_DIR}/{REF_NAME}.fa.sa",
         ref_fai = f"{REF_DIR}/{REF_NAME}.fa.fai",
@@ -92,9 +96,9 @@ rule map_fastq_pieces:
         piece='\D{1,3}'
     shell:
         'bwa mem -R "@RG\\tID:{params.flowcell_barcode}.{params.flowcell_lane}\\tSM:{wildcards.species}\\tPL:ILLUMINA\\tPI:{params.lb_insert_size}\\tPU:{params.flowcell_barcode}.{params.flowcell_lane}.{wildcards.species}\\tLB:{params.lb}" '
-        ' {input.ref} -t{params.threads} '
-        '{input.pen1_chunk} '
-        '{input.pen2_chunk} | '
+        '{input.ref} -t{params.threads} '
+        'mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/1.{FASTQ_SUFFIX}.temp.{wildcards.piece}.gz '
+        'mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/2.{FASTQ_SUFFIX}.temp.{wildcards.piece}.gz | '
         'samtools view -Sb - > {output.bam}.temp1.bam && '
         '${{PYTHON_278}} ${{STAMPY}} '
         '--readgroup='
@@ -112,8 +116,9 @@ rule map_fastq_pieces:
         'samtools sort -T mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/ -o {output.bam} {output.bam}.temp2.bam && '
         'samtools index {output.bam} && '
         'rm {output.bam}.temp2.bam && '
-        'rm {input.pen1_chunk} && '
-        'rm {input.pen2_chunk} '
+        'rm mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/1.{FASTQ_SUFFIX}.temp.{wildcards.piece}.gz && '
+        'rm mapping/{SPECIES_ORDER}/{wildcards.species}/temp/{wildcards.units}/2.{FASTQ_SUFFIX}.temp.{wildcards.piece}.gz'
+
 
 ## after STAMPY command maybe --sensitive
 ## make head this for faster version "| head -n 400"

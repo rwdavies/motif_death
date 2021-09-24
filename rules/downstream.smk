@@ -210,6 +210,7 @@ rule prepare_treemix:
     shell:
         'mkdir -p treemix && '
         'echo recode as treemix format && date && '
+        'echo ${{PYTHON_352}} {VCF2TREEMIX} {input.merged_vcf} {output.treemix_input} && '
         '${{PYTHON_352}} {VCF2TREEMIX} {input.merged_vcf} {output.treemix_input} > {output.treemix_input}.log && echo done && date'
         
         

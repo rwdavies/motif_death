@@ -82,7 +82,9 @@ rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 
 cd "${SCRIPTPATH}/../"
 
+## split into a few bits, make sure it is OK to re-run partway through
 ./run.sh config/test_run1.json mapping/test/test_pop1/test_pop1.unitpop1.bam local is_test
+./run.sh config/test_run1.json downstream_all local is_test
 ./run.sh config/test_run1.json all local is_test $other
 
 # Check test here
