@@ -39,9 +39,9 @@ rule map_all:
 
 rule test_run:
     input:
-        "ref/ref.fa"
+        "mapping/canis/africanwilddog/africanwilddog.bam"
 
-#"mapping/test/test_pop1/test_pop1.unitpop1.bam"
+
 
 
 checkpoint chunk_fastq:
@@ -74,7 +74,6 @@ checkpoint chunk_fastq:
 rule map_fastq_pieces:
     input:
         pen1_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder",
-        pen2_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/2.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
         ref_sa = f"{REF_DIR}/{REF_NAME}.fa.sa",
         ref_fai = f"{REF_DIR}/{REF_NAME}.fa.fai",
