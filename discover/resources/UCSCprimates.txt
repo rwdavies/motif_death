@@ -1,0 +1,32 @@
+count	common name and view in browser	scientific name and data download	NCBI assembly	BioSample	BioProject	assembly date and source link
+1	Angolan colobus	Colobus angolensis palliatus	GCF_000951035.1_Cang.pa_1.0	SAMN03121814	PRJNA251421	2015-03-12
+2	black snub-nosed monkey	Rhinopithecus bieti	GCF_001698545.1_ASM169854v1	SAMN02786331	PRJNA315476	2016-08-03
+3	Bolivian squirrel monkey (2021)	Saimiri boliviensis boliviensis	GCF_016699345.1_BCM_Sbol_2.0	SAMN16846876	PRJNA679316	2021-01-12
+4	chimpanzee	Pan troglodytes	GCF_002880755.1_Clint_PTRv2	SAMN06272697	PRJNA369439	2018-01-19
+5	Coquerel's sifaka	Propithecus coquereli	GCF_000956105.1_Pcoq_1.0	SAMN03121823	PRJNA251429	2015-03-23
+6	crab-eating macaque	Macaca fascicularis	GCF_000364345.1_Macaca_fascicularis_5.0	SAMN00811240	PRJNA20409	2013-06-12
+7	drill	Mandrillus leucophaeus	GCF_000951045.1_Mleu.le_1.0	SAMN03121813	PRJNA251423	2015-03-12
+8	Francois's langur	Trachypithecus francoisi	GCF_009764315.1_Tfra_2.0	SAMN12630612	PRJNA488530	2019-12-18
+9	gelada	Theropithecus gelada	GCF_003255815.1_Tgel_1.0	SAMN09197221	PRJNA470999	2018-06-19
+10	golden snub-nosed monkey	Rhinopithecus roxellana	GCF_007565055.1_ASM756505v1	SAMN11039125	PRJNA524949	2019-07-29
+11	gray mouse lemur	Microcebus murinus	GCF_000165445.2_Mmur_3.0	SAMN06275470	PRJNA19967	2017-02-06
+12	green monkey 1994-021	Chlorocebus sabaeus	GCF_000409795.2_Chlorocebus_sabeus_1.1	SAMN01760484	PRJNA168621	2014-03-25
+13	green monkey WHO RCB 10-87	Chlorocebus sabaeus	GCF_015252025.1_Vero_WHO_p1.0	SAMN15458746	PRJNA644395	2020-11-06
+14	human	Homo sapiens	GCF_000001405.39_GRCh38.p13	n/a	PRJNA31257	2019-02-28
+15	Ma's night monkey	Aotus nancymaae	GCF_000952055.2_Anan_2.0	SAMN03121886	PRJNA251539	2017-06-09
+16	northern white-cheeked gibbon	Nomascus leucogenys	GCF_006542625.1_Asia_NLE_v1	SAMN11124083	PRJNA369439	2019-07-02
+17	olive baboon	Papio anubis	GCF_008728515.1_Panubis1.0	SAMN11179045	PRJNA527874	2019-10-02
+18	Panamanian white-faced capuchin	Cebus imitator	GCF_001604975.1_Cebus_imitator-1.0	SAMN04522148	PRJNA298580	2016-04-04
+19	Philippine tarsier	Carlito syrichta	GCF_000164805.1_Tarsius_syrichta-2.0.1	SAMN02445010	PRJNA20339	2013-09-18
+20	pig-tailed macaque	Macaca nemestrina	GCF_000956065.1_Mnem_1.0	SAMN03121842	PRJNA251427	2015-03-19
+21	pygmy chimpanzee (Ulindi)	Pan paniscus	GCF_000258655.2_panpan1.1	SAMEA1029457	PRJNA49285	2015-08-18
+22	pygmy chimpanzee (Mhudiblu)	Pan paniscus	GCF_013052645.1_Mhudiblu_PPA_v0	SAMN11123633	PRJNA526933	2020-05-15
+23	Rhesus monkey	Macaca mulatta	GCF_003339765.1_Mmul_10	SAMN09435472	PRJNA476474	2019-02-13
+24	silvery gibbon	Hylobates moloch	GCF_009828535.2_HMol_V2	SAMN12851060	PRJNA575281	2020-02-13
+25	small-eared galago	Otolemur garnettii	GCF_000181295.1_OtoGar3	SAMN02981229	PRJNA16955	2011-03-16
+26	sooty mangabey	Cercocebus atys	GCF_000955945.1_Caty_1.0	SAMN03379531	PRJNA157077	2015-03-19
+27	Sumatran orangutan	Pongo abelii	GCF_002880775.1_Susie_PABv2	SAMN06275555	PRJNA369439	2018-01-19
+28	tufted capuchin	Sapajus apella	GCF_009761245.1_GSC_monkey_1.0	SAMN13265339	PRJNA588076	2019-12-17
+29	Ugandan red Colobus	Piliocolobus tephrosceles	GCF_002776525.3_ASM277652v3	SAMN07735529	PRJNA413051	2019-12-12
+30	western lowland gorilla	Gorilla gorilla gorilla	GCF_008122165.1_Kamilah_GGO_v0	SAMN11078986	PRJNA369439	2019-08-28
+31	white-tufted-ear marmoset	Callithrix jacchus	GCF_009663435.1_Callithrix_jacchus_cj1700_1.1	n/a	PRJNA566173	2020-05-22

@@ -8,8 +8,9 @@ How to run
 
 Use code like the following to make a plot, and to investigate individual species
 ```
-source("~/proj/motif_death/discover/functions.R")
-assemblies <- get_ucsc_assemblies()
+motif_death_dir <- "~/proj/motif_death"
+source(file.path(motif_death_dir, "discover/functions.R"))
+assemblies <- get_ucsc_assemblies(motif_death_dir)
 out <- investigate("Afrotheria")
 results <- out$results
 look_at_one_species_or_study(results, scientific_name="Chrysemys picta")

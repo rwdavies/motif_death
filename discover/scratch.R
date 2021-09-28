@@ -1,6 +1,7 @@
-source("~/proj/motif_death/discover/functions.R")
+motif_death_dir <- "~/proj/motif_death"
+source(file.path(motif_death_dir, "discover/functions.R"))
 
-assemblies <- get_ucsc_assemblies()
+assemblies <- get_ucsc_assemblies(motif_death_dir)
 
 out <- investigate("Iguania")
 results <- out$results

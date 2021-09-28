@@ -1,0 +1,102 @@
+count	common name and view in browser	scientific name and data download	NCBI assembly	BioSample	BioProject	assembly date, source link	class VGP link
+1	Abyssinian ground-hornbill	Bucorvus abyssinicus	GCA_009769605.1_bBucAby1.pri	SAMN12614799	PRJNA561887	2019-12-23	birds
+2	American flamingo	Phoenicopterus ruber ruber	GCA_009819775.1_bPhoRub2.pri	SAMN12614931	PRJNA561888	2019-12-31	birds
+3	American shad	Alosa sapidissima	GCF_018492685.1_fAloSap1.pri	SAMN18857608	PRJNA728145	2021-05-25	fish
+4	Anna's hummingbird	Calypte anna	GCA_003957555.2_bCalAnn1_v1.p	SAMN02265252	PRJNA489139	2019-05-16	birds
+5	Asian bonytongue	Scleropages formosus	GCF_900964775.1_fSclFor1.1	SAMEA4872123	PRJEB31995	2019-04-11	fish
+6	Atlantic cod	Gadus morhua	GCF_902167405.1_gadMor3.0	SAMEA5574046	PRJEB33455	2019-07-16	fish
+7	Atlantic halibut (refseq)	Hippoglossus hippoglossus	GCF_009819705.1_fHipHip1.pri	SAMN12629501	PRJNA562001	2019-12-31	fish
+8	Australian echidna	Tachyglossus aculeatus	GCF_015852505.1_mTacAcu1.pri	SAMN12634963	PRJNA607237	2020-12-09	mammals
+9	banded archerfish	Toxotes jaculatrix	GCF_017976425.1_fToxJac2.pri	SAMN18445299	PRJNA717046	2021-04-15	fish
+10	barn swallow	Hirundo rustica	GCF_015227805.1_bHirRus1.pri.v2	SAMN14675488	PRJNA636192	2021-03-02	birds
+11	blackcap	Sylvia atricapilla	GCA_009819655.1_bSylAtr1.pri	SAMN12369542	PRJNA558064	2019-12-31	birds
+12	blue whale	Balaenoptera musculus	GCF_009873245.2_mBalMus1.pri.v3	SAMN12287136	PRJNA554522	2020-10-02	mammals
+13	blunt-snouted clingfish	Gouania willdenowi	GCF_900634775.1_fGouWil2.1	SAMEA104026382	PRJEB30359	2019-02-06	fish
+14	Boeseman's rainbowfish	Melanotaenia boesemani	GCF_017639745.1_fMelBoe1.pri	SAMN12623618	PRJNA561965	2021-03-30	fish
+15	brown argus butterfly	Aricia agestis	GCF_905147365.1_ilAriAges1.1	SAMEA7523300	PRJEB41901	2021-01-28	insects
+16	California sea lion	Zalophus californianus	GCF_009762305.2_mZalCal1.pri.v2	SAMN12368149	PRJNA559673	2020-07-14	mammals
+17	Canada lynx	Lynx canadensis	GCF_007474595.2_mLynCan4.pri.v2	SAMN09948483	PRJNA489107	2020-07-14	mammals
+18	carmine bee-eater	Merops nubicus	GCA_009819595.1_bMerNub1.pri	SAMN12621035	PRJNA561894	2019-12-31	birds
+19	channel bull blenny	Cottoperca gobio	GCF_900634415.1_fCotGob3.1	SAMEA104242975	PRJEB30248	2019-02-06	fish
+20	climbing perch	Anabas testudineus	GCF_900324465.2_fAnaTes1.2	SAMEA104026376	PRJEB25768	2018-12-19	fish
+21	common brushtail	Trichosurus vulpecula	GCF_011100635.1_mTriVul1.pri	SAMN12629507	PRJNA562014	2020-03-10	mammals
+22	common tern	Sterna hirundo	GCA_009819605.1_bSteHir1.pri	SAMN12369541	PRJNA558062	2019-12-31	birds
+23	common yellowthroat	Geothlypis trichas	GCA_009764595.1_bGeoTri1.pri	SAMN12631222	PRJNA589703	2019-12-19	birds
+24	common toad	Bufo bufo	GCF_905171765.1_aBufBuf1.1	SAMEA7521636	PRJEB42168	2021-01-28	amphibians
+25	copperband butterflyfish	Chelmon rostratus	GCF_017976325.1_fCheRos1.pri	SAMN12623620	PRJNA561969	2021-04-15	fish
+26	denticle herring	Denticeps clupeoides	GCF_900700375.1_fDenClu1.1	SAMEA104129917	PRJEB31545	2019-03-16	fish
+27	East African grey crowned-crane	Balearica regulorum gibbericeps	GCA_011004875.1_bBalReg1.pri	SAMN12615749	PRJNA561890	2020-03-05	birds
+28	eastern happy	Astatotilapia calliptera	GCF_900246225.1_fAstCal1.2	SAMEA104026430	PRJEB24325	2018-05-30	fish
+29	Egyptian rousette	Rousettus aegyptiacus	GCF_014176215.1_mRouAeg1.p	SAMN14734550	PRJNA628585	2020-08-07	mammals
+30	electric eel	Electrophorus electricus	GCF_013358815.1_fEleEle1.pri	SAMN12623625	PRJNA561981	2020-06-23	fish
+31	ermine	Mustela erminea	GCF_009829155.1_mMusErm1.Pri	SAMN12611999	PRJNA561931	2020-01-03	mammals
+32	Eurasian red squirrel	Sciurus vulgaris	GCA_902686455.1_mSciVul1.1	SAMEA994733	PRJEB35380	2019-11-26	mammals
+33	Eurasian water vole (2021)	Arvicola amphibius	GCF_903992535.2_mArvAmp1.2	SAMEA994740	PRJEB39550	2021-05-15	mammals
+34	European common frog	Rana temporaria	GCF_905171775.1_aRanTem1.1	SAMEA7521635	PRJEB42171	2021-01-28	amphibians
+35	European eel	Anguilla anguilla	GCF_013347855.1_fAngAng1.pri	SAMN12623627	PRJNA561979	2020-06-18	fish
+36	European starfish	Asterias rubens	GCF_902459465.1_eAstRub1.3	SAMEA994741	PRJEB33974	2020-02-12	echinoderm
+37	European turtle dove	Streptopelia turtur	GCA_901699155.1_bStrTur1.1	SAMEA994735	PRJEB32724	2019-06-05	birds
+38	flier cichlid	Archocentrus centrarchus	GCF_007364275.1_fArcCen1	SAMN09948522	PRJNA489129	2019-08-01	fish
+39	Gabon caecilian	Geotrypetes seraphini	GCF_902459505.1_aGeoSer1.1	SAMEA104387963	PRJEB33992	2019-08-18	amphibians
+40	gilthead seabream	Sparus aurata	GCF_900880675.1_fSpaAur1.1	SAMEA104384835	PRJEB31901	2019-07-30	fish
+41	golden eagle (2021)	Aquila chrysaetos chrysaetos	GCF_900496995.4_bAquChr1.4	SAMEA994725	PRJEB27699	2021-03-26	birds
+42	Goodes thornscrub tortoise	Gopherus evgoodei	GCF_007399415.2_rGopEvg1_v1.p	SAMN03496275	PRJNA489103	2019-07-25	reptiles
+43	great scallop	Pecten maximus	GCF_902652985.1_xPecMax1.1	SAMEA994736	PRJEB35330	2019-11-26	molluscs
+44	great white shark	Carcharodon carcharias	GCF_017639515.1_sCarCar2.pri	SAMN12629504	PRJNA562007	2021-03-30	sharks
+45	greater horseshoe bat	Rhinolophus ferrumequinum	GCA_004115265.2_mRhiFer1_v1.p	SAMN09948510	PRJNA489106	2019-05-16	mammals
+46	greater pipefish	Syngnathus acus	GCF_901709675.1_fSynAcu1.2	SAMEA104381750	PRJEB32741	2020-07-31	fish
+47	greater mouse-eared bat	Myotis myotis	GCF_014108235.1_mMyoMyo1.p	SAMN14734277	PRJNA628559	2020-08-07	mammals
+48	green sea turtle	Chelonia mydas	GCF_015237465.1_rCheMyd1.pri	SAMN12612360	PRJNA561941	2020-11-05	reptiles
+49	gyrfalcon	Falco rusticolus	GCF_015220075.1_bFalRus1.pri	SAMN12629496	PRJNA561988	2020-11-03	birds
+50	honeycomb rockfish	Sebastes umbrosus	GCF_015220745.1_fSebUmb1.pri	SAMN12629503	PRJNA562005	2020-11-03	fish
+51	hybrid cattle	Bos indicus x Bos taurus	GCA_003369685.2_UOA_Angus_1	SAMN08473802	PRJNA432857	2018-11-30	mammals
+52	hybrid cattle	Bos indicus x Bos taurus	GCF_003369695.1_UOA_Brahman_1	SAMN08473802	PRJNA432857	2018-11-30	mammals
+53	Indian glassy fish	Parambassis ranga	GCF_900634625.1_fParRan2.1	SAMEA4675621	PRJEB30257	2019-02-06	fish
+54	Indo-Pacific tarpon	Megalops cyprinoides	GCF_013368585.1_fMegCyp1.pri	SAMN12623619	PRJNA561967	2020-06-23	fish
+55	jewelled blenny	Salarias fasciatus	GCF_902148845.1_fSalaFa1.1	SAMEA4966329	PRJEB33184	2019-07-03	fish
+56	Kakapo	Strigops habroptila	GCF_004027225.2_bStrHab1.2.pri	SAMN09948751	PRJNA489135	2020-03-04	birds
+57	Korean giant-fin mudskipper (refseq)	Periophthalmus magnuspinnatus	GCF_009829125.1_fPerMag1.pri	SAMN12629500	PRJNA561998	2020-01-03	fish
+58	Kuhl's pipistrelle	Pipistrellus kuhlii	GCF_014108245.1_mPipKuh1.p	SAMN14734388	PRJNA628567	2020-08-07	mammals
+59	lance-tailed manakin	Chiroxiphia lanceolata	GCF_009829145.1_bChiLan1.pri	SAMN12620979	PRJNA561943	2020-01-03	birds
+60	leatherback sea turtle (v3 2020)	Dermochelys coriacea	GCF_009764565.2_rDerCor1.pri.v3	SAMN12629498	PRJNA561993	2020-12-09	reptiles
+61	lesser kestrel	Falco naumanni	GCF_017639655.2_bFalNau1.pat	SAMN16870685	PRJNA702666	2021-03-30	birds
+62	live sharksucker	Echeneis naucrates	GCF_900963305.1_fEcheNa1.1	SAMEA4966390	PRJEB31992	2019-04-11	fish
+63	lumpfish (refseq)	Cyclopterus lumpus	GCF_009769545.1_fCycLum1.pri	SAMN12629502	PRJNA562003	2019-12-23	fish
+64	mallard	Anas platyrhynchos	GCF_015476345.1_ZJU1.0	SAMN15588841	PRJNA636121	2020-11-23	birds
+65	milkfish	Chanos chanos	GCF_902362185.1_fChaCha1.1	SAMEA5159473	PRJEB33882	2019-08-14	fish
+66	mute swan (v2 2021)	Cygnus olor	GCF_009769625.2_bCygOlo1.pri.v2	SAMN12621369	PRJNA561960	2021-03-31	birds
+67	New Caledonian crow	Corvus moneduloides	GCF_009650955.1_bCorMon1.pri	SAMN12368441	PRJNA560983	2019-11-14	birds
+68	New Zealand spotty (refseq)	Notolabrus celidotus	GCF_009762535.1_fNotCel1.pri	SAMN12623201	PRJNA561956	2019-12-18	fish
+69	northern pike	Esox lucius	GCF_011004845.1_fEsoLuc1.pri	SAMN12623624	PRJNA561977	2020-03-05	fish
+70	Norway rat BN7.2	Rattus norvegicus	GCF_015227675.2_mRatBN7.2	SAMN16261960	PRJNA662791	2020-11-10	mammals
+71	orbiculate cardinalfish	Sphaeramia orbicularis	GCF_902148855.1_fSphaOr1.1	SAMEA4966328	PRJEB33177	2019-07-03	fish
+72	pale spear-nosed bat	Phyllostomus discolor	GCF_004126475.2_mPhyDis1.pri.v3	SAMN09948786	PRJNA489141	2020-05-12	mammals
+73	Pallas's mastiff bat	Molossus molossus	GCF_014108415.1_mMolMol1.p	SAMN14734448	PRJNA628574	2020-08-07	mammals
+74	pinecone soldierfish	Myripristis murdjan	GCF_902150065.1_fMyrMur1.1	SAMEA4872133	PRJEB33188	2019-07-03	fish
+75	platypus (v4 2020)	Ornithorhynchus anatinus	GCF_004115215.2_mOrnAna1.pri.v4	SAMN08537700	PRJNA489114	2020-11-06	mammals
+76	prehistoric monster fish	Thalassophryne amazonica	GCF_902500255.1_fThaAma1.1	SAMEA104129913	PRJEB34606	2019-09-30	fish
+77	razorbill	Alca torda	GCA_008658365.1_bAlcTor1_primary	SAMN12292087	PRJNA554520	2019-10-10	birds
+78	red-bellied piranha	Pygocentrus nattereri	GCF_015220715.1_fPygNat1.pri	SAMN12623623	PRJNA561975	2020-11-03	fish
+79	red-crested turaco	Tauraco erythrolophus	GCA_009769465.1_bTauEry1.pri	SAMN12621036	PRJNA561947	2019-12-19	birds
+80	red-legged seriema	Cariama cristata	GCA_009819825.1_bCarCri1.pri	SAMN12614807	PRJNA561892	2019-12-31	birds
+81	reedfish	Erpetoichthys calabaricus	GCF_900747795.1_fErpCal1.1	SAMEA104026374	PRJEB31579	2019-03-26	fish
+82	river trout	Salmo trutta	GCF_901001165.1_fSalTru1.1	SAMEA994732	PRJEB32115	2019-06-02	fish
+83	sand lizard	Lacerta agilis	GCF_009819535.1_rLacAgi1.pri	SAMN12629509	PRJNA562018	2019-12-31	reptiles
+84	sea lamprey	Petromyzon marinus	GCF_010993605.1_kPetMar1.pri	SAMN12629506	PRJNA562011	2020-02-24	otherChordates
+85	Siamese fighting fish (2020)	Betta splendens	GCF_900634795.3_fBetSpl5.3	SAMEA104381735	PRJEB30365	2020-08-25	fish
+86	smalltooth sawfish	Pristis pectinata	GCA_009764475.1_sPriPec2.pri	SAMN12629505	PRJNA562009	2019-12-19	sharks
+87	southern grasshopper mouse	Onychomys torridus	GCF_903995425.1_mOncTor1.1	SAMEA104026389	PRJEB39770	2020-08-21	mammals
+88	southern two-toed sloth	Choloepus didactylus	GCF_015220235.1_mChoDid1.pri	SAMN12612024	PRJNA561937	2020-11-03	mammals
+89	specked wood butterfly	Pararge aegeria	GCF_905163445.1_ilParAegt1.1	SAMEA7532732	PRJEB42039	2021-01-28	insects
+90	Swainson's thrush	Catharus ustulatus	GCF_009819885.1_bCatUst1.pri	SAMN12618602	PRJNA561933	2019-12-31	birds
+91	thorny skate (v2 2020)	Amblyraja radiata	GCF_010909765.2_sAmbRad1.1.pri	SAMN09948523	PRJNA591369	2020-02-21	sharks
+92	tiny Cayenne caecilian	Microcaecilia unicolor	GCF_901765095.1_aMicUni1.1	SAMEA104387962	PRJEB32737	2019-06-22	amphibians
+93	torafugu	Takifugu rubripes	GCF_901000725.2_fTakRub1.2	SAMEA104384834	PRJEB31988	2019-06-05	fish
+94	tufted duck	Aythya fuligula	GCF_009819795.1_bAytFul2.pri	SAMN12621346	PRJNA561952	2019-12-31	birds
+95	two-lined caecilian	Rhinatrema bivittatum	GCF_901001135.1_aRhiBiv1.1	SAMEA104387956	PRJEB32111	2019-06-02	amphibians
+96	vaquita	Phocoena sinus	GCF_008692025.1_mPhoSin1.pri	SAMN12325353	PRJNA557831	2019-09-26	mammals
+97	yellowfin seabream	Acanthopagrus latus	GCF_904848185.1_fAcaLat1.1	SAMN16236878	PRJEB40700	2020-10-12	fish
+98	Western terrestrial garter snake	Thamnophis elegans	GCF_009769535.1_rThaEle1.pri	SAMN12629499	PRJNA561996	2019-12-23	reptiles
+99	yellow-throated sandgrouse	Pterocles gutturalis	GCA_009769525.1_bPteGut1.pri	SAMN12623217	PRJNA561958	2019-12-23	birds
+100	zebra finch (refseq 2021 Blue55 female)	Taeniopygia guttata	GCF_003957565.2_bTaeGut1.4.pri	SAMN02981239	PRJNA489098	2021-05-04	birds
+101	zig-zag eel	Mastacembelus armatus	GCF_900324485.2_fMasArm1.2	SAMEA104026378	PRJEB25769	2019-03-16	fish

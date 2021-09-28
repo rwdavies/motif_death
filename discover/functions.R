@@ -72,12 +72,12 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL) {
 
 
 
-get_ucsc_assemblies <- function() {
+get_ucsc_assemblies <- function(motif_death_dir = "~/proj/motif_death/") {
     ##
     ## all assemlies
     ##
-    system("cd ~/Downloads && curl -s https://hgdownload.soe.ucsc.edu/hubs/UCSC_GI.assemblyHubList.txt > UCSC_GI.assemblyHubList.txt")
-    assemblies <- read.table("~/Downloads/UCSC_GI.assemblyHubList.txt", skip = 11, sep = "\t", comment.char="@", header = TRUE, quote = "")
+    ##system("cd ~/Downloads && curl -s https://hgdownload.soe.ucsc.edu/hubs/UCSC_GI.assemblyHubList.txt > UCSC_GI.assemblyHubList.txt")
+    assemblies <- read.table(file.path(motif_death_dir, "discover/resources/UCSC_GI.assemblyHubList.txt"), skip = 11, sep = "\t", comment.char="@", header = TRUE, quote = "")
     assemblies[, "scientific.name"] <- gsub(" ", "_", assemblies[, "scientific.name"])
     assemblies$class2 <- NA
     ##
@@ -86,7 +86,7 @@ get_ucsc_assemblies <- function() {
     for(what in c("primates", "mammals", "vgp")) {
         ## manually downloaded from e.g. https://hgdownload.soe.ucsc.edu/hubs/mammals/index.html
         ## copy and paste into txt file, fix header by removing line breaks
-        primates <- read.table(paste0("~/Downloads/UCSC", what, ".txt"), sep = "\t", quote = "", header = TRUE)
+        primates <- read.table(file.path(motif_death_dir, paste0("discover/resources/UCSC", what, ".txt")), sep = "\t", quote = "", header = TRUE)
         primates$accession2 <- sapply(strsplit(primates[, "NCBI.assembly"], "_"), function(x) paste0(x[1], "_", x[2]))
         m <- match(primates$accession2, assemblies[, "X..accession"])
         assemblies[m, "class"] <- what
