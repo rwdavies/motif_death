@@ -3,8 +3,28 @@ source(file.path(motif_death_dir, "discover/functions.R"))
 
 assemblies <- get_ucsc_assemblies(motif_death_dir)
 
-out <- investigate(keyword = "Amphibia")
+out <- investigate(keyword = "Mollusca", nCores = 48)
 results <- out$results
+
+## optionally nuke afterwards
+unlink(tempdir(), recursive = TRUE)
+dir.create(tempdir(), showWarnings = FALSE)
+
+
+
+
+## scallops - possible? genome a bit small
+xPecMax1.1
+bay scallop, Argopecten irradians, PRJNA304363, SRR2976401, SRR2976403
+great scallop, Pecten maximus, PRJEB22206, ERR3316025, ERR3316027, ERR3316026, ERR3316028
+YessoEso, Mizuhopecten yessoensis, PRJNA259405, SRR1712896, SRR1712894
+Azumapecten farreri aka Chlamys farreri, PRJNA185465, SRR2736013, I think OK
+no plactopen, it is RADseq
+
+
+
+
+
 
 ## could try, using same one, against same reference?
 head(look_at_one_species_or_study(results, scientific_name = "Rhinatrema bivittatum"), 1) ## two-lined caecilian, likely outgroup

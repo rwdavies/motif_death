@@ -1,0 +1,54 @@
+{
+    "SPECIES_ORDER": "pectinidae",
+    "RUN_ID": "20210929",
+    "SPECIES_LIST": {
+        "bayscallop": {
+            "ENA_PRJ": "PRJNA304363",
+            "RUN_ACCESSION":["SRR2976401", "SRR2976403"]
+        },
+        "greatscallop": {
+            "ENA_PRJ": "PRJEB22206",
+            "RUN_ACCESSION":["ERR3316025", "ERR3316027", "ERR3316026", "ERR3316028"]
+        },
+        "YessoEso": {
+            "ENA_PRJ": "PRJNA259405",
+            "RUN_ACCESSION":["SRR1712896", "SRR1712894"]
+        },
+        "Farrers": {
+            "ENA_PRJ": "PRJNA185465",
+            "RUN_ACCESSION":["SRR2736013"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "xPecMax1.1",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/652/985/GCF_902652985.1_xPecMax1.1/GCF_902652985.1_xPecMax1.1_genomic.fna.gz",
+    "CHR_LIST_ONLY_AUTOS": ["15.1", "16.1", "17.1", "18.1", "19.1", "20.1", "21.1", "22.1", "23.1", "24.1", "25.1", "26.1", "27.1", "28.1", "29.1", "30.1", "31.1", "32.1", "33.1"],
+    "CHR_LIST": ["15.1", "16.1", "17.1", "18.1", "19.1", "20.1", "21.1", "22.1", "23.1", "24.1", "25.1", "26.1", "27.1", "28.1", "29.1", "30.1", "31.1", "32.1", "33.1"],
+    "GATK_CHR_PREFIX": "NC_0470",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "bayscallop",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]\\.1+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 918306378,
+        "outgroups": ["bayscallop"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}

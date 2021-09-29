@@ -32,8 +32,9 @@ Todo, revisit birds, fish, possibly go further!
 
 |Status|run name|Class, order, family|Common name|Notes|
 |---|---|---|---|---|
+|ready to go| pectinidae | Mollusca, Bivalvia | scallop | Looks good, 4 available, not sure divergence. Smaller genome though only about 1 GB|
 |ready to go| gymnophiona | Amphibia, Gymnophiona | caecilians | 3 available, all VGP refs, not sure if will work, not sure about divergence|
-|ready to go| petromyzontidae | Hyperoartia | lampreys | just 3 available, no more. not sure if will work, about 40M years diverged|
+|running| petromyzontidae | Hyperoartia | lampreys | just 3 available, no more. not sure if will work, about 40M years diverged|
 |ready to go| anolis | Reptilia, Squamata | anolis | looks good, should be enough I hope|
 |ready to go| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
@@ -42,6 +43,32 @@ Todo, revisit birds, fish, possibly go further!
 |running by Robbie|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
 |run, not much loss signal, wide AT to GC, likely like dogs which do not have PRDM9 and have recombination localize at promoters|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
 
+
+Mollusca, scallops
+==================
+Looks good, possibly genome too small. Not sure about divergence, probably about right, but we'll see
+
+Mollusca, other
+===============
+Worth considering octopuses, as well as oysters, they look viable
+
+For octoposes, in particular
+https://www.ncbi.nlm.nih.gov/assembly/GCF_006345805.1
+ASM634580v1
+Muusoctopus leioderma
+Octopus rubescens
+Octopus bimaculoides
+Octopus vulgaris
+
+
+
+
+
+
+
+Starfish
+========
+Genome probably too small at less than 400 Mbp
 
 
 

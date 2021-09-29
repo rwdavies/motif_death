@@ -26,28 +26,65 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL, nCores = 
         ##
         genus <- genuses[iGenus]
         url <- paste0("https://www.ebi.ac.uk/ena/taxonomy/rest/suggest-for-search/", genus, "?limit=1000")
-        file <- tempfile()
-        x <- system(paste0("curl -s ", url, " > ", file), intern = TRUE)
+        file <- file.path(tempdir(), paste0(genus, ".txt"))
+        n_tries <- 0
+        f <- function(file) {
+            if (is.na(file.size(file))) {
+                return(TRUE)
+            } else if (file.size(file) == 0) {
+                return(TRUE)
+            } else {
+                return(FALSE)
+            }
+        }
+        while(f(file) & n_tries <= 3) {
+            x <- system(paste0("curl -s ", url, " > ", file), intern = TRUE)
+            n_tries <- n_tries + 1
+        }
         x <- readLines(file, n = 1)
         if(x == "No results.") {
-            unlink(file)
             return(NULL)
         }
         available <- fromJSON(file)
-        unlink(file)
         message(paste0(genus, " has ", nrow(available)))
         ##
         ##
         ##
         iRow <- 1
         url <- paste0("https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=tax_tree(", available[iRow, "taxId"], ")", fields)
-        file <- tempfile()
-        x <- system(paste0("curl -s ", shQuote(url), " > ", file), intern = TRUE)
-        if (file.info(file)["size"] == 0) {
-            return(NULL)
+        file <- file.path(tempdir(), paste0(available[iRow, "taxId"], ".txt"))
+        ## check, if it exists, and is 0, we are done
+        ## if it exists, is not 0, and doesn't have error, we're done
+        ## otherwise, download
+        ## if it
+        n_tries <- 0
+        max_tries <- 5
+        while (n_tries <= max_tries) {
+            yes_file <- !is.na(file.size(file))
+            file_empty <- file.size(file) == 0
+            if (yes_file) {
+                if (file_empty) {
+                    return(NULL)
+                } else {
+                    file_has_error <- scan(file, n = 1, what = "character", quiet = TRUE) == "ERROR:"
+                    if (!file_has_error) {
+                        n_tries <- max_tries
+                        break
+                    } else {
+                        warning(paste0("File has entry, re-trying taxon ", available[iRow, "taxId"]))
+                        unlink(file)
+                    }
+                }
+            } else {
+                x <- system(paste0("curl -s ", shQuote(url), " > ", file), intern = TRUE)
+            }
+            n_tries <- n_tries + 1
+            if (n_tries > max_tries) {
+                warning(paste0("Unsolvable problem with taxId:", available[iRow, "taxId"]))
+                return(NULL)
+            }
         }
         results <- read.table(file, sep = "\t", header = TRUE, comment.char="", quote = "")
-        unlink(file)
         remove1 <- results[, "library_source"] %in% c("TRANSCRIPTOMIC", "METAGENOMIC")
         remove2 <- results[, "library_selection"] %in% c("Reduced Representation", "Restriction Digest", "Hybrid Selection", "ChIP", "DNase")
         remove3 <- results[, "library_strategy"] %in% "Hi-C"
@@ -121,6 +158,7 @@ investigate <- function(keyword, nCores = 12) {
     }
     subfamilies <- f("ott", subfamilies)
     subfamilies <- f("(", subfamilies)
+    subfamilies <- f("'", subfamilies)    
     subfamilies <- unique(subfamilies)
     message(paste0("There are ", length(subfamilies), " subfamilies to investigate"))
     results <- get_match_against_subfamilies(genuses = subfamilies, nCores = nCores)
@@ -139,10 +177,10 @@ investigate <- function(keyword, nCores = 12) {
     )
 }
 
-make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/Downloads/", height_scale = 1) {
+make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/Downloads/", height_scale = 1, width = 20) {
     ##
     ## get some information to plot about them
-    ## 
+    ##
     mapped_per_species <- tapply(X = results[, "base_count"], INDEX = as.factor(results[, "scientific_name"]), FUN = sum, na.rm =TRUE) / 1e9
     N_per_species <- tapply(X = results[, "base_count"], INDEX = as.factor(results[, "scientific_name"]), FUN = length)
     stopifnot(sum(!(names(N_per_species) == names(mapped_per_species))) == 0) ## check they are done in the same way
@@ -207,7 +245,7 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
     tree2 <- drop.tip(tree, tip.label[!keep_tip])
     tip.color <- tip.color[match(tree2$tip.label, tree$tip.label)]
     height <- max(10, height_scale * length(tree$tip.label) / 100)
-    pdf(file.path(plotdir, paste0(keyword, ".pdf")), height = height, width = 20)
+    pdf(file.path(plotdir, paste0(keyword, ".pdf")), height = height, width = width)
     plot(tree2, tip.color = "white", show.node.label = TRUE, show.tip.label = TRUE, srt = 90)
     par(new = TRUE)
     plot(tree2, tip.color = tip.color, show.node.label = FALSE)
@@ -217,7 +255,7 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
 
 
 look_at_one_species_or_study <- function(results, study = NA, scientific_name = NA) {
-    cols <- c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_length", "first_created", "read_count", "study_accession", "run_accession", "library_strategy", "run_accession", "base_count", "experiment_title", "sample_alias")
+    cols <- c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_length", "first_created", "read_count", "study_accession", "run_accession", "library_strategy", "library_name", "run_accession", "base_count", "experiment_title", "sample_alias")
     w1 <- rep(TRUE, nrow(results))
     w2 <- rep(TRUE, nrow(results))
     if (!is.na(study)) {
