@@ -7,7 +7,7 @@ library("parallel")
 library("data.table")
 library("rotl")
 
-get_match_against_subfamilies <- function(subfamilies, genuses = NULL) {
+get_match_against_subfamilies <- function(subfamilies, genuses = NULL, nCores = 12) {
     fields <- "&fields=study_accession,secondary_study_accession,sample_accession,secondary_sample_accession,experiment_accession,run_accession,submission_accession,tax_id,scientific_name,instrument_platform,instrument_model,library_name,nominal_length,library_layout,library_strategy,library_source,library_selection,read_count,base_count,center_name,first_public,last_updated,experiment_title,study_title,study_alias,experiment_alias,run_alias,fastq_bytes,fastq_md5,fastq_ftp,fastq_aspera,fastq_galaxy,submitted_bytes,submitted_md5,submitted_ftp,submitted_aspera,submitted_galaxy,submitted_format,sra_bytes,sra_md5,sra_ftp,sra_aspera,sra_galaxy,cram_index_ftp,cram_index_aspera,cram_index_galaxy,sample_alias,broker_name,sample_title,nominal_sdev,first_created"
     if (is.null(genuses)) {
         genuses <- unique(unlist(lapply(subfamilies, function(subfamily) {
@@ -22,7 +22,7 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL) {
         message("Nothing found")
         return(NULL)
     }
-    super_results <- mclapply(1:length(genuses), mc.cores = 48, function(iGenus) {
+    super_results <- mclapply(1:length(genuses), mc.cores = nCores, function(iGenus) {
         ##
         genus <- genuses[iGenus]
         url <- paste0("https://www.ebi.ac.uk/ena/taxonomy/rest/suggest-for-search/", genus, "?limit=1000")
@@ -55,7 +55,11 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL) {
         ## keep most things?
         ## remove3 <- results[, "instrument_model"]
         ## results <- results[grep("HiSeq", results[ ,"instrument_model"]), ]
+        ## want at least 1X of a 3 GBP genome to even start to think about adding
+        ## so that's 3e9
+        ## results <- results[results[ ,"base_count"] > 3e9, ]
         results <- results[results[ ,"read_count"] > 10e6, ]  ## honestly, prob too small?
+        ## ## vs 6e10 as 30X one genome
         results
     })
     results <- data.frame(rbindlist(lapply(super_results[!sapply(super_results, is.null)], function(x) x)))
@@ -98,7 +102,7 @@ get_ucsc_assemblies <- function(motif_death_dir = "~/proj/motif_death/") {
 }
 
 
-investigate <- function(keyword) {
+investigate <- function(keyword, nCores = 12) {
     ##
     ##
     a <- rotl::tnrs_match_names(keyword) ##
@@ -119,14 +123,14 @@ investigate <- function(keyword) {
     subfamilies <- f("(", subfamilies)
     subfamilies <- unique(subfamilies)
     message(paste0("There are ", length(subfamilies), " subfamilies to investigate"))
-    results <- get_match_against_subfamilies(genuses = subfamilies)
+    results <- get_match_against_subfamilies(genuses = subfamilies, nCores = nCores)
     ##
     ## get some info for the plots
     ##
     ##
     ## do plot
     ##
-    make_informative_plot(results, result_phylo, keyword)
+    make_informative_plot(results, result_phylo, keyword, height_scale = 0.2)
     return(
         list(
             results = results,
@@ -138,7 +142,7 @@ investigate <- function(keyword) {
 make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/Downloads/", height_scale = 1) {
     ##
     ## get some information to plot about them
-    ##
+    ## 
     mapped_per_species <- tapply(X = results[, "base_count"], INDEX = as.factor(results[, "scientific_name"]), FUN = sum, na.rm =TRUE) / 1e9
     N_per_species <- tapply(X = results[, "base_count"], INDEX = as.factor(results[, "scientific_name"]), FUN = length)
     stopifnot(sum(!(names(N_per_species) == names(mapped_per_species))) == 0) ## check they are done in the same way

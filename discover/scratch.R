@@ -3,8 +3,23 @@ source(file.path(motif_death_dir, "discover/functions.R"))
 
 assemblies <- get_ucsc_assemblies(motif_death_dir)
 
-out <- investigate(keyword = "Petromyzontiformes")
+out <- investigate(keyword = "Amphibia")
 results <- out$results
+
+## could try, using same one, against same reference?
+head(look_at_one_species_or_study(results, scientific_name = "Rhinatrema bivittatum"), 1) ## two-lined caecilian, likely outgroup
+head(look_at_one_species_or_study(results, scientific_name = "Geotrypetes seraphini"), 1)## Gaboon caecilian
+head(look_at_one_species_or_study(results, scientific_name = "Microcaecilia unicolor"), 1) ## Microcaecilia unicolor
+
+aGeoSer1.1
+3,779,430,019
+https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/459/505/GCF_902459505.1_aGeoSer1.1/GCF_902459505.1_aGeoSer1.1_genomic.fna.gz
+
+
+
+
+
+## should be OK?
 
 ## OK worth trying, genome looks fine
 ## Petromyzon marinus
