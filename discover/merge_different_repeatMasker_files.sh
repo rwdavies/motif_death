@@ -10,7 +10,7 @@ ref_name="Dog10K_Boxer_Tasha"
 key="rmask"
 
 ref_name="kPetMar1.pri"
-key="repeatMasker"
+key="rmask"
 
 ref_name="CAS_Tse_1.0"
 key="rmask"
@@ -18,11 +18,12 @@ key="rmask"
 ref_name="OchPri4.0"
 key="rmask"
 
-ref_name="aGeoSer1.1"
+ref_name="xPecMax1.1"
 key="rmask"
 
+
 ## optionally with .txt or not depending on how downloaded
-gunzip -c ${ref_name}.${key}.SINE.gz | head -n1 > ${ref_name}.rmsk
+gunzip -c ${ref_name}.${key}.RNA.gz | head -n1 > ${ref_name}.rmsk
 
 files=$(ls ${ref_name}.${key}*gz)
 for f in $files
