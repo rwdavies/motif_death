@@ -130,14 +130,14 @@ rule merge_mapped_pieces:
         bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.unit{{units}}.bam.bai")
     params:
         N='merge_mapped_pieces',
-        threads=1,
+        threads=4,
         queue = "short.qc@@short.hge"
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
         """
         set -e
-        samtools merge {output.bam} {input.bams}
+        samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
         samtools index {output.bam}
         rm -rf {input.bams}
         rm -rf {input.bais}
