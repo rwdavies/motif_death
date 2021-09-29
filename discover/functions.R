@@ -135,7 +135,7 @@ investigate <- function(keyword) {
     )
 }
 
-make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/Downloads/") {
+make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/Downloads/", height_scale = 1) {
     ##
     ## get some information to plot about them
     ##
@@ -202,7 +202,7 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
     tree$tip.label <- tip.label
     tree2 <- drop.tip(tree, tip.label[!keep_tip])
     tip.color <- tip.color[match(tree2$tip.label, tree$tip.label)]
-    height <- max(10, 3 * length(tree$tip.label) / 100)
+    height <- max(10, height_scale * length(tree$tip.label) / 100)
     pdf(file.path(plotdir, paste0(keyword, ".pdf")), height = height, width = 20)
     plot(tree2, tip.color = "white", show.node.label = TRUE, show.tip.label = TRUE, srt = 90)
     par(new = TRUE)

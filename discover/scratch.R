@@ -3,8 +3,52 @@ source(file.path(motif_death_dir, "discover/functions.R"))
 
 assemblies <- get_ucsc_assemblies(motif_death_dir)
 
-out <- investigate("Iguania")
+out <- investigate(keyword = "Petromyzontiformes")
 results <- out$results
+
+## OK worth trying, genome looks fine
+## Petromyzon marinus
+## kPetMar1.pri
+## https://www.ncbi.nlm.nih.gov/assembly/GCA_010993605.1
+
+look_at_one_species_or_study(results, scientific_name = "Petromyzon")[1:5, ]
+
+Sea lamprey, Petromyzon marinus, PRJNA385973, SRR5535434 (which is blood not sperm) (ref genome)
+Brook lamprey,Lampetra planeri, PRJNA420358, SRR6329407, looks good
+Far Eastern Brook Lamprey, Lethenteron reissneri, PRJNA558325, SRR9964061
+Lethenteron camtschaticum - NO - not enough + is testis looks 
+
+
+## not entirely sure it will work, divergence is high, potentially 40m years ago
+
+look_at_one_species_or_study(results, scientific_name = "Lethenteron camtschaticum")
+look_at_one_species_or_study(results, scientific_name = "Lethenteron reissneri")
+
+
+
+
+
+
+
+
+## try the skates
+## Amblyraja looks pretty good
+## https://www.ncbi.nlm.nih.gov/assembly/GCF_010909765.2#/def
+## check out the PDF
+## assembly sAmbRad1.1.pri
+
+## looks OK - sScyCan1.1
+## 
+
+
+Scyliorhinus
+
+look_at_one_species_or_study(results, scientific_name = "Bathyraja")
+")
+
+Carcharodon carcharias - great white shark
+Rhincodon typus - whale shark
+diverged several hundred million years ago
 
 
 ## anolis looks fine, BUT, do we have enough?

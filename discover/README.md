@@ -32,6 +32,7 @@ Todo, revisit birds, fish, possibly go further!
 
 |Status|run name|Class, order, family|Common name|Notes|
 |---|---|---|---|---|
+|ready to go| petromyzontidae | Hyperoartia | lampreys | looks good, not sure if too diverged|
 |ready to go| anolis | Reptilia, Squamata | anolis | looks good, should be enough I hope|
 |ready to go (need manual download)| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
@@ -47,6 +48,25 @@ Amphibians
 ==========
 Can't easily get Xenopus or Rana to work (not enough / too diverged), same with toad (bufo)
 Couldn't obviously get caecilians to work either!
+
+
+Sharks
+=====
+Can't find anything obvious that works. Many sets of 3 -5 species identified. However divergence very high between them (e.g. great white shark vs whale shark), and within sets of 3, can't find compatible high quality reference genome, AND 3 or more sets of high quality Illumina non-GAII sequences. Maybe in a few more years.
+```
+out <- investigate(keyword = "Chondrichthyes")
+```
+
+Lampreys (Petromyzontidae)
+========
+Keyword: Petromyzontiformes
+Four possibilities, can make a tree from 3 of them (the other not enough data)
+Quite possibly the sea lamprey is too far diverged against the others, but we'll see
+Sea lamprey, Petromyzon marinus, PRJNA385973, SRR5535434 (which is blood not sperm) (ref genome)
+Brook lamprey,Lampetra planeri, PRJNA420358, SRR6329407, looks good
+Far Eastern Brook Lamprey, Lethenteron reissneri, PRJNA558325, SRR9964061
+Lethenteron camtschaticum - NO - not enough + is testis looks 
+
 
 
 
