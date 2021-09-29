@@ -9,6 +9,19 @@ key="rmask"
 ref_name="Dog10K_Boxer_Tasha"
 key="rmask"
 
+ref_name="kPetMar1.pri"
+key="repeatMasker"
+
+ref_name="CAS_Tse_1.0"
+key="rmask"
+
+ref_name="OchPri4.0"
+key="rmask"
+
+ref_name="aGeoSer1.1"
+key="rmask"
+
+## optionally with .txt or not depending on how downloaded
 gunzip -c ${ref_name}.${key}.SINE.gz | head -n1 > ${ref_name}.rmsk
 
 files=$(ls ${ref_name}.${key}*gz)
@@ -24,7 +37,8 @@ sed -i '' -e '1s/#chrom/#genoName/' -e '1s/chromStart/genoStart/' -e '1s/chromEn
 
 gzip $ref_name.rmsk
 
+exit
 
 ## some R code to change chromosome names
-a <- data.table::fread(cmd = "gunzip -c /well/davies/shared/motif_death_analysis/external/Dog10K_Boxer_Tasha.rmsk.gz", data.table = FALSE)w
+a <- data.table::fread(cmd = "gunzip -c /well/davies/shared/motif_death_analysis/external/Dog10K_Boxer_Tasha.rmsk.gz", data.table = FALSE)
 
