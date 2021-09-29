@@ -32,13 +32,13 @@ Todo, revisit birds, fish, possibly go further!
 
 |Status|run name|Class, order, family|Common name|Notes|
 |---|---|---|---|---|
-|ready to go| petromyzontidae | Hyperoartia | lampreys | looks good, not sure if too diverged|
+|ready to go| petromyzontidae | Hyperoartia | lampreys | just 3 available, no more. not sure if will work, about 40M years diverged|
 |ready to go| anolis | Reptilia, Squamata | anolis | looks good, should be enough I hope|
-|ready to go (need manual download)| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
+|ready to go| emydidae | Reptilia, Testudines | turtles | nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)|
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
-|ready to go (need manual download)|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
-|running by Jhamat|eupleridae|Mammalia,Carnivora, Feliformia| meerkat |config made by Jhamat, needs to be uploaded. Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup|
-|ready to go|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
+|ready to go|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
+|unsure|eupleridae|Mammalia,Carnivora, Feliformia| meerkat |config made by Jhamat, I think? Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup|
+|running by Robbie|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
 |run, not much loss signal, wide AT to GC, likely like dogs which do not have PRDM9 and have recombination localize at promoters|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
 
 
