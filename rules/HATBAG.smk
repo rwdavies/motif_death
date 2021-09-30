@@ -210,6 +210,7 @@ rule treemix_to_hatbag_lineages:
 
         out_dict = config
         out_dict["HATBAG_PARAMS"] = new_params
+        out_dict["CHR_LIST_ONLY_AUTOS"] = CHR_LIST_ONLY_AUTOS # HATBAG needs this in config json
 
         Path(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}").mkdir(parents=True, exist_ok=True)
 
