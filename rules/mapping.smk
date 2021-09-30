@@ -153,7 +153,7 @@ rule merge_units:
         bai = temp(f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.bam.bai")
     params:
         N='merge_units',
-        threads=1,
+        threads=4,
         queue = "short.qc@@short.hge",
         nunits = get_bam_number_of_units
     wildcard_constraints:
@@ -168,7 +168,7 @@ rule merge_units:
             mv {input.bais} {output.bai}
         else
             echo Many units - so perform merge as usual
-            samtools merge {output.bam} {input.bams}
+            samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
             samtools index {output.bam}
         fi
         # TODO: below is hack as snakemake temp(directory(...)) not working
@@ -260,13 +260,16 @@ rule merge_realigned_bams:
         bai = f"mapping/{SPECIES_ORDER}/{{species}}/{{species}}.{BAM_SUFFIX}.bai"
     params:
         N='merge_bams',
-        threads=1,
+        threads=4,
         queue = "short.qc@@short.hge"
     wildcard_constraints:
     shell:
         """
-        samtools merge {output.bam} {input.bams}
+        echo merge bams
+        samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
+        echo index bams
         samtools index {output.bam}
+        echo remove fastq files
         rm mapping/{SPECIES_ORDER}/{wildcards.species}/*{FASTQ_SUFFIX}
         """
 
