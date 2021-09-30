@@ -19,7 +19,7 @@
     "REF_NAME": "ref",
     "REF_URL": "https://storage.googleapis.com/motif_death/test_data/ref.fa.gz",
     "CHR_LIST": [1,2],
-    "CHR_AUTO_LIST": [],
+    "SEX_CHR_LIST": [],
     "TREEMIX_OUTGROUP": "test_outgroup",
     "GATK_CHR_PREFIX": "",
     "OPERATE_GATK_PER_CHR": "TRUE", 
