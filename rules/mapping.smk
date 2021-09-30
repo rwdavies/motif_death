@@ -2,30 +2,22 @@
 # if SPECIES == "marmoset":
 #     FASTQ_SUFFIX = "standardized_phred.fastq.gz"
 
-# TODO: replace with one function
 def get_bam_pieces(wildcards):
-    unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
+    unit_dir = checkpoints.chunk_fastq1.get(**wildcards).output.unit_dir
     pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder").piece
     filenames = expand(rules.map_fastq_pieces.output.bam, **wildcards, piece=pieces)
     return filenames
 
 def get_bai_pieces(wildcards):
-    unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
+    unit_dir = checkpoints.chunk_fastq1.get(**wildcards).output.unit_dir
     pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder").piece
     filenames = expand(rules.map_fastq_pieces.output.bai, **wildcards, piece=pieces)
     return filenames
 
-# TODO: replace with one function
 def get_bam_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
     filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
     return filenames
-
-# Copied from above, but just the length
-def get_bam_number_of_units(wildcards):
-    units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
-    return len(filenames)
 
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
@@ -44,10 +36,9 @@ rule test_run:
 
 
 
-checkpoint chunk_fastq:
+checkpoint chunk_fastq1:
     input:
-        pen1 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.{FASTQ_SUFFIX}",
-        pen2 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.{FASTQ_SUFFIX}",
+        pen1 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_1.{FASTQ_SUFFIX}"
     output:
         unit_dir = directory(f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}")
     params:
@@ -64,9 +55,32 @@ checkpoint chunk_fastq:
         lines_per_chunk=$(($(gunzip -c {input.pen1} | wc -l) / {params.n_mapping_pieces}))
         lines_per_chunk=$(($lines_per_chunk - $(($lines_per_chunk % 4))))
         zcat {input.pen1} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/1.{FASTQ_SUFFIX}.temp.
-        zcat {input.pen2} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {output.unit_dir}/2.{FASTQ_SUFFIX}.temp.
         cd {output.unit_dir}
         $(ls *gz | awk '{{print "touch "$0".placeholder"}}')
+        """
+
+rule chunk_fastq2:
+    # Note: separated from chunk_fastq1 so can run in parallel (save time)
+    input:
+        pen2 = f"mapping/{SPECIES_ORDER}/{{species}}/{{units}}_2.{FASTQ_SUFFIX}"
+    output:
+        f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/chunk_fastq2_done"
+    params:
+        N='chunk_fastq',
+        threads=1,
+        queue = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "mapping_queue"],
+        n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"],
+        unit_dir = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}"
+    wildcard_constraints:
+        units=WILDCARD_UNIT_CONSTRAINT
+    shell:
+        """
+        mkdir -p {params.unit_dir}
+        # Note: bash math below. division returns integer only. must be multiple of 4 as fasta is in 4 line pieces.
+        lines_per_chunk=$(($(gunzip -c {input.pen2} | wc -l) / {params.n_mapping_pieces}))
+        lines_per_chunk=$(($lines_per_chunk - $(($lines_per_chunk % 4))))
+        zcat {input.pen2} | split -l ${{lines_per_chunk}} --filter=\'gzip > $FILE.gz\' - {params.unit_dir}/2.{FASTQ_SUFFIX}.temp.
+        touch {output}
         """
 
 
@@ -74,6 +88,7 @@ checkpoint chunk_fastq:
 rule map_fastq_pieces:
     input:
         pen1_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder",
+        pen2_chunk_placeholder = f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/chunk_fastq2_done",
         ref = f"{REF_DIR}/{REF_NAME}.fa",
         ref_sa = f"{REF_DIR}/{REF_NAME}.fa.sa",
         ref_fai = f"{REF_DIR}/{REF_NAME}.fa.fai",
@@ -155,7 +170,7 @@ rule merge_units:
         N='merge_units',
         threads=4,
         queue = "short.qc@@short.hge",
-        nunits = get_bam_number_of_units
+        nunits = lambda wildcards: len(order_df.loc[wildcards.species])
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:

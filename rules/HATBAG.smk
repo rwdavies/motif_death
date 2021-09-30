@@ -1,5 +1,6 @@
 from pathlib import Path
 import json
+import gzip
 from collections import OrderedDict
 
 def convert_tree_text_to_dict(t):
@@ -170,24 +171,10 @@ rule HATBAG_HACK_FUNCTION:
         touch {output.decoy}
         """
 
-rule unzip_tree:
-    # TODO: combine with below job by calling gunzip from python
-    input:
-        zipped = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout.gz"
-    output:
-        unzipped = f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout"
-    params:
-        N='unzip_treemix_tree',
-        queue="short.qc@@short.hge",
-        threads=1
-    shell:
-        """
-        gunzip -c {input.zipped} > {output.unzipped}
-        """
     
 rule treemix_to_hatbag_lineages:
     input:
-        f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout"
+        f"treemix/{SPECIES_ORDER}/{RUN_ID}/treemix.migrants.0.out.treeout.gz"
     output:
         f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/hatbag_params.json"
     params:
@@ -195,7 +182,7 @@ rule treemix_to_hatbag_lineages:
         queue="short.qc@@short.hge",
         threads=1
     run:
-        with open(input[0]) as f:
+        with gzip.open(input[0], 'rt') as f:
             tree_text = f.readline() # reads first line only
         
         orig_params = config["HATBAG_PARAMS"]
@@ -210,6 +197,7 @@ rule treemix_to_hatbag_lineages:
 
         out_dict = config
         out_dict["HATBAG_PARAMS"] = new_params
+        out_dict["CHR_LIST_ONLY_AUTOS"] = CHR_LIST_ONLY_AUTOS # HATBAG needs this in config json
 
         Path(f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}").mkdir(parents=True, exist_ok=True)
 
