@@ -2,7 +2,6 @@
 # if SPECIES == "marmoset":
 #     FASTQ_SUFFIX = "standardized_phred.fastq.gz"
 
-# TODO: replace with one function
 def get_bam_pieces(wildcards):
     unit_dir = checkpoints.chunk_fastq.get(**wildcards).output.unit_dir
     pieces = glob_wildcards(f"{unit_dir}/1.{FASTQ_SUFFIX}.temp.{{piece}}.gz.placeholder").piece
@@ -15,17 +14,10 @@ def get_bai_pieces(wildcards):
     filenames = expand(rules.map_fastq_pieces.output.bai, **wildcards, piece=pieces)
     return filenames
 
-# TODO: replace with one function
 def get_bam_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
     filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
     return filenames
-
-# Copied from above, but just the length
-def get_bam_number_of_units(wildcards):
-    units = list(order_df.loc[wildcards.species, "units"])
-    filenames = [f"mapping/{SPECIES_ORDER}/{wildcards.species}/{wildcards.species}.unit{u}.bam" for u in units]
-    return len(filenames)
 
 def get_bai_units(wildcards):
     units = list(order_df.loc[wildcards.species, "units"])
@@ -155,7 +147,7 @@ rule merge_units:
         N='merge_units',
         threads=4,
         queue = "short.qc@@short.hge",
-        nunits = get_bam_number_of_units
+        nunits = lambda wildcards: len(order_df.loc[wildcards.species])
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
