@@ -164,7 +164,7 @@ rule test_chr_names:
     output:
         f"mapping/{SPECIES_ORDER}/{RUN_ID}.test_chr_name_passed"
     run:
-        Path(f"mapping/{SPECIES_ORDER}/{RUN_ID}").mkdir(parents=True, exist_ok=True)
+        Path(f"mapping/{SPECIES_ORDER}").mkdir(parents=True, exist_ok=True)
 
         r = re.compile(WILDCARD_CHR_CONSTRAINT)
         to_test = [c for c in CHR_LIST_ONLY_AUTOS if r.match(str(c))]
