@@ -1,6 +1,4 @@
-from pathlib import Path
 import json
-import gzip
 from collections import OrderedDict
 
 def convert_tree_text_to_dict(t):
@@ -130,7 +128,8 @@ def get_hatbag_input(wildcards):
                 f'vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz',
                 f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
                 f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
-                f"{REF_DIR}/{REF_NAME}.fa.gz"
+                f"{REF_DIR}/{REF_NAME}.fa.gz",
+                f"mapping/{SPECIES_ORDER}/{RUN_ID}.test_chr_name_passed"
             ]
         )
     if run == "B":

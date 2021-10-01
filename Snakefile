@@ -1,5 +1,7 @@
 import os
 import pandas as pd
+import gzip
+from pathlib import Path
 
 # From Activate or run.sh
 R_DIR=os.environ["R_DIR"]
