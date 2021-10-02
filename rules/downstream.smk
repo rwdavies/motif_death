@@ -1,3 +1,5 @@
+import re
+
 rule downstream_all:
     input:
         f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
@@ -139,6 +141,7 @@ rule calculate_doc:
 
 rule prepare_reference:
     input:
+        test_passed = f"mapping/{SPECIES_ORDER}/{RUN_ID}.test_chr_name_passed",
         amb = f"{REF_DIR}/{REF_NAME}.fa.amb",
         ann = f"{REF_DIR}/{REF_NAME}.fa.ann"
     output:
@@ -153,6 +156,43 @@ rule prepare_reference:
         {R_GET_GENOME_STATS} --ref_dir={REF_DIR} --ref={REF_NAME}.fa --chr_prefix={GATK_CHR_PREFIX} {CHR_LIST_ONLY_AUTOS}
         """
 
+rule test_chr_names:
+    input:
+        ann = f"{REF_DIR}/{REF_NAME}.fa.ann",
+        sr = f"{EXTERNAL_DIR}/{REF_NAME}.simpleRepeat.gz",
+        rmsk = f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
+    output:
+        f"mapping/{SPECIES_ORDER}/{RUN_ID}.test_chr_name_passed"
+    params:
+        N='test_chr_names',
+        threads=1,
+        queue = "short.qc@@short.hge"
+    run:
+        Path(f"mapping/{SPECIES_ORDER}").mkdir(parents=True, exist_ok=True)
+
+        r = re.compile(WILDCARD_CHR_CONSTRAINT)
+        to_test = [c for c in CHR_LIST_ONLY_AUTOS if r.match(str(c))]
+        assert to_test == CHR_LIST_ONLY_AUTOS, "WILDCARD_CHR_CONSTRAINT regex in config doesn't match all chr names"
+
+        chr_names = [GATK_CHR_PREFIX + str(c) for c in CHR_LIST_ONLY_AUTOS]
+
+        ref_df = pd.read_csv(input.ann, header=None, sep="\t")
+        to_test = ref_df[0].str.extract(r"\s([^\s]*)", expand = False).unique()
+        assert set(chr_names).issubset(set(to_test)), "chr names in config don't match reference"
+
+        sr_df = pd.read_csv(input.sr, compression='gzip', header=0, sep='\t')
+        for col_name in ["chrom", "#chrom"]:
+            if col_name in sr_df.columns:
+                to_test = sr_df[col_name].astype(str).unique()
+        assert set(chr_names).issubset(set(to_test)), "chr names in config don't match simpleRepeat 'chrom' col"
+
+        rmsk_df = pd.read_csv(input.rmsk, compression='gzip', header=0, sep='\t')
+        for col_name in ["genoName", "#genoName"]:
+            if col_name in rmsk_df.columns:
+                to_test = rmsk_df[col_name].astype(str).unique()
+        assert set(chr_names).issubset(set(to_test)), "chr names in config don't match rmask 'genoName' col"
+
+        Path(output[0]).touch()
 
 rule get_callable_regions:
     input:
