@@ -163,6 +163,10 @@ rule test_chr_names:
         rmsk = f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz",
     output:
         f"mapping/{SPECIES_ORDER}/{RUN_ID}.test_chr_name_passed"
+    params:
+        N='test_chr_names',
+        threads=1,
+        queue = "short.qc@@short.hge"
     run:
         Path(f"mapping/{SPECIES_ORDER}").mkdir(parents=True, exist_ok=True)
 
