@@ -125,7 +125,7 @@ rule calculate_doc:
         species='\w{1,40}'	
     shell:
         'mkdir -p coverage && '
-        '${{JAVA}} -Xmx8g -jar ${{GATK}} '
+        '${{JAVA}} -Xmx14g -jar ${{GATK}} '
         '-T DepthOfCoverage '
         '-R {input.ref} '
         '-L {GATK_CHR_PREFIX}{wildcards.chr} '
@@ -160,7 +160,8 @@ rule get_callable_regions:
         summary = f"{REF_DIR}/{REF_NAME}.fa.summary.txt"
     output:
         beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{{{species}}}}.chr{{chr}}.callableOnly.bed", chr = CHR_LIST_ONLY_AUTOS),
-	    merged_bed = f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed"
+        merged_bed = f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed",
+        average = f"coverage/{SPECIES_ORDER}/average.{{species}}.txt"
     params:
         N='get_callable_regions',
         threads = 2,
@@ -176,11 +177,18 @@ rule get_callable_regions:
 
 CALLABLE_MIN_N=CALLABLE_MIN_FRACTION * len(SPECIES_LIST)
 
+EASY_SPECIES_LIST=""
+for species in SPECIES_LIST:
+    EASY_SPECIES_LIST = EASY_SPECIES_LIST + species + " "
+
+
 rule get_single_callable_regions:
     input:
-        beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed", species = SPECIES_LIST)
+        beds = expand(f"coverage/{SPECIES_ORDER}/coverage.{{species}}.callableOnly.bed", species = SPECIES_LIST),
+        avs = expand(f"coverage/{SPECIES_ORDER}/average.{{species}}.txt", species = SPECIES_LIST)
     output:
-        bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed"
+        bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed",
+        av = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.average.txt"
     params:
         N='get_single_callable_regions',
         threads = 1,
@@ -193,6 +201,13 @@ rule get_single_callable_regions:
             echo "Error: file {output.bed} is empty"
             exit 1
         fi
+	rm -f {output.av}
+	for sps in {EASY_SPECIES_LIST}
+	do
+            cov=`cat coverage/{SPECIES_ORDER}/average.${{sps}}.txt`
+	    echo coverage is ${{cov}}
+	    echo -e "${{sps}}\t${{cov}}" >> {output.av}
+        done
         """
 
 

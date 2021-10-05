@@ -123,7 +123,7 @@ rule map_fastq_pieces:
         'PU:{params.flowcell_barcode}.{params.flowcell_lane}.{wildcards.species},'
         'LB:{params.lb}'
         '-t{params.threads} -g {REF_DIR}/{REF_NAME} -h {REF_DIR}/{REF_NAME} --overwrite --bamkeepgoodreads '
-        '-M {output.bam}.temp1.bam | '
+        '-M {output.bam}.temp1.bam | sed "s/^@CO/@PG/" | '
         'samtools view -Sb - > {output.bam}.temp2.bam && '
 	'rm {output.bam}.temp1.bam && '
         'echo STAMPY DONE && '
@@ -152,10 +152,14 @@ rule merge_mapped_pieces:
     shell:
         """
         set -e
-        samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
+        echo merge mapped pieces
+        samtools merge -c -p --threads $(({params.threads} - 1)) {output.bam} {input.bams}
+        echo index
         samtools index {output.bam}
+        echo remove stuff
         rm -rf {input.bams}
         rm -rf {input.bais}
+        echo done
         """
 
 
@@ -183,7 +187,7 @@ rule merge_units:
             mv {input.bais} {output.bai}
         else
             echo Many units - so perform merge as usual
-            samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
+            samtools merge -c -p --threads $(({params.threads} - 1)) {output.bam} {input.bams}
             samtools index {output.bam}
         fi
         # TODO: below is hack as snakemake temp(directory(...)) not working
@@ -202,7 +206,7 @@ rule mark_duplicates:
     params:
         N='rmdup',
         threads=3,
-        queue = "short.qc@@short.hge"
+        queue = "long.qc@@short.hge"
     shell:
         'ulimit -n 4096 && ${{JAVA}} -Xmx16G -jar ${{PICARD}} MarkDuplicates '
         'ASSUME_SORTED=false '
@@ -281,7 +285,7 @@ rule merge_realigned_bams:
     shell:
         """
         echo merge bams
-        samtools merge --threads $(({params.threads} - 1)) {output.bam} {input.bams}
+        samtools merge -c -p --threads $(({params.threads} - 1)) {output.bam} {input.bams}
         echo index bams
         samtools index {output.bam}
         echo remove fastq files
