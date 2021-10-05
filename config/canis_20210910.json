@@ -43,6 +43,7 @@
         "genomeSize": 2345550353,
         "ndge": 3,
         "gcW2": 5000,
+        "outgroups": ["manedwolf"],	
         "num_non_missing_outgroups_required": null,
         "num_missing_lineages_allowed": null,
         "similar_kmer_criterion": ["cpg", "at"],
