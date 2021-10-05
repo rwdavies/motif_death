@@ -40,7 +40,7 @@ Todo, revisit birds, fish, possibly go further!
 |ready to go|leporidae | Mammals, lagomorpha | rabits/hares|looks great|
 |ready to go|ochotona | Mammals, lagomorpha | pikas|only using Illumina data. samples are from two phyla, use as outgroups to each other|
 |unsure|eupleridae|Mammalia,Carnivora, Feliformia| meerkat |config made by Jhamat, I think? Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup|
-|running by Robbie|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes|
+|running by Robbie|canis|Mammalia, Carnivora, Canidae| dogs | name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes. coverage OK though andean fox and dhole low at about 10 to 15 X coverage, could be worth adding more for a re-run|
 |run, not much loss signal, wide AT to GC, likely like dogs which do not have PRDM9 and have recombination localize at promoters|vulpes|Mammalia, Carnivora, Canidae | foxes | name should somehow be Vulpini and Urocyon, but cannot get unique any better vs dogs|
 
 
