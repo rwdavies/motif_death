@@ -1,0 +1,83 @@
+{
+    "SPECIES_ORDER": "eupleridae",
+    "RUN_ID": "20210908",
+    "SPECIES_LIST": {
+        "striped_hyaena": {
+            "ENA_PRJ": "PRJNA390068",
+            "RUN_ACCESSION": ["SRR5904112", "SRR5904111"]
+        },
+        "brown_hyaena": {
+            "ENA_PRJ": "PRJNA396697",
+            "RUN_ACCESSION": ["SRR5886633"]
+        },
+        "aardwolf": {
+            "ENA_PRJ": "PRJNA694835",
+            "RUN_ACCESSION": ["SRR13528972"]
+        },
+        "spotted_hyaena": {
+            "ENA_PRJ": "PRJNA559045",
+            "RUN_ACCESSION": ["SRR9914662"]
+        },
+        "fossa": {
+            "ENA_PRJ": "PRJNA512907",
+            "RUN_ACCESSION":["SRR11097184", "SRR11428701"]
+        },
+        "banded_mongoose": {
+            "ENA_PRJ": "PRJNA399406",
+            "RUN_ACCESSION":["SRR7704821"]
+        },
+        "common_dwarf_mongoose": {
+            "ENA_PRJ": "PRJNA412530",
+            "RUN_ACCESSION":["SRR7637809"]
+        },
+        "meerkat": {
+            "ENA_PRJ": "PRJNA399357",
+            "RUN_ACCESSION":["SRR11434616"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "SurSur1",
+    "REF_URL": "ftp://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/006/229/205/GCF_006229205.1_meerkat_22Aug2017_6uvM2_HiC/GCF_006229205.1_meerkat_22Aug2017_6uvM2_HiC_genomic.fna.gz",
+    "CHR_LIST": ["00.1", "01.1", "02.1", "03.1", "04.1", "05.1", "06.1", "07.1", "08.1", "09.1", "10.1", "11.1", "12.1", "13.1", "14.1", "15.1", "16.1", "17.1"],
+    "SEX_CHR_LIST": ["17.1"],
+    "GATK_CHR_PREFIX": "NC_0437",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "striped_hyaena",
+    "simpleRepeat_URL": "manually downloaded from genome-euro.ucsc.edu/cgi-bin/hgTables. Chromsome names changed from 'chr1' to above format. Rsynced.",
+    "rmask_URL": "manually downloaded from genome-euro.ucsc.edu/cgi-bin/hgTables, and 'chrom', 'chromStart', 'chromEnd', 'name' column names changed to 'genoName', 'genoStart','genoEnd', 'repName'. Chromsome names changed from 'chr1' to above format. Rsynced.",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "outgroups": ["striped_hyaena", "spotted_hyaena", "brown_hyaena"],
+        "lineages": {
+            "common_dwarf_mongoose": "common_dwarf_mongoose",
+            "banded_mongoose": "banded_mongoose",
+            "Anc_CoBa": ["common_dwarf_mongoose", "banded_mongoose"],
+            "meerkat": "meerkat",
+            "Anc_MeCoBa": ["meerkat", "Anc_CoBa"],
+            "fossa": "fossa",
+            "Anc_FoMeCoBa": ["fossa", "Anc_MeCoBa"],
+            "aardwolf": "aardwolf"
+        },
+        "ancestral_lineage": {
+            "Anc_AaFoMeCoBa": ["aardwolf", "Anc_FoMeCoBa"]
+        },
+        "genomeSize": 2353578744,
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
