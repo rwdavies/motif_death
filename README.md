@@ -100,10 +100,10 @@ Downstream: Treemix will run automatically (can also be manually run using `./ru
 
 HATBAG: HATBAG itself is a relatively OK piece of code. It can be run from the command line.  The current integration of this into the script is very hacky. It should work - it does work - but it is inelegant, and was put together now in a brute force fashion (previously this ran on a single compute server with 300+ GB of RAM, rather than on a cluster). Old code towards this goal (in `HATBAG.smk`) still exists but isn't quite working.  
 
-### Appendix <a name="paragraph-appendix"></a>
+## Appendix <a name="paragraph-appendix"></a>
 Directory paths and filenames specified in `config/filenames.json`.
 
-### TODOs <a name="paragraph-todos"></a>
+## TODOs <a name="paragraph-todos"></a>
 
 * Test that reference chromosome names match what are input in run config json.
 * Split chunk_fastq into two jobs to run simultaneous
