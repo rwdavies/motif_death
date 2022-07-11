@@ -5,7 +5,16 @@ motif_death
 
 This repository contains code to download, pre-process, map, and variant call related species for use in motif death research.
 
-## Testing
+# Table of contents
+1. [Introduction](#paragraph-testing)
+2. [Setup](#paragraph-setup)
+3. [Running Motif Death and HATBAG](#paragraph-motifandhatbag)
+    1. [Downloading files](#paragraph-download)
+    2. [Running the pipeline](#paragraph-running)
+4. [Appendix](#paragraph-appendix)
+4. [TODOs](#paragraph-todos)
+
+## Testing <a name="paragraph-testing"></a>
 
 ```
 . activate
@@ -13,9 +22,8 @@ This repository contains code to download, pre-process, map, and variant call re
 ./scripts/test.sh 4 # specify number of cores, default 8 if left blank
 ```
 
-## Workthrough / explanation
 
-### Set-up
+## Setup <a name="paragraph-setup"></a>
 All packages and user-specific paths are specified in `activate`. **A new user should define their own packages and paths there.**  Some notes on installations below:
 
 1. For the version of R you are using (i.e. specified in `activate`), you need to install of [**HATBAG**](https://github.com/rwdavies/HATBAG). On the cluster, you can [follow instructions here](https://www.medsci.ox.ac.uk/divisional-services/support-services-1/bmrc/r-and-rstudio-on-the-bmrc-cluster) on installing R packages. This requires creating a `~/.Rprofile` file, downloading the HATBAG repo, then running the HATBAG installation as described in its' repo. 
@@ -30,7 +38,7 @@ All packages and user-specific paths are specified in `activate`. **A new user s
 . activate
 ```
 
-### A. Specify a Motif Death & HATBAG run
+## Running Motif Death and HATBAG  <a name="paragraph-motifandhatbag"></a>
 
 For a group of species (titled `SPECIES_ORDER` e.g., artiodactyla) you want to analyze, you should write a `config/{...}.json` (see other files in folder for reference):
 * **Reference**: Start with finding a suitable reference for your group of species. You need the reference genome, as well as simpleRepeat and repeat mask tables.
@@ -66,7 +74,7 @@ The resulting folder structure is below:
 └── logs # snakemake logs
 ```
 
-### B.1. Downloading files
+### Downloading files <a name="paragraph-download"></a>
 
 You need internet access to download fastqs and reference files, so this needs to be run on a head node on the cluster ('local'). 
 ```
@@ -75,7 +83,7 @@ You need internet access to download fastqs and reference files, so this needs t
 ```
 Note this might take from 30 minutes to a few hours of wall clock time to run per job, depending on size of individual fastqs.
 
-### B.2 Running the pipeline
+### Running the pipeline <a name="paragraph-running"></a>
 
 ```
 ./run.sh config/artiodactyla.json all cluster --dryrun ## to check what will be run
@@ -92,10 +100,10 @@ Downstream: Treemix will run automatically (can also be manually run using `./ru
 
 HATBAG: HATBAG itself is a relatively OK piece of code. It can be run from the command line.  The current integration of this into the script is very hacky. It should work - it does work - but it is inelegant, and was put together now in a brute force fashion (previously this ran on a single compute server with 300+ GB of RAM, rather than on a cluster). Old code towards this goal (in `HATBAG.smk`) still exists but isn't quite working.  
 
-## Appendix
+### Appendix <a name="paragraph-appendix"></a>
 Directory paths and filenames specified in `config/filenames.json`.
 
-## TODOs
+### TODOs <a name="paragraph-todos"></a>
 
 * Test that reference chromosome names match what are input in run config json.
 * Split chunk_fastq into two jobs to run simultaneous
