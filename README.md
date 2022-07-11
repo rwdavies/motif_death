@@ -47,7 +47,12 @@ For a group of species (titled `SPECIES_ORDER` e.g., artiodactyla) you want to a
     * For each species, data must exist in the EBI ENA, with a project ID e.g. PRJNA313910.  Under this Project ID, choose the 'Run Accessions' (i.e. units) to use for each species.
     * TODO: add notes about what is good choice (high coverage, short read ...)
 * `RUN_ID`: (e.g., 20200706) Coverage, VCF, Treemix, and HATBAG are all run specific, as you can have multiple runs within the same order using different species.
-* `HATBAG_OUTPUT_DIR`: HATBAG has an additional ID parameter, so you can redo the same order and run with different HATBAG settings.  
+* `HATBAG_OUTPUT_DIR`: HATBAG has an additional ID parameter, so you can redo the same order and run with different HATBAG settings.
+* `REF_NAME` and `REF_URL`: The reference URL (self-explanatory) and reference name (a short form description, usually the part before `.fa`).
+* `CHR_LIST_ONLY_AUTOS` and `CHR_LIST`: a list of the chromosomes that will be analyzed. Despite the names, the current assumption in the code is that only non-sex chromosomes will be used.
+* `TREEMIX_OUTGROUP` species to be used as the outgroup for Treemix and throughout.
+* `HATBAG_PARAMS` specifically `genomeSize`, is the reference fasta genome length.
+
 
 The resulting folder structure is below:
 
