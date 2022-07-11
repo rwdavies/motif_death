@@ -153,9 +153,8 @@ Dogs / foxes
 ============
 
 See canidae.R
-Also need to build simpleRepeat, rmask 
 
-
+If African wild dog keeps crashing, just redo african wild dog SRR7874817 with SRR7874816
 
 
 

@@ -3,14 +3,15 @@ source(file.path(motif_death_dir, "discover/functions.R"))
 
 assemblies <- get_ucsc_assemblies(motif_death_dir)
 
-out <- investigate(keyword = "Mollusca", nCores = 48)
+out <- investigate(keyword = "Canidae", nCores = 48)
 results <- out$results
 
 ## optionally nuke afterwards
 unlink(tempdir(), recursive = TRUE)
 dir.create(tempdir(), showWarnings = FALSE)
 
-
+## if this keeps crashing, just redo african wild dog SRR7874817 with SRR7874816
+look_at_one_species_or_study(results, scientific_name = "ictus")
 
 
 ## scallops - possible? genome a bit small
