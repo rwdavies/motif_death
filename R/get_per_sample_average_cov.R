@@ -20,6 +20,7 @@ chr_nums <- args$chrlist
 
 chrlist <- paste0(chr_prefix, chr_nums)
 
+## species <- "diamondbackterrapin"; ref_dir <- "ref"; ref="CAS_Tse_1.0.fa"; chr_prefix="NC_048"; chr_nums <- c("298.1"); c
 ## species <- "chimp"; ref <- "hg38.fa";
 ## species <- "caroli"; ref <- "NCBIM37_um.fa";
 ## species <- "whitetaileddeer"; ref <- "bosTau8.fa"

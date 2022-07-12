@@ -164,7 +164,7 @@ rule get_callable_regions:
         average = f"coverage/{SPECIES_ORDER}/average.{{species}}.txt"
     params:
         N='get_callable_regions',
-        threads = 2,
+        threads = 3,
         queue = "short.qc@@short.hge"
     wildcard_constraints:
         species='\w{1,40}'
