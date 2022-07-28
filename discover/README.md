@@ -32,7 +32,7 @@ Todo, revisit birds, fish, possibly go further!
 
 |Status|run name|Class, order, family|Common name|Notes|
 |---|---|---|---|---|
-|ready to go| pectinidae | Mollusca, Bivalvia | scallop | Looks good, 4 available, not sure divergence. Smaller genome though only about 1 GB|
+|ready to go| pectinidae | Mollusca, Bivalvia | scallop | Looks good, 4 available, not sure divergence. Smaller genome though only about 1 GB. Robbie running|
 |ready to go| gymnophiona | Amphibia, Gymnophiona | caecilians | 3 available, all VGP refs, not sure if will work, not sure about divergence|
 |running| petromyzontidae | Hyperoartia | lampreys | just 3 available, no more. not sure if will work, about 40M years diverged|
 |ready to go| anolis | Reptilia, Squamata | anolis | looks good, should be enough I hope|
