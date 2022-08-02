@@ -42,7 +42,7 @@ get_match_against_subfamilies <- function(subfamilies, genuses = NULL, nCores = 
             n_tries <- n_tries + 1
         }
         x <- readLines(file, n = 1)
-        if(x == "No results.") {
+        if(x == "No results." | x == "[ ]") {
             return(NULL)
         }
         available <- fromJSON(file)
