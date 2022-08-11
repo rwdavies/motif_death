@@ -1,0 +1,62 @@
+{
+    "SPECIES_ORDER": "peciformes",
+    "RUN_ID": "20220803",
+    "SPECIES_LIST": {
+        "SouthGeorgiaIcefish": {
+            "ENA_PRJ": "PRJEB19273",
+            "RUN_ACCESSION": ["ERR3332391"]
+        },
+        "BlackfinIcefish": {
+            "ENA_PRJ": "PRJNA89117",
+            "RUN_ACCESSION": ["SRR599604", "SRR599645"]
+        },
+        "ChionobathyscusDewitti": {
+            "ENA_PRJ": "PRJEB19273",
+            "RUN_ACCESSION": ["ERR3338759"]
+        },
+        "SpinyIcefish": {
+            "ENA_PRJ": "PRJEB19273",
+            "RUN_ACCESSION": ["ERR3332440"]
+        },
+        "MyerIcefish": {
+            "ENA_PRJ": "PRJNA505770",
+            "RUN_ACCESSION": ["SRR8197048"]
+        },
+        "ChionodracoHamatus": {
+            "ENA_PRJ": "PRJNA505770",
+            "RUN_ACCESSION": ["SRR8197057"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "fPseGeo1.1",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/902/827/115/GCF_902827115.1_fPseGeo1.1/GCF_902827115.1_fPseGeo1.1_genomic.fna.gz",
+    "CHR_LIST": ["03.1", "04.1", "05.1", "06.1", "07.1", "08.1", "09.1", "10.1", "11.1", "12.1", "13.1", "14.1", "15.1", "16.1", "17.1", "18.1", "19.1", "20.1", "21.1", "22.1", "23.1", "24.1", "25.1", "26.1"],
+    "SEX_CHR_LIST": [],
+    "GATK_CHR_PREFIX": "NC_0475",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "SouthGeorgiaIcefish",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1026101545,
+        "outgroups": ["SouthGeorgiaIcefish"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
