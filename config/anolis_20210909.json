@@ -16,7 +16,7 @@
         },
         "apletophallus": {
             "ENA_PRJ": "PRJNA400788",
-            "RUN_ACCESSION": ["SRR8111633", "SRR8111630", "SRR8111632"],
+            "RUN_ACCESSION": ["SRR8111633", "SRR8111630", "SRR8111632"]
         }
     },
     "HATBAG_OUTPUT_DIR": "run1",

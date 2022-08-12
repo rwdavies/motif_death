@@ -40,7 +40,7 @@
     "REF_NAME": "oryCun2",
     "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/oryCun2/bigZips/oryCun2.fa.gz",
     "CHR_LIST_ONLY_AUTOS": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-    "CHR_LIST": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, X],
+    "CHR_LIST": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, "X"],
     "GATK_CHR_PREFIX": "chr",
     "OPERATE_GATK_PER_CHR": "TRUE",
     "TREEMIX_OUTGROUP": "brushrabbit",

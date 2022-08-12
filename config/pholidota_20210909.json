@@ -13,7 +13,7 @@
         "sundapangolin": {
             "ENA_PRJ": "PRJNA529540",
             "RUN_ACCESSION": ["SRR9018632"]
-        },
+        }
     },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "oryCun2",
