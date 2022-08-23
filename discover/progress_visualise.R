@@ -17,9 +17,9 @@ library(ggimage)
 # Add the following line: ENTREZ_KEY=api_key_here
 # Restart R
 
-root <- "Chordata"
+root <- "Carnivora"
 
-leaf_rank <- "order" # Draw tree until this level
+leaf_rank <- "family" # Draw tree until this level
 motif_death_dir <- "~/proj/motif_death/"
 
 root_ott_id <- rotl::tnrs_match_names(root)$ott_id
@@ -66,12 +66,14 @@ get_ncbi <- function(root, leaf_rank){
 }
 
 get_otl <- function(root, leaf_rank){
+  print(root)
   otl_children <- datelife::get_ott_children(ott_ids=root_ott_id, ott_rank=leaf_rank)[[root]]
-  otl_children <- otl_children[otl_children[,'rank'] == 'order',]
+  return(otl_children[otl_children[,'rank'] == leaf_rank,]$ott_id)
 }
 
-ncbi_ott_ids <- get_ncbi(root, leaf_rank)
 otl_ott_ids <- get_otl(root, leaf_rank)
+ncbi_ott_ids <- get_ncbi(root, leaf_rank)
+
 
 get_all_ids <- function(progress, ...){
   valid_configs <- progress[progress[,'root_parent'] == root_ott_id,]
