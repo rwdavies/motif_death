@@ -17,7 +17,11 @@
         "Caroli": {
             "ENA_PRJ": "PRJEB14895",
             "RUN_ACCESSION": ["ERR1545529","ERR1545528","ERR1545537"]
-        }
+        },
+	"Famulus":{
+	    "ENA_PRJ": "PRJEB2176",
+	    "RUN_ACCESSION": ["ERR019160","ERR019161", "ERR019162","ERR019163", "ERR019164", "ERR019165"]
+	}
     },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "WSB_EiJ_v1",
