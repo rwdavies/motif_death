@@ -1,0 +1,56 @@
+
+{
+	"template" : {
+		"config name" : "",
+		"common name" : "",
+		"representative species" : "",
+		"status" : "",
+		"notes" : ""
+	},
+
+	"main" : [
+		{
+			"config_name" : "none",
+			"common_name" : "Sharks",
+			"representative_species" : "Carcharodon carcharias",
+			"status" : "not feasible",
+			"notes" : "Can't find anything obvious that works. Many sets of 3-5 species identified. However divergence very high between them (e.g. great white shark vs whale shark), and within sets of 3, can't find compatible high quality reference genome, AND 3 or more sets of high quality Illumina non-GAII sequences. Maybe in a few more years."
+		},
+		{
+			"config_name" : "pectinidae_20210929.json",
+			"common_name" : "Scallops",
+			"representative_species" : "Pecten maximus",
+			"status" : "failed",
+			"notes" : "4X coverage for bay scallop. Too diverged (~6-8%), and there are no other feasible scallops available."
+		},
+		{
+			"config_name" : "notothenioidei_20220803.json ",
+			"common_name" : "cod icefish",
+			"representative_species" : "Pseudochaenichthys georgianus",
+			"status" : "running",
+			"notes" : "Richard running, 11X coverage for Spiny Icefish is a bit low"
+		},
+		{
+			"config_name" : "canis_20210910.json",
+			"common_name" : "dogs",
+			"representative_species" : "Canis familiaris",
+			"status" : "running",
+			"notes" : ""
+		},
+		{
+			"config_name" : "vulpes_20210910.json",
+			"common_name" : "foxes",
+			"representative_species" : "vulpes vulpes",
+			"status" : "run success",
+			"notes" : ""
+		},
+		{
+			"config_name" : "eupleridae_20210908.json",
+			"common_name" : "meerkats",
+			"representative_species" : "Suricata suricatta",
+			"status" : "ready to go",
+			"notes" : ""
+		}
+	]
+
+}
