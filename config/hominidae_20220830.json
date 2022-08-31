@@ -29,7 +29,7 @@
     "TREEMIX_OUTGROUP": "PongoPygmaeus",
     "simpleRepeat_URL": "need to download manually",
     "rmask_URL": "need to download manually",
-    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1+",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.[0-9]+",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 3099441038,
