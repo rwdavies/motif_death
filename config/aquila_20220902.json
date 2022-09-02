@@ -1,0 +1,54 @@
+{
+    "SPECIES_ORDER": "aquila",
+    "RUN_ID": "20220902",
+    "SPECIES_LIST": {
+        "Heliaca": {
+            "ENA_PRJ": "PRJNA556680",
+            "RUN_ACCESSION": ["SRR9892941","SRR9892941","SRR9892939"]
+        },
+        "Canadensis": {
+            "ENA_PRJ": "PRJNA256103",
+            "RUN_ACCESSION": ["SRR1586160", "SRR1586158","SRR1586155", "SRR1586154", "SRR1586100", "SRR1586099", "SRR1586088"]
+        },
+        "Chrysaetos": {
+            "ENA_PRJ": "PRJEB22206",
+            "RUN_ACCESSION": ["ERR3312497"]
+        },
+        "Spilogaster": {
+            "ENA_PRJ": "PRJNA771655",
+            "RUN_ACCESSION": ["SRR18767731"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "bAquChr1.4",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/900/496/995/GCF_900496995.4_bAquChr1.4/GCF_900496995.4_bAquChr1.4_genomic.fna.gz",
+    "CHR_LIST": ["04.1", "05.1", "06.1", "07.1", "08.1", "09.1", "10.1", "11.1", "12.1", "13.1", "14.1", "15.1", "16.1", "17.1", "18.1", "19.1", "20.1", "21.1", "22.1", "23.1", "24.1", "25.1", "26.1", "27.1", "28.1", "29.1", "30.1"],
+    "SEX_CHR_LIST": ["30.1"],
+    "GATK_CHR_PREFIX": "NC_0440",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "Heliaca",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1233704830,
+        "outgroups": ["Heliaca"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
