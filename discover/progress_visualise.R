@@ -1,16 +1,14 @@
 # For the program to work you need to download a file from ncbi. 
 # This file is too large to store on github (~200MB).
 # This file contains name information for species, and it is used for getting
-# a representative species of a taxon.
+# the common name of a representative species of a taxon.
 
 # How to download:
 # Go to https://ftp.ncbi.nih.gov/pub/taxonomy/
 # Download taxdmp.zip and extract
-# Run the following in the taxdmp directory:
+# Run the following in the taxdmp directory (the file is \t|\t delimited, change this):
 # cat names.dmp | sed 's/\t//g' | tr "|" "," > names.csv
 # Copy names.csv to motif_death/discover/progress_visualise_data
-
-
 
 
 # You only need to do the following step if you plan to do a large tree that is not
@@ -24,76 +22,131 @@
 # Add the following line: ENTREZ_KEY=api_key_here
 # Restart R
 
-root <- "Testudines"
-leaf_rank <- "family" # Draw tree until this level. Use singular not plural
-motif_death_dir <- "~/proj/motif_death/"
+validate_json <- function(){
+  progress_track <- jsonlite::fromJSON(file.path(motif_death_dir, "progress_track.json"))
+  
+  progress <- progress_track$main
+  
+  # Check for duplicated rep species
+  rep_species <- progress$representative_species
+  rep_species_ne <- rep_species[rep_species != ""]
+  if (TRUE %in% duplicated(rep_species_ne)){
+    print("validate_json: Duplicated representative species present")
+    print(rep_species_ne[duplicated(rep_species_ne)])
+  }
+  
+  # Check for invalid statuses
+  status <- progress$status
+  
+  invalid_status <- status != "" & !(status %in% progress_track$color_dict$names) 
+  
+  if (TRUE %in% invalid_status){
+    print("validate_json: Invalid status present")
+    print(progress[invalid_status,])
+  }
+  
+  # Check for reps that don't match. Could just rely on rotl warning, but that feels hacky
+  rep_taxons <- rotl::tnrs_match_names(rep_species_ne)
+  unmatched <- is.na(rep_taxons$ott_id)
+  if (TRUE %in% unmatched){
+    print("validate_json: Unmatched representative species")
+    print(rep_taxons[unmatched,])
+  }
+}
 
-root_ott_id <- rotl::tnrs_match_names(root)$ott_id
-root_rank <- attributes(rotl::tnrs_match_names(root))$original_response$results[[1]]$matches[[1]]$taxon$rank
+# Global variables available: motif_death_dir, ncbi_names
+make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, max_iter=100){
+  #### Step 1: Read in and prune progress_track.json ####
+  progress_track <- jsonlite::fromJSON(file.path(motif_death_dir, "progress_track.json"))
 
-#### Step 1: Read in progress_track.json ####
+  color_dict <- progress_track$color_dict$colors
+  names(color_dict) <- progress_track$color_dict$names
+  
+  progress <- progress_track$main
+  progress <- progress[progress$representative_species != "",]
+  
+  rep_taxons <- rotl::tnrs_match_names(progress[,'representative_species'])
+  # Won't work if same rep used twice
+  progress <- cbind(progress, rep_taxons)
+  
+  root_rank <- attributes(rotl::tnrs_match_names(root))$original_response$results[[1]]$matches[[1]]$taxon$rank
+  root_parent <- datelife::get_ott_clade(ott_ids=progress[,'ott_id'],ott_rank=root_rank)[[root_rank]]
+  progress <- cbind(progress, root_parent)
+  
+  print(paste0("make plot: dropping entries with NA as root_parent"))
+  print(progress[is.na(progress$root_parent),])
+  progress <- progress[!is.na(progress$root_parent),]
+  
+  root_ott_id <- rotl::tnrs_match_names(root)$ott_id
+  progress <- progress[progress$root_parent == root_ott_id,]
+  
+  #### Step 2: Get list of all taxons of leaf_rank from root ####
+  ncbi_ott_ids <- get_ncbi(root, leaf_rank)
+  
+  #### Step 3: Create the tree (ape phylo object) ####
+  all_ids <- c(ncbi_ott_ids, progress$ott_id)
+  
+  # There are sometimes broken ott_ids so parse the error message and remove them
+  subtree <- tryCatch({
+    rotl::tol_induced_subtree(all_ids)
+  }, error = function(e) {
+    x <- e$message
+    problems <- lapply(stringr::str_extract_all(x, "[0-9]+"), strtoi)[[1]]
+    all_ids <- all_ids[ !(all_ids %in% problems) ]
+    return(rotl::tol_induced_subtree(all_ids))
+  }
+  )
+  
+  #### Step 7: Make plot ####
+  default_labels <- subtree$tip.label
+  # Conversion input is id only
+  default_ids <- strtoi(stringr::str_extract(default_labels, "[0-9]+"))
+  
+  new_labels <- rep(NA, length(default_labels))
+  new_colors <- rep(NA, length(default_labels))
+  
+  for (i in 1:length(default_ids)){
+    print(paste0("make_plot: Converting id ", i, "/", length(default_ids), ": ", default_ids[i]))
+    # Output of convert_id is c(common_name, color)
+    convert_id_out <- convert_id(default_ids[i], progress, color_dict, max_iter=max_iter)
+    new_labels[i] <- paste0(default_labels[i], " (", convert_id_out[1], ")")
+    new_colors[i] <- convert_id_out[2]
+  }
+  
+  subtree$tip.label <- new_labels
+  
+  scale <- plot_scale*length(new_labels)
+  pdf(file = file.path(plot_dir, paste0(root, '_', leaf_rank, '.pdf')), width=scale, height=scale)
+  ape::plot.phylo(subtree, tip.color = new_colors)
+  dev.off()
+  
+}
 
-progress <- jsonlite::fromJSON(paste0(motif_death_dir, "progress_track.json"))$main
 
-# Won't work if same rep used twice
-rep_taxons <- rotl::tnrs_match_names(progress[,'representative_species'])
-progress <- cbind(progress, rep_taxons)
-
-root_parent <- datelife::get_ott_clade(ott_ids=progress[,'ott_id'],ott_rank=root_rank)[[root_rank]]
-progress <- cbind(progress, root_parent)
-
-#### Step 2: Get list of all taxons of leaf_rank from root ####
+# .RData cache files are the output of putting ncbi api call through tnrs_match_names
 get_ncbi <- function(root, leaf_rank){
   filename <- paste0(tolower( paste0(root, '_', leaf_rank) ), ".RData")
-  files <- list.files(path=paste0(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream"))
+  files <- list.files(path=file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream"))
 
   if (filename %in% files){
     print("get_ncbi: Saved api call exists")
-    api_out <- readRDS( paste0(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream/", filename))
+    output <- readRDS( file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream", filename))
   } else {
-    want_save <- readline(prompt = "get_ncbi: No saved api call. Would you like to save? [y/n] ")
+    print("get_ncbi: No saved api call exists, will save. This step may take some time")
     root_ncbi_id <- taxize::get_ids(root, db='ncbi')$ncbi[[1]]
     api_out <- taxize::ncbi_downstream(root_ncbi_id, downto=leaf_rank)
-    if (want_save == 'y'){
-      saveRDS(api_out, file=paste0(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream/", filename))
-    }
+    output <- rotl::tnrs_match_names(api_out[,'childtaxa_name'])$ott_id
+    saveRDS(output, file=file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream", filename))
   }
+  print("get_ncbi: output is")
+  print(output)
 
-  return(rotl::tnrs_match_names(api_out[,'childtaxa_name'])$ott_id)
+  return(output)
 }
 
-ncbi_ott_ids <- get_ncbi(root, leaf_rank)
-
-#### Step 3: Create the tree (ape phylo object) ####
-
-# Add ott_id of representative if it has the correct root_parent
-valid <- progress[progress$root_parent == root_ott_id,]
-
-all_ids <- c(ncbi_ott_ids, valid$ott_id)
-
-# There are sometimes broken ott_ids so parse the error message and remove them
-subtree <- tryCatch({
-    rotl::tol_induced_subtree(all_ids)
-}, error = function(e) {
-  x <- e$message
-  problems <- lapply(stringr::str_extract_all(x, "[0-9]+"), strtoi)[[1]]
-  all_ids <- all_ids[ !(all_ids %in% problems) ]
-  return(rotl::tol_induced_subtree(all_ids))
-  }
-)
 
 #### Step 4: A function to convert scientific name to common name ####
-# We use the ncbi taxonomy dump found here: https://www.ncbi.nlm.nih.gov/guide/taxonomy/
-# The file is \t|\t delimited. Change this: cat names.dmp | sed 's/\t//g' | tr "|" "," > names.csv
-# New file is motif_death/discover/progress_visualise_data/names.csv
-# For the future: make into a csv with headers Scientific, Common and load that directly
-
-# names2 is a cleaned up version of names
-ncbi_names <- read.csv("~/proj/motif_death/discover/progress_visualise_data/names.csv")
-ncbi_names <- ncbi_names[,c(1,2,4)]
-colnames(ncbi_names) <- c('ncbi_id', 'name', 'name_type')
-ncbi_names$name <- tolower(ncbi_names$name)
-
+# ncbi_names is a processed version of motif_death/discover/progress_visualise_data/names.csv
 sci2comm_fast <- function(scientific_name){
   scientific_name <- tolower(scientific_name)
   if (scientific_name %in% ncbi_names$name){
@@ -109,13 +162,12 @@ sci2comm_fast <- function(scientific_name){
 }
 
 #### Step 5: Function to convert ott_id into representative (or NA) ####
-
 # cache = c("polar bear", "emerald rockcod")
 # names(cache) = c("123456", "654321")
 # Cache file: motif_death/discover/progress_visualise_data/representatives.RData
 ott_id_to_rep <- function(ott_id, max_iter=100){
   ott_id <- as.character(ott_id)
-  cache <- readRDS(paste0(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
+  cache <- readRDS(file.path(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
   
   if (ott_id %in% names(cache)){
     print(paste("ott_id_to_rep: In cache, converted", ott_id, "to", cache[[ott_id]]))
@@ -133,7 +185,7 @@ ott_id_to_rep <- function(ott_id, max_iter=100){
       }
       rep_candidate <- NA
       # Work with species = ['mus musculus domesticus', 'vulpes vulpes']
-      for (i in species[1:min(length(species), max_iter)]){
+      for (i in sample(species)[1:min(length(species), max_iter)]){
         x <- sci2comm_fast(i)
         if (!is.na(x)){
           rep_candidate <- x
@@ -148,46 +200,22 @@ ott_id_to_rep <- function(ott_id, max_iter=100){
     
     cache <- c(cache, rep)
     names(cache)[length(names(cache))] <- ott_id
-    saveRDS(cache, file=paste0(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
+    saveRDS(cache, file=file.path(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
     print(paste("ott_id_to_rep: Not in cache, converted", ott_id, "to", rep))
     return(rep)
   }
 }
 
-#### Step 6: Function to convert ott id into new label and colour  ####
-color_dict <- c('blue', 'orange', 'red', 'green', 'purple')
-names(color_dict) <- c('ready to go', 'running', 'run failed', 'run success', 'not feasible')
-
-convert_id <- function(ott_id){
+#### Step 6: Function to convert ott id into common name and colour  ####
+convert_id <- function(ott_id, progress, color_dict, max_iter=max_iter){
   if (ott_id %in% progress$ott_id){
     row <- progress[progress$ott_id == ott_id,]
     return(c(row$common_name, color_dict[[row$status]]))
   }else{
-    rep <- ott_id_to_rep(ott_id)
+    rep <- ott_id_to_rep(ott_id, max_iter)
     return(c(rep, "black"))
   }
 }
 
-#### Step 7: Make plot ####
 
-default_labels <- subtree$tip.label
-# Use only default_ids
-default_ids <- strtoi(stringr::str_extract(default_labels, "[0-9]+"))
-
-new_labels <- rep(NA,length(default_labels))
-new_colors <- rep(NA,length(default_labels))
-
-for (i in 1:length(default_ids)){
-  print(paste0("Converting id ", i, "/", length(default_ids), ": ", default_ids[i]))
-  convert_id_out <- convert_id(default_ids[i])
-  new_labels[i] <- paste0(default_labels[i], " (", convert_id_out[1], ")")
-  new_colors[i] <- convert_id_out[2]
-}
-
-subtree$tip.label <- new_labels
-
-scale <- 0.5*length(new_labels)
-pdf(file = paste0('~/Downloads/', root, '_', leaf_rank, '.pdf'), width=1*scale, height=scale)
-ape::plot.phylo(subtree, tip.color = new_colors)
-dev.off()
 

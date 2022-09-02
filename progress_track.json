@@ -1,56 +1,248 @@
-
 {
-	"template" : {
-		"config name" : "",
-		"common name" : "",
-		"representative species" : "",
-		"status" : "",
-		"notes" : ""
+	"template" : [
+		{
+			"config_name" : "",
+			"common_name" : "",
+			"representative_species" : "",
+			"status" : "",
+			"notes" : ""
+		}
+	],
+
+	"documentation" : {
+		"config_name" : "Name of config file, or leave empty. When generating README, entries with a config will be put into the table. Entries without will be place below the table within their own sections.",
+		"common_name" : "Required. A descriptive name for the group of species.",
+		"representative_species" : "Scientific name of a species to represent the group of species - this must match with rotl::tnrs_match_names(). Leave empty to not show in giant species tree plot. (Technically doesn't need to be a species, but I would recommend to not go higher than genus/family. Otherwise untested weird things might happen with giant species tree plot!)",
+		"status" : "Required if representative_species is non empty. Check below.",
+		"notes" : "Can be empty."
+	},
+
+	"color_dict" : {
+		"names" : ["not run", "running", "run failed", "run success", "not feasible", "unsure"],
+		"colors" : ["blue", "orange", "red", "green", "purple", "pink"]
 	},
 
 	"main" : [
 		{
-			"config_name" : "none",
-			"common_name" : "Sharks",
-			"representative_species" : "Carcharodon carcharias",
-			"status" : "not feasible",
-			"notes" : "Can't find anything obvious that works. Many sets of 3-5 species identified. However divergence very high between them (e.g. great white shark vs whale shark), and within sets of 3, can't find compatible high quality reference genome, AND 3 or more sets of high quality Illumina non-GAII sequences. Maybe in a few more years."
+			"config_name" : "notothenioidei_20220803.json",
+			"common_name" : "cod icefish",
+			"representative_species" : "Pseudochaenichthys georgianus",
+			"status" : "running",
+			"notes" : "Richard running, have an error 0 significant k-mers"
+		},
+		{		
+			"config_name" : "mus_20220825.json",
+			"common_name" : "mice",
+			"representative_species" : "mus musculus domesticus",
+			"status" : "running",
+			"notes" : "Richard running, Famulus 8x coverage"
+		},
+		{		
+			"config_name" : "salmonidae_20220823.json",
+			"common_name" : "salmon",
+			"representative_species" : "Salmo salar",
+			"status" : "not run",
+			"notes" : ""
+		},
+		{		
+			"config_name" : "hominidae_20220830.json",
+			"common_name" : "apes",
+			"representative_species" : "homo sapiens",
+			"status" : "not run",
+			"notes" : ""
+		},
+		{
+			"config_name" : "aquila_20220902.json",
+			"common_name" : "Eagles",
+			"representative_species" : "Aquila chrysaetos",
+			"status" : "not run",
+			"notes" : "Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Looks great though divergence a tad high? Up to 6%"
+		},
+
+
+
+
+		{
+			"config_name" : "anolis_20210909.json",
+			"common_name" : "anoles",
+			"representative_species" : "anolis",
+			"status" : "unsure",
+			"notes" : "looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
+		},
+		{
+			"config_name" : "artiodactyla_20210708.json",
+			"common_name" : "cows and similar",
+			"representative_species" : "Bos taurus",
+			"status" : "unsure",
+			"notes" : ""
+		},
+		{
+			"config_name" : "avian_20210804.json",
+			"common_name" : "finches and similar",
+			"representative_species" : "Taeniopygia guttata",
+			"status" : "unsure",
+			"notes" : ""
+		},
+		{
+			"config_name" : "emydidae_20210909.json",
+			"common_name" : "turtles",
+			"representative_species" : "Trachemys scripta elegans",
+			"status" : "unsure",
+			"notes" : "nothing else looked good. if these turtles aren't doo distantly related, there are more than can be added (Emys, Terrapene, Actinemys)"
+		},
+		{
+			"config_name" : "gymnophiona_20210929.json",
+			"common_name" : "caecilians (look like worms)",
+			"representative_species" : "Oscaecilia ochrocephala",
+			"status" : "unsure",
+			"notes" : "3 available, all VGP refs, not sure if will work, not sure about divergence"
+		},
+		{
+			"config_name" : "leporidae_20210909.json",
+			"common_name" : "rabbits/hares",
+			"representative_species" : "Oryctolagus cuniculus",
+			"status" : "unsure",
+			"notes" : "looks great"
+		},
+		{
+			"config_name" : "ochotona_20210909.json",
+			"common_name" : "pikas",
+			"representative_species" : "Ochotona princeps",
+			"status" : "unsure",
+			"notes" : "only using Illumina data. samples are from two phyla, use as outgroups to each other"
+		},
+		{
+			"config_name" : "petromyzontidae_20210929.json",
+			"common_name" : "lampreys",
+			"representative_species" : "Lampetra fluviatilis",
+			"status" : "unsure",
+			"notes" : "Keyword: Petromyzontiformes. Four possibilities, can make a tree from 3 of them (the other not enough data). Quite possibly the sea lamprey is too far diverged against the others, but we'll see. Sea lamprey, Petromyzon marinus, PRJNA385973, SRR5535434 (which is blood not sperm) (ref genome) Brook lamprey,Lampetra planeri, PRJNA420358, SRR6329407, looks good Far Eastern Brook Lamprey, Lethenteron reissneri, PRJNA558325, SRR9964061 Lethenteron camtschaticum - NO - not enough + is testis looks"
+		},
+		{
+			"config_name" : "pholidota_20210909.json",
+			"common_name" : "pangolin (scaly anteater)",
+			"representative_species" : "Manis pentadactyla",
+			"status" : "unsure",
+			"notes" : "So these below work, but the reference genome looks too discontinuous for this approach to work at this time: chinese pangolin, Manis pentadactyla, PRJNA529540, SRR9018595 (outgroup) Indian pangolin, Manis crassicaudata, PRJNA490788, SRR7874732 sunda pangolin, Manis javanica, PRJNA529540, SRR9018632. There is a good sample Phataginus tricuspis but this looks too far diverged https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png"
+		},
+		{
+			"config_name" : "snakes_20210810.json",
+			"common_name" : "snakes",
+			"representative_species" : "Ophiophagus hannah",
+			"status" : "unsure",
+			"notes" : ""
+		},
+		{
+			"config_name" : "whippomorpha_20210713.json",
+			"common_name" : "whale (minke ref)",
+			"representative_species" : "Balaenoptera acutorostrata",
+			"status" : "unsure",
+			"notes" : ""
+		},
+		{
+			"config_name" : "whippomorpha_bluewhale_ref_20210802.json",
+			"common_name" : "whale (blue ref)",
+			"representative_species" : "Balaenoptera musculus",
+			"status" : "unsure",
+			"notes" : ""
 		},
 		{
 			"config_name" : "pectinidae_20210929.json",
 			"common_name" : "Scallops",
 			"representative_species" : "Pecten maximus",
-			"status" : "failed",
+			"status" : "run failed",
 			"notes" : "4X coverage for bay scallop. Too diverged (~6-8%), and there are no other feasible scallops available."
-		},
-		{
-			"config_name" : "notothenioidei_20220803.json ",
-			"common_name" : "cod icefish",
-			"representative_species" : "Pseudochaenichthys georgianus",
-			"status" : "running",
-			"notes" : "Richard running, 11X coverage for Spiny Icefish is a bit low"
 		},
 		{
 			"config_name" : "canis_20210910.json",
 			"common_name" : "dogs",
 			"representative_species" : "Canis familiaris",
-			"status" : "running",
-			"notes" : ""
+			"status" : "unsure",
+			"notes" : "name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes. coverage OK though andean fox and dhole low at about 10 to 15 X coverage, could be worth adding more for a re-run"
 		},
 		{
 			"config_name" : "vulpes_20210910.json",
 			"common_name" : "foxes",
 			"representative_species" : "vulpes vulpes",
 			"status" : "run success",
-			"notes" : ""
+			"notes" : "not much loss signal, wide AT to GC, likely like dogs which do not have PRDM9 and have recombination localize at promoters"
 		},
 		{
 			"config_name" : "eupleridae_20210908.json",
 			"common_name" : "meerkats",
 			"representative_species" : "Suricata suricatta",
-			"status" : "ready to go",
+			"status" : "unsure",
+			"notes" : "config made by Jhamat, I think? Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup"
+		},
+
+
+
+
+
+		{
+			"config_name" : "",
+			"common_name" : "Sharks",
+			"representative_species" : "Carcharodon carcharias",
+			"status" : "not feasible",
+			"notes" : "Can't find anything obvious that works. Many sets of 3-5 species identified. However divergence very high between them (e.g. great white shark vs whale shark), and within sets of 3, can't find compatible high quality reference genome, AND 3 or more sets of high quality Illumina non-GAII sequences. Maybe in a few more years."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Starfish",
+			"representative_species" : "Fromia monilis",
+			"status" : "not feasible",
+			"notes" : "Genome probably too small at less than 400 Mbp"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Molluscs",
+			"representative_species" : "",
+			"status" : "",
+			"notes" : "Worth considering octopuses, as well as oysters, they look viable. For octoposes, in particular https://www.ncbi.nlm.nih.gov/assembly/GCF_006345805.1 ASM634580v1 Muusoctopus leioderma Octopus rubescens Octopus bimaculoides Octopus vulgaris."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Amphibians",
+			"representative_species" : "",
+			"status" : "",
+			"notes" : "Can't easily get Xenopus or Rana to work (not enough / too diverged), same with toad (bufo) Couldn't obviously get caecilians to work either!"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Sea squirts",
+			"representative_species" : "Ciona intestinalis",
+			"status" : "not feasible",
+			"notes" : "Only reference is small - 100MB"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Kiwi",
+			"representative_species" : "Apteryx",
+			"status" : "not run",
+			"notes" : "Have a 4000 scaffold assembly. 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Duck",
+			"representative_species" : "Aythya fuligula",
+			"status" : "not run",
+			"notes" : "Tufted duck ref, divergence at 20M years might be a bit high"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Penguins",
+			"representative_species" : "Pygoscelis adeliae",
+			"status" : "not feasible",
+			"notes" : "Only 2 scaffold refs, 10k and 20k scaffolds respectively"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Hummingbirds",
+			"representative_species" : "",
+			"status" : "",
 			"notes" : ""
 		}
+
 	]
 
 }
