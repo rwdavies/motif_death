@@ -10,10 +10,10 @@
 	],
 
 	"documentation" : {
-		"config_name" : "Name of config file, or leave empty. When generating README, entries with a config will be put into the table. Entries without will be place below the table within their own sections.",
-		"common_name" : "Required. A descriptive name for the group of species.",
+		"config_name" : "Name of config file, or leave empty.",
+		"common_name" : "A descriptive name for the group of species.",
 		"representative_species" : "Scientific name of a species to represent the group of species - this must match with rotl::tnrs_match_names(). Leave empty to not show in giant species tree plot. (Technically doesn't need to be a species, but I would recommend to not go higher than genus/family. Otherwise untested weird things might happen with giant species tree plot!)",
-		"status" : "Required if representative_species is non empty. Check below.",
+		"status" : "Required if representative_species is non empty. Check color_dict below for options.",
 		"notes" : "Can be empty."
 	},
 
@@ -57,6 +57,13 @@
 			"representative_species" : "Aquila chrysaetos",
 			"status" : "not run",
 			"notes" : "Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Looks great though divergence a tad high? Up to 6%"
+		},
+		{
+			"config_name" : "trochilidae_20220906.json",
+			"common_name" : "hummingbirds",
+			"representative_species" : "calypte anna",
+			"status" : "not run",
+			"notes" : ""
 		},
 
 
@@ -219,7 +226,7 @@
 			"common_name" : "Kiwi",
 			"representative_species" : "Apteryx",
 			"status" : "not run",
-			"notes" : "Have a 4000 scaffold assembly. 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis."
+			"notes" : "Have a 4000 scaffold assembly, 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis."
 		},
 		{
 			"config_name" : "",
@@ -239,8 +246,50 @@
 			"config_name" : "",
 			"common_name" : "Hummingbirds",
 			"representative_species" : "",
-			"status" : "",
-			"notes" : ""
+			"status" : "not run",
+			"notes" : "Was unsure but worth having another look. Ref - anna's hummingbird."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Sturgeons",
+			"representative_species" : "Acipenser ruthenus",
+			"status" : "not feasible",
+			"notes" : "Not enough data (Sep 2022)."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Chicken",
+			"representative_species" : "gallus gallus gallus",
+			"status" : "not run",
+			"notes" : "Chickens are too undiverged (<1%). But maybe could work if look outside just chickens?"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Tinamou",
+			"representative_species" : "Nothoprocta perdicaria",
+			"status" : "not feasible",
+			"notes" : "Think too diverged + no chromosome ref."
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Moa",
+			"representative_species" : "Anomalopteryx didiformis",
+			"status" : "not feasible",
+			"notes" : "Not enough data"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "emu",
+			"representative_species" : "Dromaius novaehollandiae",
+			"status" : "not feasible",
+			"notes" : "Not enough data"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Rhea",
+			"representative_species" : "Rhea americana",
+			"status" : "not feasible",
+			"notes" : "Not enough data"
 		}
 
 	]

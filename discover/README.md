@@ -69,6 +69,7 @@ Samples to run / have been run
 | salmon | salmonidae_20220823.json | not run |  |
 | apes | hominidae_20220830.json | not run |  |
 | Eagles | aquila_20220902.json | not run | Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Looks great though divergence a tad high? Up to 6% |
+| hummingbirds | trochilidae_20220906.json | not run |  |
 | anoles | anolis_20210909.json | unsure | looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes |
 | cows and similar | artiodactyla_20210708.json | unsure |  |
 | finches and similar | avian_20210804.json | unsure |  |
@@ -95,6 +96,11 @@ Samples to run / have been run
 | Penguins |  | not feasible | Only 2 scaffold refs, 10k and 20k scaffolds respectively |
 | Hummingbirds |  | not run | Was unsure but worth having another look. Ref - anna's hummingbird. |
 | Sturgeons |  | not feasible | Not enough data (Sep 2022). |
+| Chicken |  | not run | Chickens are too undiverged (<1%). But maybe could work if look outside just chickens? |
+| Tinamou |  | not feasible | Think too diverged + no chromosome ref. |
+| Moa |  | not feasible | Not enough data |
+| emu |  | not feasible | Not enough data |
+| Rhea |  | not feasible | Not enough data |
 <!--- marker -->
 
 Future / notes
@@ -109,6 +115,7 @@ Reference genomes for either don't look so great, the scaffolds aren't assembled
 
 Turtles, so far looks good for Emydidae
 If they aren't too diverged / not too many SNPs, there are some other nearby turtles that could also potentially be used
+
 
 
 

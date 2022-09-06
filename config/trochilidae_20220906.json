@@ -1,0 +1,58 @@
+{
+    "SPECIES_ORDER": "trochilidae",
+    "RUN_ID": "20220906",
+    "SPECIES_LIST": {
+        "SelaRuf": {
+            "ENA_PRJ": "PRJNA640148",
+            "RUN_ACCESSION": ["SRR12247306","SRR12247336","SRR12247338","SRR12247337","SRR12247307","SRR12247341"]
+        },
+        "SelaSas": {
+            "ENA_PRJ": "PRJNA640148",
+            "RUN_ACCESSION": ["SRR12247313", "SRR12247312", "SRR12247315", "SRR12247308", "SRR12247314", "SRR12247309", "SRR12247317", "SRR12247316"]
+        },
+        "CalAnna": {
+            "ENA_PRJ": "PRJNA212866",
+            "RUN_ACCESSION": ["SRR943144","SRR943143","SRR943146"]
+        },
+        "CalCos": {
+            "ENA_PRJ": "PRJNA640148",
+            "RUN_ACCESSION": ["SRR12247351", "SRR12247352", "SRR12247363", "SRR12247361", "SRR12247335", "SRR12247364", "SRR12247355", "SRR12247349", "SRR12247350", "SRR12247360", "SRR12247333"]
+        },
+        "ArchCol": {
+            "ENA_PRJ": "PRJNA640148",
+            "RUN_ACCESSION": ["SRR12247324", "SRR12247326", "SRR12247323", "SRR12247320", "SRR12247319", "SRR12247325", "SRR12247327", "SRR12247318", "SRR12247322"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "bCalAnn1_v1.p",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/003/957/555/GCF_003957555.1_bCalAnn1_v1.p/GCF_003957555.1_bCalAnn1_v1.p_genomic.fna.gz",
+    "CHR_LIST": ["44.1", "45.1", "46.1", "47.1", "48.1", "49.1", "50.1", "51.1", "52.1", "53.1", "54.1", "55.1", "56.1", "57.1", "58.1", "59.1", "60.1", "61.1", "62.1", "63.1", "64.1", "65.1", "66.1", "67.1", "68.1", "69.1", "70.1", "71.1", "72.1", "73.1", "75.1"],
+    "SEX_CHR_LIST": [],
+    "GATK_CHR_PREFIX": "NC_0442",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "ArchCol",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1+",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1059687259,
+        "outgroups": ["ArchCol"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
