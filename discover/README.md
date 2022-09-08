@@ -1,7 +1,7 @@
 About
 =====
 
-Files in this folder are related to discovery of new sets of species that could be suitable for motif_death/HATBAG. functions.R is used for investigating a specific taxon (eg. order, family) for a suitable reference genome and short read data. progress_visualise.R is used for marking groups of species that have been investigated for this pipeline on a giant tree plot (eg. root: Chordata, leaf rank: order). 
+Files in this folder are related to discovery of new sets of species that could be suitable for motif_death/HATBAG. functions.R is used for investigating a specific taxon (eg. Testudines, Hominidae) for a suitable reference genome and short read data. progress_visualise.R is used for marking groups of species that have been investigated for this pipeline on a giant tree plot (eg. root: Chordata, leaf rank: order). 
 
 How to use functions.R
 ======================
@@ -19,28 +19,16 @@ look_at_one_species_or_study(results, scientific_name="Chrysemys picta")
 How to use progress_visualise.R
 ================================
 
-A file (~200MB) from ncbi taxonomy is required to convert scientific names to common names. How to download:
-
-```
-source('path/to/progress_visualise.R')
-get_names_csv('path/to/motif_death')
-```
-
 Data on currently investigated groups of species is stored in `motif_death/progress_track.json`. 
 
 Use code like this to make a plot:
 
 ```
 motif_death_dir <- "~/proj/motif_death"
-
-ncbi_names <- read.csv(file.path(motif_death_dir, "discover/progress_visualise_data/names.csv"))
-ncbi_names <- ncbi_names[,c(1,2,4)]
-colnames(ncbi_names) <- c('ncbi_id', 'name', 'name_type')
-ncbi_names$name <- tolower(ncbi_names$name)
-
+ncbi_names <- read.csv(file.path(motif_death_dir, "discover/resources/names.csv.gz"))
 source(file.path(motif_death_dir, "discover/progress_visualise.R"))
 
-make_plot(root="Chordata", leaf_rank="order", plot_dir="~/Downloads", plot_scale = 0.2, max_iter = 100)
+make_plot(root="amphibia", leaf_rank="family", plot_dir="~/Downloads", plot_scale = 0.2, max_iter = 100)
 ```
 
 Getting simpleRepeat / repeatMasker

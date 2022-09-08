@@ -1,35 +1,3 @@
-# For the program to work you need to download a file from ncbi. 
-# This file is too large to store on github (~200MB).
-# This file contains name information for species, and it is used for getting
-# the common name of a representative species of a taxon.
-
-# How to download:
-# Go to https://ftp.ncbi.nih.gov/pub/taxonomy/
-# Download taxdmp.zip and extract
-# Run the following in the taxdmp directory (the file is \t|\t delimited, change this):
-# cat names.dmp | sed 's/\t//g' | tr "|" "," > names.csv
-# Copy names.csv to motif_death/discover/progress_visualise_data
-
-
-# You only need to do the following step if you plan to do a large tree that is not
-# cached. Check out motif_death/discover/progress_visualise_data/ncbi_downstream
-# for currently saved api calls.
-
-# How to set ncbi api key, for taxize::ncbi_downstream() to run faster:
-# Go to: https://www.ncbi.nlm.nih.gov/account/
-# Create an account. Click account name -> account settings to get a key
-# Edit .Renviron (eg. usethis::edit_r_environ() )
-# Add the following line: ENTREZ_KEY=api_key_here
-# Restart R
-
-get_names_csv <- function(motif_death_dir){
-  setwd(file.path(motif_death_dir, 'discover/resources'))
-  download.file('https://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip', file.path(getwd(), 'taxdmp.zip'))
-  system("mkdir taxdmp; unzip taxdmp.zip -d ./taxdmp")
-  system("cat ./taxdmp/names.dmp | sed 's/\t//g' | tr '|' ',' > ./names.csv")
-  system("rm -r taxdmp*")
-}
-
 validate_json <- function(){
   progress_track <- jsonlite::fromJSON(file.path(motif_death_dir, "progress_track.json"))
   progress <- progress_track$main
@@ -172,7 +140,7 @@ sci2comm_fast <- function(scientific_name){
     id <- ncbi_names[ncbi_names$name == scientific_name,][1,"ncbi_id"]
     possible <- ncbi_names[ncbi_names$ncbi_id==id,]
     
-    comm <- possible[grepl('common', possible$name_type, fixed=TRUE),]
+    comm <- possible[possible$name_type == 'comm',]
     return(comm[1,"name"])
   } else {
     return(NA)
