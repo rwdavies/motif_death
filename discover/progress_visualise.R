@@ -22,9 +22,16 @@
 # Add the following line: ENTREZ_KEY=api_key_here
 # Restart R
 
+get_names_csv <- function(motif_death_dir){
+  setwd(file.path(motif_death_dir, 'discover/resources'))
+  download.file('https://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip', file.path(getwd(), 'taxdmp.zip'))
+  system("mkdir taxdmp; unzip taxdmp.zip -d ./taxdmp")
+  system("cat ./taxdmp/names.dmp | sed 's/\t//g' | tr '|' ',' > ./names.csv")
+  system("rm -r taxdmp*")
+}
+
 validate_json <- function(){
   progress_track <- jsonlite::fromJSON(file.path(motif_death_dir, "progress_track.json"))
-  
   progress <- progress_track$main
   
   # Check for duplicated rep species
@@ -52,6 +59,14 @@ validate_json <- function(){
     print("validate_json: Unmatched representative species")
     print(rep_taxons[unmatched,])
   }
+  
+  # Check for reps that don't have status
+  no_status <- !(rownames(progress)[rep_species != ""] %in% rownames(progress)[status != ""])
+  if (TRUE %in% no_status){
+    print("validate_json: There are representative species with no status")
+    progress[rownames(progress)[rep_species != ""][no_status],]
+  }
+  
 }
 
 # Global variables available: motif_death_dir, ncbi_names
@@ -81,10 +96,10 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   progress <- progress[progress$root_parent == root_ott_id,]
   
   #### Step 2: Get list of all taxons of leaf_rank from root ####
-  ncbi_ott_ids <- get_ncbi(root, leaf_rank)
+  downstream_ott_ids <- get_downstream(root, leaf_rank)
   
   #### Step 3: Create the tree (ape phylo object) ####
-  all_ids <- c(ncbi_ott_ids, progress$ott_id)
+  all_ids <- c(downstream_ott_ids, progress$ott_id)
   
   # There are sometimes broken ott_ids so parse the error message and remove them
   subtree <- tryCatch({
@@ -97,7 +112,7 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   }
   )
   
-  #### Step 7: Make plot ####
+  #### Step 4: Make plot ####
   default_labels <- subtree$tip.label
   # Conversion input is id only
   default_ids <- strtoi(stringr::str_extract(default_labels, "[0-9]+"))
@@ -122,23 +137,26 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   
 }
 
-
-# .RData cache files are the output of putting ncbi api call through tnrs_match_names
-get_ncbi <- function(root, leaf_rank){
-  filename <- paste0(tolower( paste0(root, '_', leaf_rank) ), ".RData")
-  files <- list.files(path=file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream"))
-
-  if (filename %in% files){
-    print("get_ncbi: Saved api call exists")
-    output <- readRDS( file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream", filename))
+# ncbi was bugging, use itis
+get_downstream <- function(root, leaf_rank){
+  cache <- readRDS(file.path(motif_death_dir, "discover/resources/get_downstream.RData"))
+  entry_name <- tolower(paste0(root, '_', leaf_rank))
+  
+  if (entry_name %in% names(cache)){
+    message("get_downstream: Saved api call exists")
+    output <- cache[[entry_name]]
   } else {
-    print("get_ncbi: No saved api call exists, will save. This step may take some time")
-    root_ncbi_id <- taxize::get_ids(root, db='ncbi')$ncbi[[1]]
-    api_out <- taxize::ncbi_downstream(root_ncbi_id, downto=leaf_rank)
-    output <- rotl::tnrs_match_names(api_out[,'childtaxa_name'])$ott_id
-    saveRDS(output, file=file.path(motif_death_dir, "discover/progress_visualise_data/ncbi_downstream", filename))
+    message("get_downstream: No saved api call exists, will save. This step may take some time")
+
+    root_itis_id <- taxize::get_ids(root, db='itis')$itis
+    api_out <- taxize::itis_downstream(root_itis_id, downto=leaf_rank)
+    output <- rotl::tnrs_match_names(api_out$taxonname)$ott_id  
+
+    output <- output[!is.na(output)]
+    cache[[entry_name]] <- output
+    saveRDS(cache, file.path(motif_death_dir, "discover/resources/get_downstream.RData"))
   }
-  print("get_ncbi: output is")
+  message("get_downstream: Output is")
   print(output)
 
   return(output)
@@ -161,13 +179,14 @@ sci2comm_fast <- function(scientific_name){
   }
 }
 
+
 #### Step 5: Function to convert ott_id into representative (or NA) ####
 # cache = c("polar bear", "emerald rockcod")
 # names(cache) = c("123456", "654321")
 # Cache file: motif_death/discover/progress_visualise_data/representatives.RData
 ott_id_to_rep <- function(ott_id, max_iter=100){
   ott_id <- as.character(ott_id)
-  cache <- readRDS(file.path(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
+  cache <- readRDS(file.path(motif_death_dir, "discover/resources/ott_id_to_rep.RData"))
   
   if (ott_id %in% names(cache)){
     print(paste("ott_id_to_rep: In cache, converted", ott_id, "to", cache[[ott_id]]))
@@ -198,15 +217,14 @@ ott_id_to_rep <- function(ott_id, max_iter=100){
       NA
     })
     
-    cache <- c(cache, rep)
-    names(cache)[length(names(cache))] <- ott_id
-    saveRDS(cache, file=file.path(motif_death_dir, "discover/progress_visualise_data/representatives.RData"))
+    cache[[ott_id]] <- rep
+    saveRDS(cache, file=file.path(motif_death_dir, "discover/resources/ott_id_to_rep.RData"))
     print(paste("ott_id_to_rep: Not in cache, converted", ott_id, "to", rep))
     return(rep)
   }
 }
 
-#### Step 6: Function to convert ott id into common name and colour  ####
+#Function to convert ott id into common name and colour
 convert_id <- function(ott_id, progress, color_dict, max_iter=max_iter){
   if (ott_id %in% progress$ott_id){
     row <- progress[progress$ott_id == ott_id,]
@@ -216,6 +234,3 @@ convert_id <- function(ott_id, progress, color_dict, max_iter=max_iter){
     return(c(rep, "black"))
   }
 }
-
-
-

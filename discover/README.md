@@ -21,9 +21,10 @@ How to use progress_visualise.R
 
 A file (~200MB) from ncbi taxonomy is required to convert scientific names to common names. How to download:
 
-1. Download and extract: https://ftp.ncbi.nih.gov/pub/taxonomy/taxdmp.zip
-2. `names.dmp` is `\t|\t` delimited, change this by running: `cat names.dmp | sed 's/\t//g' | tr "|" "," > names.csv`
-3. Copy `names.csv` to `motif_death/discover/progress_visualise_data`
+```
+source('path/to/progress_visualise.R')
+get_names_csv('path/to/motif_death')
+```
 
 Data on currently investigated groups of species is stored in `motif_death/progress_track.json`. 
 
@@ -41,15 +42,6 @@ source(file.path(motif_death_dir, "discover/progress_visualise.R"))
 
 make_plot(root="Chordata", leaf_rank="order", plot_dir="~/Downloads", plot_scale = 0.2, max_iter = 100)
 ```
-
-`taxize::ncbi_downstream` is used to get all children of the given rank from root. If you want to plot a large tree that is not saved, you should get an api key for this to run faster! Check out `motif_death/discover/progress_visualise_data/ncbi_downstream` for currently saved api calls.
-
-How get api key:
-
-1. Go to: https://www.ncbi.nlm.nih.gov/account/
-2. Create an account. Click account name -> account settings to get a key
-4. Add to `.Renviron` the following line: `ENTREZ_KEY=api_key_here`
-5. Restart R
 
 Getting simpleRepeat / repeatMasker
 ===================================
