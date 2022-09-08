@@ -4,24 +4,24 @@
     "SPECIES_LIST": {
         "PongoPygmaeus": {
             "ENA_PRJ": "PRJEB13951",
-            "RUN_ACCESSION": ["ERR1407286", "ERR1407287"]
+            "RUN_ACCESSION": ["ERR1407286", "ERR1407287", "ERR1407285"]
         },
         "GorillaGorillaGorilla": {
             "ENA_PRJ": "PRJEB29710",
-            "RUN_ACCESSION": ["ERR3078027"]
+            "RUN_ACCESSION": ["ERR3078030"]
         },
         "PanTroglodytes": {
             "ENA_PRJ": "PRJNA635393",
-            "RUN_ACCESSION": ["SRR11892932"]
+            "RUN_ACCESSION": ["SRR11892930"]
         },
         "HomoSapiens": {
-            "ENA_PRJ": "PRJEB9586",
-            "RUN_ACCESSION": ["ERR1025655"]
-        },
+            "ENA_PRJ": "PRJDB5352",
+            "RUN_ACCESSION": ["DRR078800"]
+        }
     },
     "HATBAG_OUTPUT_DIR": "run1",
-    "REF_NAME": "GRCh38.p14",
-    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.fna.gz",
+    "REF_NAME": "GRCh38.p13",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.fna.gz",
     "CHR_LIST": ["01.11", "02.12", "03.12", "04.12", "05.10", "06.12", "07.14", "08.11", "09.12", "10.11", "11.10", "12.12", "13.11", "14.9",  "15.10", "16.10", "17.11", "18.10", "19.10", "20.11", "21.9",  "22.11", "23.11", "24.10"],
     "SEX_CHR_LIST": ["23.11", "24.10"],
     "GATK_CHR_PREFIX": "NC_0000",
@@ -32,7 +32,7 @@
     "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.[0-9]+",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
-        "genomeSize": 3099441038,
+        "genomeSize": 3099706404,
         "outgroups": ["PongoPygmaeus"],
         "ndge": 3,
         "gcW2": 5000,
