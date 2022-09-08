@@ -118,7 +118,7 @@ get_ucsc_assemblies <- function(motif_death_dir = "~/proj/motif_death/") {
     ## all assemlies
     ##
     ##system("cd ~/Downloads && curl -s https://hgdownload.soe.ucsc.edu/hubs/UCSC_GI.assemblyHubList.txt > UCSC_GI.assemblyHubList.txt")
-    assemblies <- read.table(file.path(motif_death_dir, "discover/resources/UCSC_GI.assemblyHubList.txt"), skip = 11, sep = "\t", comment.char="@", header = TRUE, quote = "")
+    assemblies <- read.table(file.path(motif_death_dir, "discover/resources/UCSC_GI.assemblyHubList.txt"), skip = 27, sep = "\t", comment.char="@", header = TRUE, quote = "")
     assemblies[, "scientific.name"] <- gsub(" ", "_", assemblies[, "scientific.name"])
     assemblies$class2 <- NA
     ##
@@ -255,7 +255,7 @@ make_informative_plot <- function(results, result_phylo, keyword, plotdir = "~/D
 
 
 look_at_one_species_or_study <- function(results, study = NA, scientific_name = NA) {
-    cols <- c("scientific_name", "instrument_platform", "instrument_model", "library_source", "library_selection", "fastq_bytes", "nominal_length", "first_created", "read_count", "study_accession", "run_accession", "library_strategy", "library_name", "run_accession", "base_count", "experiment_title", "sample_alias")
+    cols <- c("scientific_name", "instrument_model", "first_created", "study_accession", "run_accession", "base_count")
     w1 <- rep(TRUE, nrow(results))
     w2 <- rep(TRUE, nrow(results))
     if (!is.na(study)) {
@@ -273,5 +273,7 @@ look_at_one_species_or_study <- function(results, study = NA, scientific_name = 
     m <- results[w1 & w2, ]
     m <- m[order(-m[, "base_count"]), ]
     m <- cbind(m, run_total = cumsum(m[, "base_count"]) / 6e10)
-    m[, c(cols, "run_total")]
+    m$base_count <- m$base_count/10^9
+    m <- cbind(m, raw_total = cumsum(m[, "base_count"]))
+    m[, c(cols, "run_total", "raw_total")]
 }
