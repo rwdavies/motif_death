@@ -46,17 +46,27 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   names(color_dict) <- progress_track$color_dict$names
   
   progress <- progress_track$main
+  progress <- progress[,colnames(progress) != 'notes']
   progress <- progress[progress$representative_species != "",]
   
   rep_taxons <- rotl::tnrs_match_names(progress[,'representative_species'])
   # Won't work if same rep used twice
-  progress <- cbind(progress, rep_taxons)
+  progress <- cbind(progress, ott_id = rep_taxons$ott_id)
+  
+  tax_info <- rotl::taxonomy_taxon_info(progress$ott_id, include_lineage = TRUE)
+  lineage_info <- rotl::tax_lineage(tax_info)
   
   root_rank <- attributes(rotl::tnrs_match_names(root))$original_response$results[[1]]$matches[[1]]$taxon$rank
-  root_parent <- datelife::get_ott_clade(ott_ids=progress[,'ott_id'],ott_rank=root_rank)[[root_rank]]
-  progress <- cbind(progress, root_parent)
   
-  print(paste0("make plot: dropping entries with NA as root_parent"))
+  for (i in 1:length(progress[,1])){
+    lin <- lineage_info[[as.character(progress[i,'ott_id'])]]
+    root_parent <- lin[tolower(lin$rank)==tolower(root_rank),][1,]$ott_id
+    leaf_parent <- lin[tolower(lin$rank)==tolower(leaf_rank),][1,]$name
+    progress[i,'root_parent'] <- root_parent
+    progress[i,'leaf_parent'] <- leaf_parent
+  }
+  
+  message("make plot: dropping entries with NA as root_parent")
   print(progress[is.na(progress$root_parent),])
   progress <- progress[!is.na(progress$root_parent),]
   
@@ -89,11 +99,22 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   new_colors <- rep(NA, length(default_labels))
   
   for (i in 1:length(default_ids)){
-    print(paste0("make_plot: Converting id ", i, "/", length(default_ids), ": ", default_ids[i]))
-    # Output of convert_id is c(common_name, color)
-    convert_id_out <- convert_id(default_ids[i], progress, color_dict, max_iter=max_iter)
-    new_labels[i] <- paste0(default_labels[i], " (", convert_id_out[1], ")")
-    new_colors[i] <- convert_id_out[2]
+    id <- default_ids[i]
+    message("make_plot: Converting id ", i, "/", length(default_ids), ": ", id)
+    if (id %in% progress$ott_id){
+      row <- progress[progress$ott_id == id, ]
+      new_labels[i] <- paste0(row$leaf_parent, " (", row$common_name, ")")
+      new_colors[i] <- color_dict[[row$status]]
+    } else {
+      lab <- default_labels[i]
+      lab <- strsplit(lab, '_')[[1]]
+      if (length(lab) >= 2){
+        lab <- lab[-length(lab)]
+      }
+      lab <- paste(lab, collapse=" ")
+      new_labels[i] <- paste0(lab, " (", ott_id_to_rep(id), ")")
+      new_colors[i] <- 'black'
+    }
   }
   
   subtree$tip.label <- new_labels
@@ -102,10 +123,10 @@ make_plot <- function(root, leaf_rank, plot_dir="~/Downloads", plot_scale=0.2, m
   pdf(file = file.path(plot_dir, paste0(root, '_', leaf_rank, '.pdf')), width=scale, height=scale)
   ape::plot.phylo(subtree, tip.color = new_colors)
   dev.off()
+
   
 }
 
-# ncbi was bugging, use itis
 get_downstream <- function(root, leaf_rank){
   cache <- readRDS(file.path(motif_death_dir, "discover/resources/get_downstream.RData"))
   entry_name <- tolower(paste0(root, '_', leaf_rank))
@@ -132,7 +153,6 @@ get_downstream <- function(root, leaf_rank){
 
 
 #### Step 4: A function to convert scientific name to common name ####
-# ncbi_names is a processed version of motif_death/discover/progress_visualise_data/names.csv
 sci2comm_fast <- function(scientific_name){
   scientific_name <- tolower(scientific_name)
   if (scientific_name %in% ncbi_names$name){
@@ -151,13 +171,13 @@ sci2comm_fast <- function(scientific_name){
 #### Step 5: Function to convert ott_id into representative (or NA) ####
 # cache = c("polar bear", "emerald rockcod")
 # names(cache) = c("123456", "654321")
-# Cache file: motif_death/discover/progress_visualise_data/representatives.RData
-ott_id_to_rep <- function(ott_id, max_iter=100){
+# Cache file: motif_death/discover/resources/ott_id_to_rep.RData
+ott_id_to_rep <- function(ott_id, max_iter=100, force_redo_cache=FALSE){
   ott_id <- as.character(ott_id)
   cache <- readRDS(file.path(motif_death_dir, "discover/resources/ott_id_to_rep.RData"))
   
-  if (ott_id %in% names(cache)){
-    print(paste("ott_id_to_rep: In cache, converted", ott_id, "to", cache[[ott_id]]))
+  if (ott_id %in% names(cache) & !force_redo_cache){
+    message("ott_id_to_rep: In cache, converted ", ott_id, " to ", cache[[ott_id]])
     return(cache[[ott_id]])
   }else{
     rep <- tryCatch({
@@ -187,18 +207,7 @@ ott_id_to_rep <- function(ott_id, max_iter=100){
     
     cache[[ott_id]] <- rep
     saveRDS(cache, file=file.path(motif_death_dir, "discover/resources/ott_id_to_rep.RData"))
-    print(paste("ott_id_to_rep: Not in cache, converted", ott_id, "to", rep))
+    message("ott_id_to_rep: Not in cache, converted ", ott_id, " to ", rep)
     return(rep)
-  }
-}
-
-#Function to convert ott id into common name and colour
-convert_id <- function(ott_id, progress, color_dict, max_iter=max_iter){
-  if (ott_id %in% progress$ott_id){
-    row <- progress[progress$ott_id == ott_id,]
-    return(c(row$common_name, color_dict[[row$status]]))
-  }else{
-    rep <- ott_id_to_rep(ott_id, max_iter)
-    return(c(rep, "black"))
   }
 }

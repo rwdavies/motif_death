@@ -12,14 +12,14 @@
 	"documentation" : {
 		"config_name" : "Name of config file, or leave empty.",
 		"common_name" : "A descriptive name for the group of species.",
-		"representative_species" : "Scientific name of a species to represent the group of species - this must match with rotl::tnrs_match_names(). Leave empty to not show in giant species tree plot. (Technically doesn't need to be a species, but I would recommend to not go higher than genus/family. Otherwise untested weird things might happen with giant species tree plot!)",
+		"representative_species" : "Scientific name of a species to represent the group of species - this must match with rotl::tnrs_match_names(). Leave empty to not show in giant species tree plot. (Technically doesn't need to be a species, but I would recommend to not go higher than genus/family. Otherwise giant tree plot will not work for some cases.)",
 		"status" : "Required if representative_species is non empty. Check color_dict below for options.",
 		"notes" : "Can be empty."
 	},
 
 	"color_dict" : {
-		"names" : ["not run", "running", "run failed", "run success", "not feasible", "unsure"],
-		"colors" : ["blue", "orange", "red", "green", "purple", "pink"]
+		"names" : ["ready", "not feasible", "revisit", "running", "run failed", "run success"],
+		"colors" : ["blue", "purple", "pink", "orange", "red", "green"]
 	},
 
 	"main" : [
@@ -34,35 +34,35 @@
 			"config_name" : "mus_20220825.json",
 			"common_name" : "mice",
 			"representative_species" : "mus musculus domesticus",
-			"status" : "running",
-			"notes" : "Richard running, Famulus 8x coverage"
+			"status" : "run success",
+			"notes" : ""
 		},
 		{		
 			"config_name" : "salmonidae_20220823.json",
 			"common_name" : "salmon",
 			"representative_species" : "Salmo salar",
-			"status" : "not run",
+			"status" : "running",
 			"notes" : ""
 		},
 		{		
 			"config_name" : "hominidae_20220830.json",
 			"common_name" : "apes",
 			"representative_species" : "homo sapiens",
-			"status" : "not run",
+			"status" : "running",
 			"notes" : ""
 		},
 		{
 			"config_name" : "aquila_20220902.json",
 			"common_name" : "Eagles",
 			"representative_species" : "Aquila chrysaetos",
-			"status" : "not run",
-			"notes" : "Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Looks great though divergence a tad high? Up to 6%"
+			"status" : "revisit",
+			"notes" : "Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Divergence maybe too high at 6%"
 		},
 		{
 			"config_name" : "trochilidae_20220906.json",
 			"common_name" : "hummingbirds",
 			"representative_species" : "calypte anna",
-			"status" : "not run",
+			"status" : "ready",
 			"notes" : ""
 		},
 
@@ -73,21 +73,21 @@
 			"config_name" : "anolis_20210909.json",
 			"common_name" : "anoles",
 			"representative_species" : "anolis",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : "looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
 		},
 		{
 			"config_name" : "artiodactyla_20210708.json",
 			"common_name" : "cows and similar",
 			"representative_species" : "Bos taurus",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : ""
 		},
 		{
 			"config_name" : "avian_20210804.json",
 			"common_name" : "finches and similar",
 			"representative_species" : "Taeniopygia guttata",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : ""
 		},
 		{
@@ -99,23 +99,23 @@
 		},
 		{
 			"config_name" : "gymnophiona_20210929.json",
-			"common_name" : "caecilians (look like worms)",
+			"common_name" : "caecilians",
 			"representative_species" : "Oscaecilia ochrocephala",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : "3 available, all VGP refs, not sure if will work, not sure about divergence"
 		},
 		{
 			"config_name" : "leporidae_20210909.json",
 			"common_name" : "rabbits/hares",
 			"representative_species" : "Oryctolagus cuniculus",
-			"status" : "not run",
+			"status" : "revisit",
 			"notes" : "looks great"
 		},
 		{
 			"config_name" : "ochotona_20210909.json",
 			"common_name" : "pikas",
 			"representative_species" : "Ochotona princeps",
-			"status" : "not run",
+			"status" : "revisit",
 			"notes" : "only using Illumina data. samples are from two phyla, use as outgroups to each other"
 		},
 		{
@@ -127,9 +127,9 @@
 		},
 		{
 			"config_name" : "pholidota_20210909.json",
-			"common_name" : "pangolin (scaly anteater)",
+			"common_name" : "Pangolins",
 			"representative_species" : "Manis pentadactyla",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : "So these below work, but the reference genome looks too discontinuous for this approach to work at this time: chinese pangolin, Manis pentadactyla, PRJNA529540, SRR9018595 (outgroup) Indian pangolin, Manis crassicaudata, PRJNA490788, SRR7874732 sunda pangolin, Manis javanica, PRJNA529540, SRR9018632. There is a good sample Phataginus tricuspis but this looks too far diverged https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png"
 		},
 		{
@@ -143,14 +143,14 @@
 			"config_name" : "whippomorpha_20210713.json",
 			"common_name" : "whale (minke ref)",
 			"representative_species" : "Balaenoptera acutorostrata",
-			"status" : "run",
+			"status" : "run success",
 			"notes" : ""
 		},
 		{
 			"config_name" : "whippomorpha_bluewhale_ref_20210802.json",
 			"common_name" : "whale (blue ref)",
 			"representative_species" : "Balaenoptera musculus",
-			"status" : "run",
+			"status" : "run success",
 			"notes" : ""
 		},
 		{
@@ -164,7 +164,7 @@
 			"config_name" : "canis_20210910.json",
 			"common_name" : "dogs",
 			"representative_species" : "Canis familiaris",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : "name should somehow be Cerdocyonina and Canina, but cannot get unique any better vs foxes. coverage OK though andean fox and dhole low at about 10 to 15 X coverage, could be worth adding more for a re-run"
 		},
 		{
@@ -178,7 +178,7 @@
 			"config_name" : "eupleridae_20210908.json",
 			"common_name" : "meerkats",
 			"representative_species" : "Suricata suricatta",
-			"status" : "unsure",
+			"status" : "revisit",
 			"notes" : "config made by Jhamat, I think? Also should probably be called Viverroidea. Note if this doesn't look good at the start, remove the hyaenidae species, and re-run with just fossa as the outgroup"
 		},
 
@@ -225,14 +225,14 @@
 			"config_name" : "",
 			"common_name" : "Kiwi",
 			"representative_species" : "Apteryx",
-			"status" : "not run",
-			"notes" : "Have a 4000 scaffold assembly, 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis."
+			"status" : "not feasible",
+			"notes" : "Have a 4000 scaffold assembly, 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis. (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Duck",
 			"representative_species" : "Aythya fuligula",
-			"status" : "not run",
+			"status" : "not feasible",
 			"notes" : "Tufted duck ref, divergence at 20M years might be a bit high"
 		},
 		{
@@ -240,14 +240,7 @@
 			"common_name" : "Penguins",
 			"representative_species" : "Pygoscelis adeliae",
 			"status" : "not feasible",
-			"notes" : "Only 2 scaffold refs, 10k and 20k scaffolds respectively"
-		},
-		{
-			"config_name" : "",
-			"common_name" : "Hummingbirds",
-			"representative_species" : "",
-			"status" : "not run",
-			"notes" : "Was unsure but worth having another look. Ref - anna's hummingbird."
+			"notes" : "Only 2 scaffold refs, 10k and 20k scaffolds respectively (Sep 2022)"
 		},
 		{
 			"config_name" : "",
@@ -260,7 +253,7 @@
 			"config_name" : "",
 			"common_name" : "Chicken",
 			"representative_species" : "gallus gallus gallus",
-			"status" : "not run",
+			"status" : "not feasible",
 			"notes" : "Chickens are too undiverged (<1%). But maybe could work if look outside just chickens?"
 		},
 		{
@@ -275,21 +268,21 @@
 			"common_name" : "Moa",
 			"representative_species" : "Anomalopteryx didiformis",
 			"status" : "not feasible",
-			"notes" : "Not enough data"
+			"notes" : "Not enough data (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "emu",
 			"representative_species" : "Dromaius novaehollandiae",
 			"status" : "not feasible",
-			"notes" : "Not enough data"
+			"notes" : "Not enough data (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Rhea",
 			"representative_species" : "Rhea americana",
 			"status" : "not feasible",
-			"notes" : "Not enough data"
+			"notes" : "Not enough data (Sep 2022)"
 		}
 
 	]
