@@ -4,7 +4,7 @@
     "SPECIES_LIST": {
         "SalmoIschchan": {
             "ENA_PRJ": "PRJNA414182",
-            "RUN_ACCESSION":["SRR6854514", "SRR6854513", "SRR6854512", "SRR6854515", "SRR6169093"]
+            "RUN_ACCESSION":["SRR6854514", "SRR6854513", "SRR6854512", "SRR6854515"]
         },
         "SalvelinusAlpinus": {
             "ENA_PRJ": "PRJNA803600",
