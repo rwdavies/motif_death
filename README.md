@@ -108,6 +108,16 @@ HATBAG: HATBAG itself is a relatively OK piece of code. It can be run from the c
 ## Appendix <a name="paragraph-appendix"></a>
 Directory paths and filenames specified in `config/filenames.json`.
 
+## Robbie rsync process <a name="paragraph-appendix"></a>
+Now that BMRC has two factor authentication, it is cumbersome to rsync from individual directories. So we stage a copy over in Stats.
+
+```
+rsync -av --exclude=*RData --exclude=*gz /well/davies/shared/motif_death_analysis/hatbag smew:/data/smew1/rdavies/
+rsync -av --exclude=*RData --exclude=*gz /well/davies/shared/motif_death_analysis/treemix smew:/data/smew1/rdavies/
+
+```
+
+
 ## TODOs <a name="paragraph-todos"></a>
 
 * Test that reference chromosome names match what are input in run config json.

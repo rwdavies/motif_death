@@ -188,7 +188,8 @@ rule get_single_callable_regions:
         avs = expand(f"coverage/{SPECIES_ORDER}/average.{{species}}.txt", species = SPECIES_LIST)
     output:
         bed = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed",
-        av = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.average.txt"
+        av = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.average.txt",
+        checkfile = f"coverage/{SPECIES_ORDER}/coverage.{SPECIES_ORDER}.{RUN_ID}.all.callableOnly.bed.clean.txt"
     params:
         N='get_single_callable_regions',
         threads = 1,
@@ -208,7 +209,18 @@ rule get_single_callable_regions:
 	    echo coverage is ${{cov}}
 	    echo -e "${{sps}}\t${{cov}}" >> {output.av}
         done
+	echo remove temp files callable regions
+        rm coverage/{SPECIES_ORDER}/coverage.*.chr*.txt*
+	rm coverage/{SPECIES_ORDER}/coverage*.chr*.callableOnly.bed
+	for sps in {EASY_SPECIES_LIST}
+	do
+            rm coverage/{SPECIES_ORDER}/coverage.${{sps}}.chr*.callableOnly.bed
+            rm coverage/{SPECIES_ORDER}/coverage.${{sps}}.callableOnly.bed	    
+        done
+	touch {output.checkfile}
+	echo done cleanup
         """
+
 
 
 
