@@ -1,16 +1,16 @@
 {
     "SPECIES_ORDER": "anolis",
-    "RUN_ID": "20210909",
+    "RUN_ID": "20220912",
     "SPECIES_LIST": {
-        "bridledanole": {
+        "frenatus": {
             "ENA_PRJ": "PRJNA400786",
             "RUN_ACCESSION": ["SRR8100042", "SRR8100035"]
         },
-        "greenanole": {
+        "carolinensis": {
             "ENA_PRJ": "PRJNA381064",
             "RUN_ACCESSION": ["SRR5813770"]
         },
-        "grassanole": {
+        "auratus": {
             "ENA_PRJ": "PRJNA400787",
             "RUN_ACCESSION": ["SRR8148313", "SRR8148312"]
         },
@@ -21,18 +21,19 @@
     },
     "HATBAG_OUTPUT_DIR": "run1",
     "REF_NAME": "AnoCar2.0",
-    "REF_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/bigZips/anoCar2.fa.gz",
-    "CHR_LIST_ONLY_AUTOS": [1,2,3,4,5,6],
-    "CHR_LIST": [1,2,3,4,5,6],
-    "GATK_CHR_PREFIX": "chr",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/090/745/GCF_000090745.1_AnoCar2.0/GCF_000090745.1_AnoCar2.0_genomic.fna.gz",
+    "CHR_LIST": ["76.1", "77.1", "78.1", "79.1", "80.1", "81.1"],
+    "SEX_CHR_LIST": [],
+    "GATK_CHR_PREFIX": "NC_0147",
     "OPERATE_GATK_PER_CHR": "TRUE",
-    "TREEMIX_OUTGROUP": "bridledanole",
-    "simpleRepeat_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/database/simpleRepeat.txt.gz",
-    "rmask_URL": "https://hgdownload.soe.ucsc.edu/goldenPath/anoCar2/database/rmsk.txt.gz",
-    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+",
+    "TREEMIX_OUTGROUP": "frenatus",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
     "HATBAG_PARAMS": {
         "lineages_to_build": null,
         "genomeSize": 1799143587,
+        "outgroups": ["frenatus"],
         "ndge": 3,
         "gcW2": 5000,
         "num_non_missing_outgroups_required": null,

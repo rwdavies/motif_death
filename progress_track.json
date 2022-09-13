@@ -65,6 +65,13 @@
 			"status" : "ready",
 			"notes" : ""
 		},
+		{
+			"config_name" : "felidae_20220913.json",
+			"common_name" : "cats",
+			"representative_species" : "felis catus",
+			"status" : "ready",
+			"notes" : ""
+		},
 
 
 
@@ -74,7 +81,7 @@
 			"common_name" : "anoles",
 			"representative_species" : "anolis",
 			"status" : "revisit",
-			"notes" : "looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
+			"notes" : "Ref genome is 1Gbp data in chromosomes. Divergence at 50M years feels too high? Previous notes: looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
 		},
 		{
 			"config_name" : "artiodactyla_20210708.json",
@@ -129,8 +136,8 @@
 			"config_name" : "pholidota_20210909.json",
 			"common_name" : "Pangolins",
 			"representative_species" : "Manis pentadactyla",
-			"status" : "revisit",
-			"notes" : "So these below work, but the reference genome looks too discontinuous for this approach to work at this time: chinese pangolin, Manis pentadactyla, PRJNA529540, SRR9018595 (outgroup) Indian pangolin, Manis crassicaudata, PRJNA490788, SRR7874732 sunda pangolin, Manis javanica, PRJNA529540, SRR9018632. There is a good sample Phataginus tricuspis but this looks too far diverged https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png"
+			"status" : "not feasible",
+			"notes" : "No good ref (Sep 2022). Previous notes: So these below work, but the reference genome looks too discontinuous for this approach to work at this time: chinese pangolin, Manis pentadactyla, PRJNA529540, SRR9018595 (outgroup) Indian pangolin, Manis crassicaudata, PRJNA490788, SRR7874732 sunda pangolin, Manis javanica, PRJNA529540, SRR9018632. There is a good sample Phataginus tricuspis but this looks too far diverged https://www.pangolinsg.org/wp-content/uploads/sites/4/2018/04/Screenshot-7.png"
 		},
 		{
 			"config_name" : "snakes_20210810.json",
@@ -219,28 +226,28 @@
 			"common_name" : "Sea squirts",
 			"representative_species" : "Ciona intestinalis",
 			"status" : "not feasible",
-			"notes" : "Only reference is small - 100MB"
+			"notes" : "Genome too small at 100MB"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Kiwi",
 			"representative_species" : "Apteryx",
 			"status" : "not feasible",
-			"notes" : "Have a 4000 scaffold assembly, 1GB. The phylogenetic tree looks really nice and clean though, we can take 4 different kiwis. (Sep 2022)"
+			"notes" : "Don't have a good reference. The phylogenetic tree looks good though, we can take 4 different kiwis. (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Duck",
 			"representative_species" : "Aythya fuligula",
 			"status" : "not feasible",
-			"notes" : "Tufted duck ref, divergence at 20M years might be a bit high"
+			"notes" : "Have good tufted duck ref. Divergence at 20M years feels too high"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Penguins",
 			"representative_species" : "Pygoscelis adeliae",
 			"status" : "not feasible",
-			"notes" : "Only 2 scaffold refs, 10k and 20k scaffolds respectively (Sep 2022)"
+			"notes" : "Don't have good ref (Sep 2022)"
 		},
 		{
 			"config_name" : "",
@@ -261,7 +268,7 @@
 			"common_name" : "Tinamou",
 			"representative_species" : "Nothoprocta perdicaria",
 			"status" : "not feasible",
-			"notes" : "Think too diverged + no chromosome ref."
+			"notes" : "Think too diverged + no good ref. (Sep 2022)"
 		},
 		{
 			"config_name" : "",

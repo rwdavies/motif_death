@@ -1,0 +1,58 @@
+{
+    "SPECIES_ORDER": "felidae",
+    "RUN_ID": "20220913",
+    "SPECIES_LIST": {
+        "FelisCatus": {
+            "ENA_PRJ": "PRJEB34554",
+            "RUN_ACCESSION":["ERR4791744"]
+        },
+        "PrionailurusViverrinus": {
+            "ENA_PRJ": "PRJNA649563",
+            "RUN_ACCESSION":["SRR12381567","SRR12381568","SRR12381570","SRR12381569"]
+        },
+        "LynxLynx": {
+            "ENA_PRJ": "PRJEB48088",
+            "RUN_ACCESSION":["ERR7133674", "ERR7132671"]
+        },
+        "CaracalCaracal": {
+            "ENA_PRJ": "PRJNA637064",
+            "RUN_ACCESSION":["SRR12378070","SRR12378069", "SRR12378067","SRR12378068"]
+        },
+        "PantheraUncia": {
+            "ENA_PRJ": "PRJNA693792",
+            "RUN_ACCESSION":["SRR13500277"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "F.catus_Fca126_mat1.0",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/018/350/175/GCF_018350175.1_F.catus_Fca126_mat1.0/GCF_018350175.1_F.catus_Fca126_mat1.0_genomic.fna.gz",
+    "CHR_LIST": ["68.1", "69.1", "70.1", "71.1", "72.1", "73.1", "74.1", "75.1", "76.1", "77.1", "78.1", "79.1", "80.1", "81.1", "82.1", "83.1", "84.1", "85.1"],
+    "SEX_CHR_LIST": [],
+    "GATK_CHR_PREFIX": "NC_0583",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "PantheraUncia",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 2425747038,
+        "outgroups": ["PantheraUncia"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
