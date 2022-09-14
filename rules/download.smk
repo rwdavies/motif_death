@@ -1,6 +1,6 @@
 def get_ftp_paths(species, units):
     urls = order_df.loc[(species, units), "fastq_ftp"].split(';')
-    return [f"ftp://{url}" for url in urls]
+    return [f"https://{url}" for url in urls]
 
 rule download_all:
     input:
