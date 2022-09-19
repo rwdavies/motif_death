@@ -28,7 +28,7 @@ motif_death_dir <- "~/proj/motif_death"
 ncbi_names <- read.csv(file.path(motif_death_dir, "discover/resources/names.csv.gz"))
 source(file.path(motif_death_dir, "discover/progress_visualise.R"))
 
-make_plot(root="amphibia", leaf_rank="family", plot_dir="~/Downloads", plot_scale = 0.2, max_iter = 100)
+make_plot(root="amphibia", leaf_rank="family", plot_dir="~/Downloads", plot_scale = 0.2, time_limit = 5)
 ```
 
 Getting simpleRepeat / repeatMasker
