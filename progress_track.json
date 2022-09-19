@@ -69,19 +69,17 @@
 			"config_name" : "felidae_20220913.json",
 			"common_name" : "cats",
 			"representative_species" : "felis catus",
-			"status" : "ready",
+			"status" : "running",
 			"notes" : ""
 		},
-
-
 
 
 		{
 			"config_name" : "anolis_20210909.json",
 			"common_name" : "anoles",
 			"representative_species" : "anolis",
-			"status" : "revisit",
-			"notes" : "Ref genome is 1Gbp data in chromosomes. Divergence at 50M years feels too high? Previous notes: looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
+			"status" : "not feasible",
+			"notes" : "Ref genome is 1Gbp data in chromosomes. Currently (Sep 2022) 4 species with sufficient data, but divergence at 50M years is too high. Previous notes: looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes"
 		},
 		{
 			"config_name" : "artiodactyla_20210708.json",
@@ -144,7 +142,7 @@
 			"common_name" : "snakes",
 			"representative_species" : "Ophiophagus hannah",
 			"status" : "revisit",
-			"notes" : ""
+			"notes" : "Snakes are very diverged. Our only good ref is in Colubridae which is ~40Mya. So I think stay within Colubridae. Unsure of divergences within Colubridae. There are not too many species with data, so could be that only available options are too diverged. Revisit sometime but low priority for now."
 		},
 		{
 			"config_name" : "whippomorpha_20210713.json",
