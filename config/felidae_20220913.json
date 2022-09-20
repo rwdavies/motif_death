@@ -3,8 +3,8 @@
     "RUN_ID": "20220913",
     "SPECIES_LIST": {
         "FelisCatus": {
-            "ENA_PRJ": "PRJEB34554",
-            "RUN_ACCESSION":["ERR4791744"]
+            "ENA_PRJ": "PRJNA684599",
+            "RUN_ACCESSION":["SRR13374520"]
         },
         "PrionailurusViverrinus": {
             "ENA_PRJ": "PRJNA649563",
