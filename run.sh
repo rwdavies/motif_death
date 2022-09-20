@@ -75,7 +75,7 @@ then
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
         -w 30 \
-	 --max-status-checks-per-second 0.1 \
+	 --max-status-checks-per-second 0.01 \
         --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \
          ${other[*]} ${what} \
         --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
