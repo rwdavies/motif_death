@@ -47,6 +47,7 @@ then
 elif [ ${user} == "csw253" ]
 then
     export PATH=/well/davies/users/dcc832/bin/R-3.6.2/bin/:${PATH}
+    export LD_LIBRARY_PATH=/well/davies/users/dcc832/bin/R-3.6.2/lib:${LD_LIBRARY_PATH}
     # export USER_CONFIG="/users/davies/zri347/proj/motif_death/config/zri347.json"
     export ANALYSIS_DIR="/well/davies/users/csw253/motif_death_analysis/"
     export PYTHON_DIR="/users/davies/csw253/proj/motif_death/python/"
