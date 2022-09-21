@@ -44,12 +44,13 @@ Samples to run / have been run
 <!--- marker -->
 | Common name | Config name | Status | Notes |
 |-|-|-|-|
-| cod icefish | notothenioidei_20220803.json | running | Richard running, have an error 0 significant k-mers |
+| cod icefish | notothenioidei_20220803.json | running | Have an error 0 significant k-mers |
 | mice | mus_20220825.json | run success |  |
 | salmon | salmonidae_20220823.json | running |  |
 | apes | hominidae_20220830.json | running |  |
 | Eagles | aquila_20220902.json | revisit | Four species: Heliaca, [chrysaetos canadensis, chrysaetos chrysaetos], spilogaster, heliaca outgroup. Divergence maybe too high at 6% |
 | hummingbirds | trochilidae_20220906.json | ready |  |
+| geese + swans | anserinae_20220920 | ready |  |
 | cats | felidae_20220913.json | running |  |
 | anoles | anolis_20210909.json | not feasible | Ref genome is 1Gbp data in chromosomes. Currently (Sep 2022) 4 species with sufficient data, but divergence at 50M years is too high. Previous notes: looks good, should be enough I hope. Tried to get SceUnd_v1.1 to work, but not sure if occidentalis is enough Sceloporus grammicus, NO Sceloporus occidentalis, Maybe Sceloporus tristichus, yes Sceloporus undulatus, yes |
 | cows and similar | artiodactyla_20210708.json | revisit |  |
@@ -72,15 +73,16 @@ Samples to run / have been run
 | Molluscs |  |  | Worth considering octopuses, as well as oysters, they look viable. For octoposes, in particular https://www.ncbi.nlm.nih.gov/assembly/GCF_006345805.1 ASM634580v1 Muusoctopus leioderma Octopus rubescens Octopus bimaculoides Octopus vulgaris. |
 | Amphibians |  |  | Can't easily get Xenopus or Rana to work (not enough / too diverged), same with toad (bufo) Couldn't obviously get caecilians to work either! |
 | Sea squirts |  | not feasible | Genome too small at 100MB |
-| Kiwi |  | not feasible | Don't have a good reference. The phylogenetic tree looks good though, we can take 4 different kiwis. (Sep 2022) |
-| Duck |  | not feasible | Have good tufted duck ref. Divergence at 20M years feels too high |
+| Duck |  | revisit | Have some good refs. Divergence at 20M years might be a bit high, but we can probably make something work here. Have also built geese config, so low priority for ducks right now. |
 | Penguins |  | not feasible | Don't have good ref (Sep 2022) |
-| Sturgeons |  | not feasible | Not enough data (Sep 2022). |
-| Chicken |  | not feasible | Chickens are too undiverged (<1%). But maybe could work if look outside just chickens? |
-| Tinamou |  | not feasible | Think too diverged + no good ref. (Sep 2022) |
-| Moa |  | not feasible | Not enough data (Sep 2022) |
-| emu |  | not feasible | Not enough data (Sep 2022) |
-| Rhea |  | not feasible | Not enough data (Sep 2022) |
+| sturgeons and paddlefishes |  | revisit | Have chrom refs Polyodon spathula, Acipenser ruthenus. Long divergence times (>100M years). Green sturgeon ~30 year generation time. According to https://www.mdpi.com/2073-4425/10/1/38/htm, excluding polyodon, we have <5% divergence. Have 3 suitable species with data. Check with stampy mapping as the <5% divergence feels a bit suspicious. |
+| Chicken |  | revisit | Chickens are too undiverged (<1%). But maybe could work if look outside just chickens? |
+| Kiwi |  | not feasible | There are 4 species with data, but because of the shape of the tree we can only take 3 of them. No Chrom ref (Sep 2022) |
+| Tinamou |  | not feasible | No good ref. (Sep 2022) |
+| Moa |  | not feasible | They're extinct |
+| emu |  | not feasible | Have a good ref, but only 2 species with data (Sep 2022) |
+| Rhea |  | not feasible | No good ref + only 1 species with data (Sep 2022) |
+|  |  |  | Note that the few above orders are members of the infraclass Palaeognathae. These birds have long lifespans, so I think we should consider Palaeognathae as a whole and try make a config. (Divergence 50-75M years). Also ostriches missed out on giant species tree plot, bear in mind. |
 <!--- marker -->
 
 Future / notes
@@ -95,6 +97,7 @@ Reference genomes for either don't look so great, the scaffolds aren't assembled
 
 Turtles, so far looks good for Emydidae
 If they aren't too diverged / not too many SNPs, there are some other nearby turtles that could also potentially be used
+
 
 
 

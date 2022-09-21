@@ -28,7 +28,7 @@
 			"common_name" : "cod icefish",
 			"representative_species" : "Pseudochaenichthys georgianus",
 			"status" : "running",
-			"notes" : "Richard running, have an error 0 significant k-mers"
+			"notes" : "Have an error 0 significant k-mers"
 		},
 		{		
 			"config_name" : "mus_20220825.json",
@@ -62,6 +62,13 @@
 			"config_name" : "trochilidae_20220906.json",
 			"common_name" : "hummingbirds",
 			"representative_species" : "calypte anna",
+			"status" : "ready",
+			"notes" : ""
+		},
+		{
+			"config_name" : "anserinae_20220920",
+			"common_name" : "geese + swans",
+			"representative_species" : "Branta canadensis",
 			"status" : "ready",
 			"notes" : ""
 		},
@@ -228,17 +235,10 @@
 		},
 		{
 			"config_name" : "",
-			"common_name" : "Kiwi",
-			"representative_species" : "Apteryx",
-			"status" : "not feasible",
-			"notes" : "Don't have a good reference. The phylogenetic tree looks good though, we can take 4 different kiwis. (Sep 2022)"
-		},
-		{
-			"config_name" : "",
 			"common_name" : "Duck",
 			"representative_species" : "Aythya fuligula",
-			"status" : "not feasible",
-			"notes" : "Have good tufted duck ref. Divergence at 20M years feels too high"
+			"status" : "revisit",
+			"notes" : "Have some good refs. Divergence at 20M years might be a bit high, but we can probably make something work here. Have also built geese config, so low priority for ducks right now."
 		},
 		{
 			"config_name" : "",
@@ -249,45 +249,59 @@
 		},
 		{
 			"config_name" : "",
-			"common_name" : "Sturgeons",
+			"common_name" : "sturgeons and paddlefishes",
 			"representative_species" : "Acipenser ruthenus",
-			"status" : "not feasible",
-			"notes" : "Not enough data (Sep 2022)."
+			"status" : "revisit",
+			"notes" : "Have chrom refs Polyodon spathula, Acipenser ruthenus. Long divergence times (>100M years). Green sturgeon ~30 year generation time. According to https://www.mdpi.com/2073-4425/10/1/38/htm, excluding polyodon, we have <5% divergence. Have 3 suitable species with data. Check with stampy mapping as the <5% divergence feels a bit suspicious."
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Chicken",
 			"representative_species" : "gallus gallus gallus",
-			"status" : "not feasible",
+			"status" : "revisit",
 			"notes" : "Chickens are too undiverged (<1%). But maybe could work if look outside just chickens?"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "Kiwi",
+			"representative_species" : "Apteryx",
+			"status" : "not feasible",
+			"notes" : "There are 4 species with data, but because of the shape of the tree we can only take 3 of them. No Chrom ref (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Tinamou",
 			"representative_species" : "Nothoprocta perdicaria",
 			"status" : "not feasible",
-			"notes" : "Think too diverged + no good ref. (Sep 2022)"
+			"notes" : "No good ref. (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Moa",
 			"representative_species" : "Anomalopteryx didiformis",
 			"status" : "not feasible",
-			"notes" : "Not enough data (Sep 2022)"
+			"notes" : "They're extinct"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "emu",
 			"representative_species" : "Dromaius novaehollandiae",
 			"status" : "not feasible",
-			"notes" : "Not enough data (Sep 2022)"
+			"notes" : "Have a good ref, but only 2 species with data (Sep 2022)"
 		},
 		{
 			"config_name" : "",
 			"common_name" : "Rhea",
 			"representative_species" : "Rhea americana",
 			"status" : "not feasible",
-			"notes" : "Not enough data (Sep 2022)"
+			"notes" : "No good ref + only 1 species with data (Sep 2022)"
+		},
+		{
+			"config_name" : "",
+			"common_name" : "",
+			"representative_species" : "",
+			"status" : "",
+			"notes" : "Note that the few above orders are members of the infraclass Palaeognathae. These birds have long lifespans, so I think we should consider Palaeognathae as a whole and try make a config. (Divergence 50-75M years). Also ostriches missed out on giant species tree plot, bear in mind."
 		}
 
 	]

@@ -1,0 +1,54 @@
+{
+    "SPECIES_ORDER": "anserinae",
+    "RUN_ID": "20220920",
+    "SPECIES_LIST": {
+        "CygnusCygnus": {
+            "ENA_PRJ": "PRJDB10192",
+            "RUN_ACCESSION": ["DRR252994"]
+        },
+        "BrantaCanadensis": {
+            "ENA_PRJ": "PRJNA524684",
+            "RUN_ACCESSION": ["SRR8867566"]
+        },
+        "AnserFabalis": {
+            "ENA_PRJ": "PRJEB35788",
+            "RUN_ACCESSION": ["ERR3849984"]
+        },
+        "AnserCygnoidesDomesticus": {
+            "ENA_PRJ": "PRJNA556795",
+            "RUN_ACCESSION": ["SRR18767731", "SRR11014416"]
+        }
+    },
+    "HATBAG_OUTPUT_DIR": "run1",
+    "REF_NAME": "bCygOlo1.pri.v2",
+    "REF_URL": "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/009/769/625/GCF_009769625.2_bCygOlo1.pri.v2/GCF_009769625.2_bCygOlo1.pri.v2_genomic.fna.gz",
+    "CHR_LIST": ["049169.1", "049170.1", "049171.1", "049172.1", "049173.1", "049174.1", "049175.1", "049176.1", "049177.1", "049178.1", "049179.1", "049180.1", "049181.1", "049182.1", "049183.1", "049184.1", "049185.1", "049186.1", "049187.1", "049188.1", "049189.1", "049190.1", "049191.1", "049192.1", "049193.1", "049194.1", "049195.1", "049196.1", "049197.1", "054087.1", "054088.1", "054089.1", "054090.1", "054091.1"],
+    "SEX_CHR_LIST": [""],
+    "GATK_CHR_PREFIX": "NC_",
+    "OPERATE_GATK_PER_CHR": "TRUE",
+    "TREEMIX_OUTGROUP": "CygnusCygnus",
+    "simpleRepeat_URL": "need to download manually",
+    "rmask_URL": "need to download manually",
+    "WILDCARD_CHR_CONSTRAINT": "[a-zA-Z0-9]+\\.1",
+    "HATBAG_PARAMS": {
+        "lineages_to_build": null,
+        "genomeSize": 1134186642,
+        "outgroups": ["CygnusCygnus"],
+        "ndge": 3,
+        "gcW2": 5000,
+        "num_non_missing_outgroups_required": null,
+        "num_missing_lineages_allowed": null,
+        "similar_kmer_criterion": ["cpg", "at"],
+        "mrle": 6,
+        "mncdnle": 100,
+        "use_one_sided_pvalue": false
+    },
+    "DEFAULTS": {
+        "TREEMIX_THREADS": 1,
+        "TREEMIX_K": 5000,
+        "GENOTYPING_QUEUE": "short.qc",
+        "GENOTYPER": "UnifiedGenotyper",
+        "GENOTYPING_THREADS": 4,
+        "CALLABLE_MIN_FRACTION": 0.75
+    }
+}
