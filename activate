@@ -31,7 +31,8 @@ then
     export PYTHON_DIR="/users/davies/dcc832/proj/motif_death/python/"
     export R_DIR="/users/davies/dcc832/proj/motif_death/R/"
     export HATBAG_DIR="/users/davies/dcc832/proj/HATBAG/"
-    export SNAKEMAKE="/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
+    export SNAKEMAKE="/well/davies/users/dcc832/bin/miniconda3/envs/snakemake_new/bin/snakemake" ## 7.25.0
+    ## export SNAKEMAKE="/well/davies/users/zri347/conda/envs/snakemake/bin/snakemake"
     #export SNAKEMAKE="/well/davies/users/dcc832/bin/miniconda3/envs/snakemake/bin/snakemake"
     # export ANALYSIS_DIR="/well/davies/users/dcc832/primates/"
     #export SNAKEMAKE="/well/davies/users/dcc832/primates/bin/miniconda3/envs/snakemake/bin/snakemake"

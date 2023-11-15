@@ -1,7 +1,33 @@
 motif_death_dir <- "~/proj/motif_death"
 source(file.path(motif_death_dir, "discover/functions.R"))
-
 assemblies <- get_ucsc_assemblies(motif_death_dir)
+
+
+investigate_results <- investigate("Chondrichthyes", nCores = 48, plotdir = "~/proj/motif_death/discover")
+
+results <- out$results
+
+
+## get first set 
+assemblies_to_consider <- get_refs_to_consider(result_phylo)
+
+
+
+
+
+
+
+## https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/017/639/515/GCF_017639515.1_sCarCar2.pri/GCF_017639515.1_sCarCar2.pri_genomic.fna.gz
+
+    
+1
+
+test <- fread("https://ftp.ncbi.nih.gov/genomes/refseq/assembly_summary_refseq.txt", data.table = FALSE)
+
+## pseudo-algorithm
+
+
+
 
 out <- investigate(keyword = "Canidae", nCores = 48)
 results <- out$results

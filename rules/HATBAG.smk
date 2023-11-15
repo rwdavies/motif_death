@@ -114,9 +114,9 @@ def get_hatbag_n_threads(wildcards):
 def get_hatbag_queue(wildcards):
     run = wildcards.run
     if run == "F":
-        return "long.qc@@long.hge"
+        return "long"
     else:
-        return "short.qc@@short.hge"
+        return "short"
 
 # TODO: obsolete?
 # def get_input_bam(wildcards):
@@ -181,7 +181,7 @@ rule treemix_to_hatbag_lineages:
         f"hatbag/{SPECIES_ORDER}/{RUN_ID}/{HATBAG_OUTPUT_DIR}/hatbag_params.json"
     params:
         N='treemix_to_hatbag',
-        queue="short.qc@@short.hge",
+        queue="short",
         threads=1
     run:
         with gzip.open(input[0], 'rt') as f:
@@ -233,7 +233,7 @@ rule treemix_to_hatbag_lineages:
 #     params:
 #         N='hatbag_test',
 #         threads=8,
-#         queue = "short.qc",
+#         queue = "short",
 #         repeat_filename = lambda wildcards: config["simple_repeat"][wildcards.simple_repeat],
 #         callable_bed_filename = lambda wildcards: config["callable_bed"][wildcards.callable_bed]
 #     wildcard_constraints:
@@ -287,7 +287,7 @@ rule treemix_to_hatbag_lineages:
 #     params:
 #         N='hatbag',
 #         threads=8,
-#         queue = "short.qc"
+#         queue = "short"
 #     shell:
 #         'mkdir -p /tmp/{HATBAG_OUTPUT_DIR} && '
 #         'for RUN in E F; do '

@@ -26,7 +26,7 @@ rule download_fastq:
     wildcard_constraints:
         units='\D{1,8}\d{0,9}',
         pen='\d',
-        queue="short.qc"
+        queue="short"
     shell:
         """
         mkdir -p mapping/{SPECIES_ORDER}
@@ -40,7 +40,7 @@ rule download_ref:
     input:
     output:
         ref = f"{REF_DIR}/{REF_NAME}.fa.gz"
-    params: N='make_ref', threads=1, queue = "short.qc"
+    params: N='make_ref', threads=1, queue = "short"
     shell:
         """
         mkdir -p {REF_DIR}
@@ -53,7 +53,7 @@ rule download_rmask:
     input:
     output:
         rmask = f"{EXTERNAL_DIR}/{REF_NAME}.rmsk.gz"
-    params: N='download_rmask', threads=1, queue = "short.qc"
+    params: N='download_rmask', threads=1, queue = "short"
     shell:
         """
         mkdir -p {EXTERNAL_DIR}
@@ -76,7 +76,7 @@ rule download_simple_repeat:
     params:
         N='download_simple_repeat',
         threads=1,
-        queue = "short.qc"
+        queue = "short"
     shell:
         """
         mkdir -p {EXTERNAL_DIR} 
@@ -101,7 +101,7 @@ rule download_simple_repeat:
 #         N='standardize_fastq',
 #         threads=1,
 #         path=lambda wildcards: config["units"][wildcards.units][wildcards.pen],
-#         queue='short.qc'	
+#         queue='short'	
 #     wildcard_constraints:
 #         units='\D{1,3}\d{1,9}',
 #         pen='\d'
@@ -127,7 +127,7 @@ rule download_simple_repeat:
 #     wildcard_constraints:
 #         units='\D{1,3}\d{1,9}',
 #         pen='\d',
-#         queue="short.qc"
+#         queue="short"
 #     shell:
 #         'cd mapping && cd {SPECIES} && '
 # 	'{PYTHON_352} SCRIPT ARGUMENTS'

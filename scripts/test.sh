@@ -65,7 +65,7 @@ for unit_name in $TEST_UNIT_NAMES; do
     then
 	species="test_outgroup"
     fi
-    echo "\"${species}\",\"${unit_name}\",\"\",20,\"short.qc\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
+    echo "\"${species}\",\"${unit_name}\",\"\",20,\"short\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
     # copy fastqs
     SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/${species}"
     mkdir -p $SPECIES_DIR
@@ -83,9 +83,11 @@ rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 cd "${SCRIPTPATH}/../"
 
 ## split into a few bits, make sure it is OK to re-run partway through
-./run.sh config/test_run1.json mapping/test/test_pop1/test_pop1.unitpop1.bam local is_test $other
-./run.sh config/test_run1.json downstream_all local is_test $other
-./run.sh config/test_run1.json all local is_test $other
+WHERE="local"
+WHERE="cluster"
+./run.sh config/test_run1.json mapping/test/test_pop1/test_pop1.unitpop1.bam ${WHERE} is_test $other
+./run.sh config/test_run1.json downstream_all ${WHERE} is_test $other
+./run.sh config/test_run1.json all ${WHERE} is_test $other
 
 # Check test here
 

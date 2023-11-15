@@ -59,6 +59,7 @@ then
     fi
 fi
 
+	
 LOG_DIR=${ANALYSIS_DIR}logs/
 mkdir -p ${ANALYSIS_DIR}
 mkdir -p ${LOG_DIR}
@@ -74,9 +75,9 @@ then
     ##--printshellcmds
     ${SNAKEMAKE} \
         --snakefile ${SNAKEFILE} \
-        -w 30 \
-	 --max-status-checks-per-second 0.01 \
-        --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \
+        -w 30 --rerun-triggers mtime \
+	--max-status-checks-per-second 0.01 \
+        --cluster "sbatch -J {params.N} -n {params.threads} --wckey davies.prjc --export=ALL -p {params.queue} --output=${LOG_DIR}/%j.out --error=${LOG_DIR}/%j.err " --jobs ${jobs} \
          ${other[*]} ${what} \
         --configfiles ${ORDER_CONFIG} "${SCRIPTPATH}/config/filenames.json"
     ## qsub -V -N {params.N} -j oe -o ${LOG_DIR} -l nodes=1:ppn={params.threads}
@@ -92,3 +93,7 @@ else
     echo bad where: ${where}
     exit 1
 fi
+
+
+## old SGE
+##         --cluster "qsub -cwd -V -N {params.N} -pe shmem {params.threads} -q {params.queue} -P davies.prjc -j Y -o ${LOG_DIR}" --jobs ${jobs} \

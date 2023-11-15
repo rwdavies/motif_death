@@ -11,7 +11,7 @@ rule unzip_ref:
         # ref = ancient(f"{REF_DIR}/{REF_NAME}.fa.gz")
     output:
         ref = f"{REF_DIR}/{REF_NAME}.fa"
-    params: N='unzip_ref', threads=1, queue = "short.qc"
+    params: N='unzip_ref', threads=1, queue = "short"
     shell:
         """
         cd {REF_DIR}
@@ -25,7 +25,7 @@ rule bwa_mem_ref:
         f"{REF_DIR}/{REF_NAME}.fa.sa",
         f"{REF_DIR}/{REF_NAME}.fa.amb",
         f"{REF_DIR}/{REF_NAME}.fa.ann"
-    params: N='bwa_mem_ref', threads=1, queue = "short.qc"
+    params: N='bwa_mem_ref', threads=1, queue = "short"
     shell:
         'cd {REF_DIR} && '
         'bwa index {REF_NAME}.fa '
@@ -35,7 +35,7 @@ rule faidx_ref:
         ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
         ref = f"{REF_DIR}/{REF_NAME}.fa.fai"
-    params: N='faidx_ref', threads=1, queue = "short.qc"
+    params: N='faidx_ref', threads=1, queue = "short"
     shell:
         'cd {REF_DIR} && '
         'samtools faidx {REF_NAME}.fa'
@@ -45,7 +45,7 @@ rule picard_ref:
         ref = f"{REF_DIR}/{REF_NAME}.fa"
     output:
         ref = f"{REF_DIR}/{REF_NAME}.dict"
-    params: N='picard_ref', threads=1, queue = "short.qc"
+    params: N='picard_ref', threads=1, queue = "short"
     shell:
         'cd {REF_DIR} && '
         '${{JAVA}} -Xmx12G -jar ${{PICARD}} CreateSequenceDictionary R={REF_NAME}.fa O={REF_NAME}.dict'
@@ -56,7 +56,7 @@ rule stampy_ref:
     output:
         f"{REF_DIR}/{REF_NAME}.sthash",
         f"{REF_DIR}/{REF_NAME}.stidx"
-    params: N='stampy_ref', threads=1, queue = "short.qc"
+    params: N='stampy_ref', threads=1, queue = "short"
     shell:
         'cd {REF_DIR} && '
         '${{PYTHON_278}} ${{STAMPY}} -G {REF_NAME} {REF_NAME}.fa && '

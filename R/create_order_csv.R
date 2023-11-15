@@ -31,7 +31,7 @@ for (species in names(config$SPECIES_LIST)) {
     order_df <- rbind(order_df, species_table)
 }
 
-order_df$mapping_queue <- "short.qc@@short.hge"
+order_df$mapping_queue <- "long"
 order_df[is.na(order_df$nominal_length), 'nominal_length'] <- 200
 order_df[, "library_name"] = gsub("\\s|,|'|\"|‘|’|(|)|[|]|\\{|\\}|<|>|*|=", "", order_df[, "library_name"]) # ref http://samtools.github.io/hts-specs/SAMv1.pdf
 

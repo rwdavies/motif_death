@@ -42,7 +42,7 @@ checkpoint chunk_fastq1:
     output:
         unit_dir = directory(f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}")
     params:
-        N='chunk_fastq',
+        N='chunk_fastq1',
         threads=1,
         queue = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "mapping_queue"],
         n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"]
@@ -66,7 +66,7 @@ rule chunk_fastq2:
     output:
         f"mapping/{SPECIES_ORDER}/{{species}}/temp/{{units}}/chunk_fastq2_done"
     params:
-        N='chunk_fastq',
+        N='chunk_fastq2',
         threads=1,
         queue = lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "mapping_queue"],
         n_mapping_pieces= lambda wildcards: order_df.loc[(wildcards.species, wildcards.units), "n_mapping_pieces"],
@@ -146,7 +146,7 @@ rule merge_mapped_pieces:
     params:
         N='merge_mapped_pieces',
         threads=4,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
     shell:
@@ -173,7 +173,7 @@ rule merge_units:
     params:
         N='merge_units',
         threads=4,
-        queue = "short.qc@@short.hge",
+        queue = "short",
         nunits = lambda wildcards: len(order_df.loc[wildcards.species])
     wildcard_constraints:
         units=WILDCARD_UNIT_CONSTRAINT
@@ -206,9 +206,9 @@ rule mark_duplicates:
     params:
         N='rmdup',
         threads=3,
-        queue = "long.qc@@short.hge"
+        queue = "long"
     shell:
-        'ulimit -n 4096 && ${{JAVA}} -Xmx16G -jar ${{PICARD}} MarkDuplicates '
+        'ulimit -n 4096 && ${{JAVA}} -Xmx15G -jar ${{PICARD}} MarkDuplicates '
         'ASSUME_SORTED=false '
         'READ_NAME_REGEX=null '
         'INPUT={input.bam} '
@@ -228,7 +228,7 @@ rule identify_indels:
     params:
         N='indel_identify',
         threads=1,
-        queue = "short.qc"
+        queue = "short"
     wildcard_constraints:
     shell:
         'if [ \"{OPERATE_GATK_PER_CHR}\" == \"FALSE" ]; then '
@@ -280,7 +280,7 @@ rule merge_realigned_bams:
     params:
         N='merge_bams',
         threads=4,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     wildcard_constraints:
     shell:
         """

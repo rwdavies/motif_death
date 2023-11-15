@@ -73,7 +73,7 @@ rule filter_chr:
     output:
         filtered_vcf = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz"),
         filtered_tbi = expand(f"vcf/{SPECIES_ORDER}/{RUN_ID}/chr{{{{chr}}}}.filtered.piece{{{{piece}}}}.vcf.gz.tbi")
-    params: N='filter_chr', threads=1, queue = "short.qc"
+    params: N='filter_chr', threads=1, queue = "short"
     wildcard_constraints:
         chr = WILDCARD_CHR_CONSTRAINT,
         piece='\d{1,3}'
@@ -97,7 +97,7 @@ rule merge_chr:
     output:
         merged_vcf = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz",
         merged_tbi = f"vcf/{SPECIES_ORDER}/{RUN_ID}/filtered.vcf.gz.tbi"
-    params: N='merge_chr', threads=1, queue = "short.qc"
+    params: N='merge_chr', threads=1, queue = "short"
     wildcard_constraints:
         chr = WILDCARD_CHR_CONSTRAINT
     shell:
@@ -120,7 +120,7 @@ rule calculate_doc:
     params:
         N='get_depth_of_coverage',
         threads=1,
-        queue = "short.qc"
+        queue = "short"
     wildcard_constraints:
         species='\w{1,40}'	
     shell:
@@ -146,7 +146,7 @@ rule prepare_reference:
     params:
         N='prepare_reference',
         threads=1,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     wildcard_constraints:
     shell:
         """
@@ -165,7 +165,7 @@ rule get_callable_regions:
     params:
         N='get_callable_regions',
         threads = 3,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     wildcard_constraints:
         species='\w{1,40}'
     shell:
@@ -193,7 +193,7 @@ rule get_single_callable_regions:
     params:
         N='get_single_callable_regions',
         threads = 1,
-        queue = "short.qc"
+        queue = "short"
     shell:
         """
         multiIntersectBed -i {input.beds} | awk '{{if($4 >= ({CALLABLE_MIN_N})) {{print $1"\t"$2"\t"$3}}}}' > {output.bed}
@@ -233,7 +233,7 @@ rule prepare_treemix:
     params:
         N='prepare_treemix',
         threads=1,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     shell:
         'mkdir -p treemix && '
         'echo recode as treemix format && date && '
@@ -249,7 +249,7 @@ rule run_treemix:
     params:
         N='run_treemix',
         threads=TREEMIX_THREADS,
-        queue = "short.qc@@short.hge"
+        queue = "short"
     wildcard_constraints:
         migrants='\d{1,2}'
     shell:
