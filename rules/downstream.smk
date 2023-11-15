@@ -210,12 +210,12 @@ rule get_single_callable_regions:
 	    echo -e "${{sps}}\t${{cov}}" >> {output.av}
         done
 	echo remove temp files callable regions
-        rm coverage/{SPECIES_ORDER}/coverage.*.chr*.txt*
-	rm coverage/{SPECIES_ORDER}/coverage*.chr*.callableOnly.bed
+        rm -f coverage/{SPECIES_ORDER}/coverage.*.chr*.txt*
+	rm -f coverage/{SPECIES_ORDER}/coverage*.chr*.callableOnly.bed
 	for sps in {EASY_SPECIES_LIST}
 	do
-            rm coverage/{SPECIES_ORDER}/coverage.${{sps}}.chr*.callableOnly.bed
-            rm coverage/{SPECIES_ORDER}/coverage.${{sps}}.callableOnly.bed	    
+            rm -f coverage/{SPECIES_ORDER}/coverage.${{sps}}.chr*.callableOnly.bed
+            rm -f coverage/{SPECIES_ORDER}/coverage.${{sps}}.callableOnly.bed	    
         done
 	touch {output.checkfile}
 	echo done cleanup

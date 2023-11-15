@@ -18,8 +18,9 @@ This repository contains code to download, pre-process, map, and variant call re
 
 ```
 . activate
-./scripts/test.sh --dryrun # check what will be run (will fail test)
-./scripts/test.sh 4 # specify number of cores, default 8 if left blank
+./scripts/test.sh local --dryrun # check what will be run (will fail test), try to run test locally
+./scripts/test.sh local 4 # specify number of cores, default 8 if left blank
+./scripts/test.sh cluster 30 # try to test on the cluster
 ```
 
 

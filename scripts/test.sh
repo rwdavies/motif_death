@@ -8,7 +8,11 @@ then
       exit 1
 fi
 
-other=$1 # n_cores if integer, or can be `--dryrun`, `--debug-dag`, `--reason`
+WHERE=$1 ## cluster or local
+#WHERE="local"
+#WHERE="cluster"
+
+other=$2 # n_cores if integer, or can be `--dryrun`, `--debug-dag`, `--reason`
 
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
@@ -35,8 +39,8 @@ if [ -d "${ANALYSIS_DIR}" ]
 then
     rm -r "${ANALYSIS_DIR}"
 fi
-
 $HATBAG_DIR/HATBAG_simulate_input.R --chr_lengths='c(2e5,2e5)' --seed=145 --verbose=TRUE --outputDir="$SIMULATE_DIR" --model=1 --enriched_in_tails=FALSE --simulate_reads=TRUE
+
 
 # to ensure sufficient test coverage, split outgroup into two fastq units
 # as the code does something different if there are one or two
@@ -65,12 +69,15 @@ for unit_name in $TEST_UNIT_NAMES; do
     then
 	species="test_outgroup"
     fi
-    echo "\"${species}\",\"${unit_name}\",\"\",20,\"short\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
+    echo "\"${species}\",\"${unit_name}\",\"www.fake.txt\",20,\"short\",\"dummy_lb\",100,\"X1\",1" >> $ORDER_CSV
     # copy fastqs
     SPECIES_DIR="${ANALYSIS_DIR}/mapping/${SPECIES_ORDER}/${species}"
     mkdir -p $SPECIES_DIR
     rsync -a "${unit_name}"* $SPECIES_DIR
 done
+
+
+echo Using ${ORDER_CSV}
 
 ## Copy reference files
 TEST_REF_DIR="${ANALYSIS_DIR}/${REF_DIR}/"
@@ -83,8 +90,6 @@ rsync -a simpleRepeat.gz ${TEST_EXTERNAL_DIR}ref.simpleRepeat.gz
 cd "${SCRIPTPATH}/../"
 
 ## split into a few bits, make sure it is OK to re-run partway through
-WHERE="local"
-WHERE="cluster"
 ./run.sh config/test_run1.json mapping/test/test_pop1/test_pop1.unitpop1.bam ${WHERE} is_test $other
 ./run.sh config/test_run1.json downstream_all ${WHERE} is_test $other
 ./run.sh config/test_run1.json all ${WHERE} is_test $other
